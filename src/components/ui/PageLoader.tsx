@@ -15,7 +15,7 @@ export function PageLoader({
 }: PageLoaderProps) {
   const content = (
     <div className="flex flex-col items-center justify-center p-6 text-center space-y-3 animate-in fade-in duration-200">
-      {/* Simple, sleek circular spinner ring — NO logo */}
+      {/* Simple, sleek circular spinner ring - NO logo */}
       <div className="w-8 h-8 rounded-full border-2 border-slate-200 dark:border-slate-800 border-t-blue-600 dark:border-t-blue-500 animate-spin" />
       
       {message && (

@@ -5,7 +5,7 @@ import { formatINR, formatPercentage } from "../utils/formatters";
 
 export const SITE_CONFIG = {
   name: "IPO List",
-  title: "IPO List — Live IPO GMP, Allotment Status, Dates & Subscription India",
+  title: "IPO List | Live IPO GMP, Allotment Status, Dates & Subscription India",
   description:
     "Track latest Mainboard & SME IPOs in India. Real-time Grey Market Premium (GMP), live subscription status, allotment link checker, expected listing gains and IPO reviews.",
   url: "https://ipolist.in",

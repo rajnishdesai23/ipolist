@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Fast auth check: read cookie presence synchronously — no network round-trip
+  // Fast auth check: read cookie presence synchronously - no network round-trip
   useEffect(() => {
     const hasCookie = document.cookie
       .split(";")

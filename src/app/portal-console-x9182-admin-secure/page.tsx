@@ -18,7 +18,7 @@ import { formatDate } from "@/lib/utils/formatters";
 export const revalidate = 30; // ISR: revalidate admin dashboard every 30 seconds
 
 export default async function AdminDashboardPage() {
-  // Parallelise all data fetches — one round-trip instead of 5 sequential ones
+  // Parallelise all data fetches - one round-trip instead of 5 sequential ones
   const [allIpos, liveIpos, upcomingIpos, blogs, scrapeLogs] = await Promise.all([
     getAllIpos(),
     getLiveIpos(),

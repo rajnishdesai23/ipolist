@@ -136,7 +136,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
               <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Expected Listing:{" "}
                 <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
-                  {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
+                  {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                 </strong>
               </span>
 
@@ -295,10 +295,10 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                   {ipo.financials.map((fin, idx) => (
                     <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                       <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{fin.period || fin["Period Ended"] || `FY ${idx}`}</td>
-                      <td className="py-3 px-4 text-slate-800 dark:text-slate-200 font-semibold">{fin.revenue || fin["Revenue"] || "—"}</td>
-                      <td className="py-3 px-4 text-slate-600 dark:text-slate-400">{fin.expense || fin["Expense"] || "—"}</td>
-                      <td className="py-3 px-4 font-extrabold text-emerald-600 dark:text-emerald-400">{fin.pat || fin["PAT"] || "—"}</td>
-                      <td className="py-3 px-4 text-right font-semibold text-slate-800 dark:text-slate-200">{fin.assets || fin["Assets"] || "—"}</td>
+                      <td className="py-3 px-4 text-slate-800 dark:text-slate-200 font-semibold">{fin.revenue || fin["Revenue"] || "N/A"}</td>
+                      <td className="py-3 px-4 text-slate-600 dark:text-slate-400">{fin.expense || fin["Expense"] || "N/A"}</td>
+                      <td className="py-3 px-4 font-extrabold text-emerald-600 dark:text-emerald-400">{fin.pat || fin["PAT"] || "N/A"}</td>
+                      <td className="py-3 px-4 text-right font-semibold text-slate-800 dark:text-slate-200">{fin.assets || fin["Assets"] || "N/A"}</td>
                     </tr>
                   ))}
                 </tbody>

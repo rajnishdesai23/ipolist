@@ -8,7 +8,7 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "Open IPOs Today — Live Bidding IPO List in India",
+  title: "Open IPOs Today | Live Bidding IPO List in India",
   description:
     "Check all IPOs currently open for subscription today. Live bidding multiple, Grey Market Premium (GMP), minimum lot investment, and closing dates.",
 };

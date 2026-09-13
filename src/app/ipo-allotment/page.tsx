@@ -8,7 +8,7 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { IpoAllotmentTable } from "@/components/ipo/IpoAllotmentTable";
 
 export const metadata: Metadata = {
-  title: "IPO Allotment Status Check Online — Direct KFintech, Link Intime & Bigshare Links",
+  title: "IPO Allotment Status Check Online | Direct KFintech, Link Intime & Bigshare Links",
   description:
     "Instant direct online allotment verification. Official direct links for KFintech, MUFG / Link Intime, Bigshare, and BSE India.",
 };

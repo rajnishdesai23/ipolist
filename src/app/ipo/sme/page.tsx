@@ -8,7 +8,7 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "SME IPO List India (NSE Emerge & BSE SME) — Live GMP & Lot Sizes",
+  title: "SME IPO List India (NSE Emerge & BSE SME) | Live GMP & Lot Sizes",
   description:
     "Complete list of SME IPOs on NSE Emerge and BSE SME platforms. Check SME Grey Market Premium (GMP), minimum lot investment values, subscription multiples, and allotment dates.",
 };

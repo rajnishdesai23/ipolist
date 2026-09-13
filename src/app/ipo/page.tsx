@@ -9,7 +9,7 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "All IPOs in India (2026) — Mainboard & SME IPO List",
+  title: "All IPOs in India (2026) | Mainboard & SME IPO List",
   description:
     "Complete list of all Mainboard and SME IPOs in India. Check live GMP, price band, lot size, subscription status, issue dates, and allotment links.",
 };
@@ -27,7 +27,7 @@ export default async function AllIposPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
-              IPO List India (2026) — Mainboard & SME
+              IPO List India (2026) - Mainboard & SME
             </h1>
           </div>
 

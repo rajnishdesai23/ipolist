@@ -43,7 +43,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
       `"${ipo.type || ""}"`,
       `"${ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}"`,
       `"${ipo.gmp?.value ? `+₹${ipo.gmp.value}` : "₹0"}"`,
-      `"${ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}"`,
+      `"${ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}"`,
       `"${ipo.gmp?.percentage ? `${ipo.gmp.percentage}%` : "0%"}"`,
       `"${ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}"`,
     ]);
@@ -208,7 +208,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                         </td>
 
                         <td className="py-4 px-4 font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                          {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
+                          {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                         </td>
 
                         <td className="py-4 px-4 font-extrabold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
@@ -299,7 +299,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                       <div>
                         <span className="text-[10px] text-slate-400 block font-semibold">Est. Listing Price</span>
                         <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                          {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
+                          {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                         </span>
                       </div>
                       <div>

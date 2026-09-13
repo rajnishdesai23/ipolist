@@ -120,7 +120,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
           </div>
         )}
 
-        {/* Article Body — styled with rich blog-article-content typography */}
+        {/* Article Body - styled with rich blog-article-content typography */}
         <div
           className="blog-article-content"
           dangerouslySetInnerHTML={{

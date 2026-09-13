@@ -67,7 +67,7 @@ export const metadata: Metadata = {
         url: SITE_CONFIG.ogImage,
         width: 1200,
         height: 630,
-        alt: "IPO List — Live IPO GMP & Allotment Tracker",
+        alt: "IPO List | Live IPO GMP & Allotment Tracker",
       },
     ],
   },

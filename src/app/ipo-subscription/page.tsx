@@ -9,7 +9,7 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { getStatusBadgeConfig } from "@/lib/utils/status";
 
 export const metadata: Metadata = {
-  title: "Live IPO Subscription Status Today — Category-wise Bidding Details",
+  title: "Live IPO Subscription Status Today | Category-wise Bidding Details",
   description:
     "Check live IPO subscription status today in India. Category-wise bidding details for Retail, NII/HNI, and QIB institutional investors.",
 };

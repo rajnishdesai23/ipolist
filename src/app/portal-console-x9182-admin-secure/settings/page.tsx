@@ -6,7 +6,7 @@ import { Settings, Save, Globe, Shield } from "lucide-react";
 export default function AdminSettingsPage() {
   const [siteName, setSiteName] = useState("IPO List");
   const [siteTitle, setSiteTitle] = useState(
-    "IPO List — Live IPO GMP, Allotment Status, Dates & Subscription India"
+    "IPO List | Live IPO GMP, Allotment Status, Dates & Subscription India"
   );
   const [siteDesc, setSiteDesc] = useState(
     "Track latest Mainboard & SME IPOs in India. Real-time Grey Market Premium (GMP), live subscription status, allotment link checker, expected listing gains and IPO reviews."

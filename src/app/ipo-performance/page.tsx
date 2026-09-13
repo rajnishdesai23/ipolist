@@ -9,7 +9,7 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { formatINR } from "@/lib/utils/formatters";
 
 export const metadata: Metadata = {
-  title: "IPO Listing Performance Tracker — Gain & Listing Price Analysis",
+  title: "IPO Listing Performance Tracker | Gain & Listing Price Analysis",
   description:
     "Track historical IPO listing gains, opening prices, current market performance, and return on investment for Mainboard & SME issues.",
 };
@@ -74,7 +74,7 @@ export default async function IpoPerformancePage() {
                         {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}
                       </td>
                       <td className="py-4 px-4 font-bold text-emerald-600 dark:text-emerald-400">
-                        {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
+                        {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                       </td>
                       <td className="py-4 px-4 text-slate-500">
                         {ipo.dates?.listing || ipo.dates?.rawRange || "TBA"}

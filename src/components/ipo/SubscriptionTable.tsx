@@ -61,7 +61,7 @@ export function SubscriptionTable({ subscription, ipoName }: SubscriptionTablePr
                       {cat.multiple}x
                     </span>
                   ) : (
-                    "—"
+                    "TBA"
                   )}
                 </td>
               </tr>

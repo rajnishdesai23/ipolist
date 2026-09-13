@@ -8,7 +8,7 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "IPO Blog, Reviews & Market News — Fundamental Analysis India",
+  title: "IPO Blog, Reviews & Market News | Fundamental Analysis India",
   description:
     "Expert IPO fundamental analysis, valuation reviews, daily Grey Market Premium (GMP) reports, beginner guides, and allotment news.",
 };

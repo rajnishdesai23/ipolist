@@ -63,7 +63,7 @@ export default async function HomePage() {
     <div className="space-y-6 pb-10">
       {/* Clean Minimal Hero Section */}
       <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
-        {/* JSON-LD Schema for FAQs — inside hero so no top gap from space-y */}
+        {/* JSON-LD Schema for FAQs - inside hero so no top gap from space-y */}
         {faqSchema && (
           <script
             type="application/ld+json"
@@ -199,7 +199,7 @@ export default async function HomePage() {
                     <span>Price: {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}</span>
                     <span>•</span>
                     <span className="text-emerald-600 font-semibold">
-                      Exp: {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
+                      Exp: {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                     </span>
                   </div>
                 </div>

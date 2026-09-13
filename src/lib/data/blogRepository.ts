@@ -3,7 +3,7 @@ import { BlogPost, BlogCategory } from "@/types/blog";
 import { db } from "@/lib/firebase/client";
 import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 
-// In-memory cache — populated from Firestore on first access
+// In-memory cache - populated from Firestore on first access
 let inMemoryBlogs: BlogPost[] = [];
 
 /** Load all blogs from Firestore into memory (on first call per server instance) */

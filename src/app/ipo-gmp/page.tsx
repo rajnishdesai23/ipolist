@@ -8,7 +8,7 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { IpoGmpView } from "@/components/ipo/IpoGmpView";
 
 export const metadata: Metadata = {
-  title: "IPO GMP Today — Live Grey Market Premium for Mainboard & SME IPOs",
+  title: "IPO GMP Today | Live Grey Market Premium for Mainboard & SME IPOs",
   description:
     "Check live IPO GMP (Grey Market Premium) today in India. Daily updated expected listing gains and historical GMP trends.",
 };
