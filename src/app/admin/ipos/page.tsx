@@ -6,6 +6,8 @@ import { PlusCircle, Edit3, Trash2, ExternalLink, RefreshCw } from "lucide-react
 import { IPO } from "@/types/ipo";
 import { formatINR } from "@/lib/utils/formatters";
 
+import { IpoLogo } from "@/components/ui/IpoLogo";
+
 export default function AdminIposListPage() {
   const [ipos, setIpos] = useState<IPO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +77,7 @@ export default function AdminIposListPage() {
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-800/80 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
-                <th className="py-3.5 px-4">IPO Name & Slug</th>
+                <th className="py-3.5 px-4">IPO Name & Logo</th>
                 <th className="py-3.5 px-4">Type</th>
                 <th className="py-3.5 px-4">Status</th>
                 <th className="py-3.5 px-4">Price Band</th>
@@ -91,8 +93,15 @@ export default function AdminIposListPage() {
                 return (
                   <tr key={ipo.id} className="hover:bg-slate-800/40">
                     <td className="py-4 px-4">
-                      <span className="font-bold text-white block">{ipo.name}</span>
-                      <span className="font-mono text-[10px] text-slate-400">/ipo/{ipo.slug}</span>
+                      <div className="flex items-center gap-3">
+                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
+                        <div>
+                          <Link href={`/admin/ipos/${ipo.slug || ipo.id}`} className="font-bold text-white hover:text-blue-400 block text-sm">
+                            {ipo.name}
+                          </Link>
+                          <span className="font-mono text-[10px] text-slate-400">/ipo/{ipo.slug}</span>
+                        </div>
+                      </div>
                     </td>
                     <td className="py-4 px-4">
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-blue-400">
@@ -113,22 +122,32 @@ export default function AdminIposListPage() {
                     <td className="py-4 px-4 text-slate-400 text-[11px]">
                       {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
                     </td>
-                    <td className="py-4 px-4 text-right whitespace-nowrap space-x-2">
-                      <Link
-                        href={`/ipo/${ipo.slug}`}
-                        target="_blank"
-                        className="p-1.5 inline-block text-slate-400 hover:text-white bg-slate-800 rounded-lg"
-                        title="View Public Page"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(ipo.id, ipo.name)}
-                        className="p-1.5 text-rose-400 hover:text-white bg-slate-800 rounded-lg"
-                        title="Delete IPO"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                    <td className="py-4 px-4 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/admin/ipos/${ipo.slug || ipo.id}`}
+                          className="px-2.5 py-1.5 inline-flex items-center gap-1 text-blue-400 hover:text-white bg-blue-950/60 hover:bg-blue-600 rounded-lg font-bold text-xs transition-colors"
+                          title="Edit IPO Details & Logo"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                          <span>Edit</span>
+                        </Link>
+                        <Link
+                          href={`/ipo/${ipo.slug}`}
+                          target="_blank"
+                          className="p-1.5 inline-block text-slate-400 hover:text-white bg-slate-800 rounded-lg"
+                          title="View Public Page"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(ipo.id, ipo.name)}
+                          className="p-1.5 text-rose-400 hover:text-white bg-slate-800 rounded-lg"
+                          title="Delete IPO"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
