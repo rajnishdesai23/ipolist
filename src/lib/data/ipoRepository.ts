@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { IPO, IPOFilterOptions } from "@/types/ipo";
 import { db } from "@/lib/firebase/client";
 import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
@@ -8,7 +9,7 @@ import { sortIposByStatusPriority } from "@/lib/utils/status";
 let inMemoryIpos: IPO[] = [];
 let isScrapingInProgress = false;
 
-export async function getAllIpos(options?: IPOFilterOptions): Promise<IPO[]> {
+export const getAllIpos = cache(async (options?: IPOFilterOptions): Promise<IPO[]> => {
   // If in-memory is empty, try loading from Firestore
   if (inMemoryIpos.length === 0 && db) {
     try {
@@ -74,7 +75,7 @@ export async function getAllIpos(options?: IPOFilterOptions): Promise<IPO[]> {
   return list;
 }
 
-export async function getIpoBySlug(slug: string): Promise<IPO | null> {
+export const getIpoBySlug = cache(async (slug: string): Promise<IPO | null> => {
   const ipos = await getAllIpos();
   const normalizedSlug = slug.toLowerCase().replace(/-ipo$/, "").replace(/-details$/, "").trim();
 
@@ -91,7 +92,7 @@ export async function getIpoBySlug(slug: string): Promise<IPO | null> {
   });
 
   return found || null;
-}
+});
 
 export async function getLiveIpos(): Promise<IPO[]> {
   return getAllIpos({ status: "LIVE" });
