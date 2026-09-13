@@ -4,14 +4,15 @@ import { db } from "@/lib/firebase/client";
 import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { scrapeAllIpos } from "@/lib/scrapers/ipowatch";
 import { sortIposByStatusPriority } from "@/lib/utils/status";
+import { mockIpos } from "@/lib/data/mockIpos";
 
 // In-memory cache for fast SSR / Edge delivery
-let inMemoryIpos: IPO[] = [];
+let inMemoryIpos: IPO[] = [...mockIpos];
 let isScrapingInProgress = false;
 
 export const getAllIpos = cache(async (options?: IPOFilterOptions): Promise<IPO[]> => {
-  // If in-memory is empty, try loading from Firestore
-  if (inMemoryIpos.length === 0 && db) {
+  // If only mock data is in memory, attempt fast async Firestore fetch
+  if (inMemoryIpos === mockIpos && db) {
     try {
       const snapshot = await getDocs(collection(db, "ipos"));
       if (!snapshot.empty) {
@@ -22,20 +23,19 @@ export const getAllIpos = cache(async (options?: IPOFilterOptions): Promise<IPO[
     }
   }
 
-  // If still empty and not currently scraping, perform immediate live scrape
-  if (inMemoryIpos.length === 0 && !isScrapingInProgress) {
+  // Trigger background scrape if needed (non-blocking)
+  if (!isScrapingInProgress && inMemoryIpos.length <= mockIpos.length) {
     isScrapingInProgress = true;
-    try {
-      console.log("Empty database detected: Performing live bootstrap scrape from IPOWatch...");
-      const scraped = await scrapeAllIpos();
-      if (scraped.length > 0) {
-        await saveAllIpos(scraped);
-      }
-    } catch (err) {
-      console.error("Bootstrap scrape error:", err);
-    } finally {
-      isScrapingInProgress = false;
-    }
+    scrapeAllIpos()
+      .then((scraped) => {
+        if (scraped.length > 0) {
+          saveAllIpos(scraped).catch(() => {});
+        }
+      })
+      .catch((err) => console.error("Background scrape notice:", err))
+      .finally(() => {
+        isScrapingInProgress = false;
+      });
   }
 
   let list = [...inMemoryIpos];
