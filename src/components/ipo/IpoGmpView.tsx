@@ -267,21 +267,21 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                       <div className="min-w-0 flex-1">
                         <Link
                           href={`/ipo/${ipo.slug}`}
-                          className="font-black text-xl sm:text-2xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
+                          className="font-normal sm:font-medium text-lg sm:text-xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
                         >
                           {ipo.name}
                         </Link>
                         <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                          <span className="text-xs font-black px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                          <span className="text-xs font-medium px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                             {ipo.type}
                           </span>
                           {ipo.issueDetails?.listingExchange && (
-                            <span className="text-xs font-semibold text-slate-400">
+                            <span className="text-xs font-normal text-slate-400">
                               {ipo.issueDetails.listingExchange}
                             </span>
                           )}
                           {ipo.status && (
-                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${
                               ipo.status === "LIVE"
                                 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
                                 : ipo.status === "UPCOMING"
@@ -297,7 +297,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                       {/* Prominent GMP Badge */}
                       <div className="flex flex-col items-end shrink-0">
                         <span
-                          className={`inline-flex items-center px-3.5 py-1.5 rounded-xl font-black text-base sm:text-lg shrink-0 shadow-sm ${
+                          className={`inline-flex items-center px-3.5 py-1.5 rounded-xl font-semibold text-base sm:text-lg shrink-0 shadow-sm ${
                             isPositive
                               ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
                               : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
@@ -305,7 +305,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                         >
                           {isPositive ? `+₹${gmpVal}` : "₹0"}
                         </span>
-                        <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                        <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
                           {gmpPct > 0 ? `+${gmpPct}% Est.` : "GMP"}
                         </span>
                       </div>
@@ -314,34 +314,34 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                     {/* High-Impact Financial Metrics Box */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
                           Issue Price
                         </span>
-                        <span className="font-black text-base sm:text-lg text-slate-900 dark:text-white block">
+                        <span className="font-semibold text-sm sm:text-base text-slate-900 dark:text-white block">
                           {rawPrice}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
                           Est. Listing
                         </span>
-                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
+                        <span className="font-semibold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 block">
                           {estListing}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
                           Est. Gain
                         </span>
-                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
+                        <span className="font-semibold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 block">
                           {gmpPct > 0 ? `+${gmpPct}%` : "0%"}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
                           {estProfit ? "Est. Profit/Lot" : "Lot Size"}
                         </span>
-                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
+                        <span className="font-semibold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 block">
                           {estProfit ? `+${formatINR(estProfit)}` : (lot > 0 ? `${lot} Shares` : "1 Lot")}
                         </span>
                       </div>

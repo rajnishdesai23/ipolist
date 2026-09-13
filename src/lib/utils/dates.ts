@@ -120,7 +120,7 @@ export function getSmartAllotmentDate(
     if (closeParsed) {
       const estimated = addBusinessDays(closeParsed, 1);
       return {
-        displayText: `${formatDateDisplay(estimated)} (Expected)`,
+        displayText: formatDateDisplay(estimated),
         isEstimated: true,
         dateObj: estimated,
       };

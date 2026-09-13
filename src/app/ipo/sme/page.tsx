@@ -29,25 +29,17 @@ export default async function SmeIposPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 mb-2">
             <span>NSE Emerge & BSE SME Platforms</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h1 className="text-2xl sm:text-3xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
             SME IPO List (Small & Medium Enterprises)
           </h1>
         </div>
 
         <LeaderboardAd />
 
-        <div className="hidden md:block">
-          <IpoTable ipos={ipos} initialSegment="SME" title="SME Platform Issues" showAllColumns={true} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-          {ipos.map((ipo) => (
-            <IpoCard key={ipo.id} ipo={ipo} />
-          ))}
-        </div>
+        <IpoTable ipos={ipos} initialSegment="SME" title="SME Platform Issues" showAllColumns={true} />
 
         <BrokerCtaCard variant="horizontal" broker="zerodha" />
       </div>

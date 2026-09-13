@@ -60,11 +60,11 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
             <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
             <div className="min-w-0 flex-1">
               <Link href={`/ipo/${ipo.slug}`} className="block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                <h3 className="text-lg sm:text-[20px] font-bold text-slate-900 dark:text-white tracking-tight line-clamp-1">
+                <h3 className="text-lg sm:text-[20px] font-medium sm:font-semibold text-slate-900 dark:text-white tracking-tight line-clamp-1">
                   {ipo.name}
                 </h3>
               </Link>
-              <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 block truncate mt-0.5">
+              <span className="text-xs font-normal text-slate-400 dark:text-slate-500 block truncate mt-0.5">
                 {dateRange}
               </span>
             </div>
@@ -74,7 +74,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
           <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
             <div className="flex items-center gap-1.5">
               <span
-                className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${
+                className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${
                   isSme
                     ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300"
                     : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300"
@@ -82,7 +82,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
               >
                 {ipo.type}
               </span>
-              <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${statusPill.className}`}>
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${statusPill.className}`}>
                 {statusPill.label}
               </span>
             </div>

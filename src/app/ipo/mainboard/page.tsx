@@ -29,22 +29,14 @@ export default async function MainboardIposPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h1 className="text-2xl sm:text-3xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
             Mainboard IPOs (NSE & BSE)
           </h1>
         </div>
 
         <LeaderboardAd />
 
-        <div className="hidden md:block">
-          <IpoTable ipos={ipos} initialSegment="MAINBOARD" title="Mainboard Issues" showAllColumns={true} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-          {ipos.map((ipo) => (
-            <IpoCard key={ipo.id} ipo={ipo} />
-          ))}
-        </div>
+        <IpoTable ipos={ipos} initialSegment="MAINBOARD" title="Mainboard Issues" showAllColumns={true} />
 
         <BrokerCtaCard variant="horizontal" broker="upstox" />
       </div>
