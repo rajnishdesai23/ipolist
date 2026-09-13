@@ -25,27 +25,15 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
 
     // Compute SEBI T+3 tentative dates if dates are TBA but close date is known
     let computedAllotment = parseFlexibleDate(dates.allotment, "end");
-    let computedRefunds = parseFlexibleDate(dates.refunds, "end");
-    let computedDemat = parseFlexibleDate(dates.creditToDemat, "end");
     let computedListing = parseFlexibleDate(dates.listing, "end");
 
     let isAllotmentTentative = false;
-    let isRefundsTentative = false;
-    let isDematTentative = false;
     let isListingTentative = false;
 
     if (closeParsed) {
       if (!computedAllotment) {
         computedAllotment = addBusinessDays(closeParsed, 1);
         isAllotmentTentative = true;
-      }
-      if (!computedRefunds) {
-        computedRefunds = addBusinessDays(closeParsed, 2);
-        isRefundsTentative = true;
-      }
-      if (!computedDemat) {
-        computedDemat = addBusinessDays(closeParsed, 2);
-        isDematTentative = true;
       }
       if (!computedListing) {
         computedListing = addBusinessDays(closeParsed, 3);
@@ -55,6 +43,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
 
     const isTba = (s?: string | null) => !s || s.trim().toLowerCase().includes("tba") || s.trim().toLowerCase().includes("n/a");
 
+    // STRICTLY 4 STEPS: Open, Close, Allotment, Listing
     const rawSteps = [
       {
         label: "IPO Open",
@@ -72,31 +61,15 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
         label: "Basis of Allotment",
         dateText: !isTba(dates.allotment)
           ? dates.allotment!.replace(/[–—]/g, " to ")
-          : (computedAllotment ? `${formatDateDisplay(computedAllotment)} (Expected)` : "TBA"),
+          : (computedAllotment ? `${formatDateDisplay(computedAllotment)} (Tentative)` : "TBA"),
         parsed: computedAllotment,
         key: "allotment",
-      },
-      {
-        label: "Initiation of Refunds",
-        dateText: !isTba(dates.refunds)
-          ? dates.refunds!.replace(/[–—]/g, " to ")
-          : (computedRefunds ? `${formatDateDisplay(computedRefunds)} (Expected)` : "TBA"),
-        parsed: computedRefunds,
-        key: "refunds",
-      },
-      {
-        label: "Credit to Demat",
-        dateText: !isTba(dates.creditToDemat)
-          ? dates.creditToDemat!.replace(/[–—]/g, " to ")
-          : (computedDemat ? `${formatDateDisplay(computedDemat)} (Expected)` : "TBA"),
-        parsed: computedDemat,
-        key: "demat",
       },
       {
         label: "Listing Date",
         dateText: !isTba(dates.listing)
           ? dates.listing!.replace(/[–—]/g, " to ")
-          : (computedListing ? `${formatDateDisplay(computedListing)} (Expected)` : "TBA"),
+          : (computedListing ? `${formatDateDisplay(computedListing)} (Tentative)` : "TBA"),
         parsed: computedListing,
         key: "listing",
       },
@@ -125,27 +98,25 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
       };
     });
 
-    // If IPO status is CLOSED, we know bidding closed (Step 0 and Step 1 are completed)
+    // If IPO status is CLOSED, bidding is closed (Step 0 and Step 1 are completed)
     if (status === "CLOSED" || status === "ALLOTMENT") {
-      if (evaluated[0] && evaluated[0].state === "UPCOMING") evaluated[0].state = "COMPLETED";
-      if (evaluated[1] && evaluated[1].state === "UPCOMING") evaluated[1].state = "COMPLETED";
+      evaluated[0].state = "COMPLETED";
+      evaluated[1].state = "COMPLETED";
       if (lastPassedIndex < 1) lastPassedIndex = 1;
     } else if (status === "LIVE") {
-      if (evaluated[0] && evaluated[0].state === "UPCOMING") evaluated[0].state = "COMPLETED";
-      if (evaluated[1] && evaluated[1].state === "UPCOMING") evaluated[1].state = "CURRENT";
+      evaluated[0].state = "COMPLETED";
+      if (evaluated[1].state === "UPCOMING") evaluated[1].state = "CURRENT";
       if (currentActiveIndex === -1) currentActiveIndex = 1;
       if (lastPassedIndex < 0) lastPassedIndex = 0;
     }
 
-    // Determine active index for progress bar
     const activeIndex = currentActiveIndex >= 0 ? currentActiveIndex : Math.max(0, lastPassedIndex);
-    const fillPercent = Math.min(100, Math.max(0, (activeIndex / (rawSteps.length - 1)) * 100));
     const isAllCompleted = evaluated.every((s) => s.state === "COMPLETED");
 
-    return { steps: evaluated, activeIndex, fillPercent, currentActiveIndex, isAllCompleted };
+    return { steps: evaluated, activeIndex, isAllCompleted };
   }, [dates, status, today]);
 
-  const { steps, activeIndex, fillPercent, isAllCompleted } = stepsWithState;
+  const { steps, activeIndex, isAllCompleted } = stepsWithState;
 
   return (
     <section className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-6">
@@ -166,7 +137,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
         </div>
 
         {/* Status Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800 self-start sm:self-auto">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800 self-start sm:self-auto shadow-sm">
           <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           <span>
             {isAllCompleted
@@ -180,82 +151,108 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
         </div>
       </div>
 
-      {/* Desktop Progress Line & Stepper */}
-      <div className="hidden lg:block relative pt-6 pb-4">
-        {/* Background Track Line */}
-        <div className="absolute top-10 left-8 right-8 h-2 bg-slate-100 dark:bg-slate-800 rounded-full z-0" />
-
-        {/* Animated Progress Fill Line */}
-        <div
-          className="absolute top-10 left-8 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 rounded-full z-0 transition-all duration-700 ease-out shadow-sm"
-          style={{ width: `calc(${fillPercent}% * 0.88)` }}
-        />
-
-        {/* Step Nodes Grid */}
-        <div className="relative z-10 grid grid-cols-6 gap-2">
+      {/* Desktop Stepper (4 Steps with Flawless Segmented Connectors) */}
+      <div className="hidden md:block">
+        {/* Row of Nodes and Seamless Connector Lines */}
+        <div className="flex items-center w-full px-6 py-2">
           {steps.map((step, idx) => {
             const isCompleted = step.state === "COMPLETED";
-            const isCurrent = step.state === "CURRENT" || (idx === activeIndex && !isCompleted && !isAllCompleted);
+            const isCurrent = step.state === "CURRENT";
+            const isNextCompleted = idx < steps.length - 1 && steps[idx + 1].state === "COMPLETED";
+            const isNextActive = idx < steps.length - 1 && steps[idx + 1].state === "CURRENT";
 
             return (
-              <div key={step.key} className="flex flex-col items-center text-center group">
-                {/* Node Button Circle — Simple & Clean, NO logo or sparkles */}
-                <div className="relative mb-3">
+              <React.Fragment key={step.key}>
+                {/* Step Circle Node */}
+                <div className="relative shrink-0 flex items-center justify-center">
                   {isCurrent && (
-                    <span className="absolute -inset-1.5 rounded-full bg-blue-500/30 dark:bg-blue-400/20 animate-ping" />
+                    <span className="absolute -inset-1.5 rounded-full bg-blue-500/30 animate-ping" />
                   )}
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${
-                      isCurrent
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shadow-md ${
+                      isCompleted
+                        ? "bg-emerald-500 text-white shadow-emerald-500/25 ring-4 ring-emerald-100 dark:ring-emerald-950/60"
+                        : isCurrent
                         ? "bg-blue-600 text-white ring-4 ring-blue-500/20 scale-105"
-                        : isCompleted
-                        ? "bg-emerald-500 text-white shadow-emerald-500/20"
                         : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700"
                     }`}
                   >
                     {isCompleted ? (
-                      <Check className="w-4 h-4 stroke-[3]" />
+                      <Check className="w-5 h-5 stroke-[3]" />
                     ) : (
                       <span>{idx + 1}</span>
                     )}
                   </div>
                 </div>
 
-                {/* Step Details Box */}
-                <div
-                  className={`p-3 rounded-2xl w-full border text-left transition-all ${
-                    isCurrent
-                      ? "bg-blue-50/90 border-blue-300 dark:bg-blue-950/80 dark:border-blue-700 shadow-md"
-                      : isCompleted
-                      ? "bg-emerald-50/40 dark:bg-slate-800/40 border-emerald-100 dark:border-slate-800"
-                      : "bg-slate-50/40 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800 opacity-70"
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                      Step {idx + 1}
-                    </span>
-                    {isCurrent && (
-                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-blue-600 text-white">
-                        Active
-                      </span>
-                    )}
+                {/* Connecting Track Line to next node — Fully connects whenever next step is completed */}
+                {idx < steps.length - 1 && (
+                  <div className="flex-1 h-2 mx-3 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-500 rounded-full ${
+                        isNextCompleted
+                          ? "bg-emerald-500 w-full"
+                          : isNextActive || (isCompleted && idx + 1 === activeIndex)
+                          ? "bg-gradient-to-r from-emerald-500 to-blue-500 w-full"
+                          : "w-0"
+                      }`}
+                    />
                   </div>
-                  <span className="font-extrabold text-slate-900 dark:text-white block text-xs truncate">
-                    {step.label}
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+
+        {/* 4 Detail Boxes Below Nodes */}
+        <div className="grid grid-cols-4 gap-3 sm:gap-4 mt-4">
+          {steps.map((step, idx) => {
+            const isCompleted = step.state === "COMPLETED";
+            const isCurrent = step.state === "CURRENT";
+
+            return (
+              <div
+                key={step.key}
+                className={`p-4 rounded-2xl border text-left transition-all ${
+                  isCurrent
+                    ? "bg-blue-50/90 border-blue-300 dark:bg-blue-950/80 dark:border-blue-700 shadow-sm"
+                    : isCompleted
+                    ? "bg-emerald-50/40 dark:bg-slate-800/40 border-emerald-200 dark:border-emerald-900/40"
+                    : "bg-slate-50/40 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800 opacity-80"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Step {idx + 1}
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 mt-1 block truncate">
-                    {step.dateText}
-                  </span>
+                  {isCompleted ? (
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                      Completed
+                    </span>
+                  ) : isCurrent ? (
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-600 text-white">
+                      Active Today
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-semibold text-slate-400">
+                      Upcoming
+                    </span>
+                  )}
                 </div>
+                <span className="font-extrabold text-slate-900 dark:text-white block text-sm sm:text-base tracking-tight">
+                  {step.label}
+                </span>
+                <span className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mt-1 block">
+                  {step.dateText}
+                </span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Mobile & Tablet Vertical Step Track */}
-      <div className="block lg:hidden space-y-4">
+      {/* Mobile & Tablet Vertical Step Track (4 Steps) */}
+      <div className="block md:hidden space-y-4">
         <div className="relative pl-6 space-y-4 before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
           {steps.map((step, idx) => {
             const isCompleted = step.state === "COMPLETED";
@@ -290,11 +287,15 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                     <span className="font-extrabold text-sm text-slate-900 dark:text-white">
                       {step.label}
                     </span>
-                    {isCurrent && (
+                    {isCompleted ? (
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                        Completed
+                      </span>
+                    ) : isCurrent ? (
                       <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-600 text-white">
                         Active Today
                       </span>
-                    )}
+                    ) : null}
                   </div>
                   <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold mt-1 block">
                     {step.dateText}
