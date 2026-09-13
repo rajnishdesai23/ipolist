@@ -125,7 +125,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         </div>
       </div>
 
-      {/* Footer Dates & Action CTA */}
+      {/* Footer Action CTAs */}
       <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <Calendar className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
@@ -134,13 +134,27 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
           </span>
         </div>
 
-        <Link
-          href={`/ipo/${ipo.slug}`}
-          className="inline-flex items-center gap-1 bg-slate-900 hover:bg-blue-600 text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors shadow-sm"
-        >
-          <span>View Details</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
+        <div className="flex items-center gap-1.5">
+          {ipo.status === "LIVE" ? (
+            <a
+              href="https://zerodha.com/open-account"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+            >
+              <span>Apply</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          ) : (
+            <Link
+              href={`/ipo/${ipo.slug}`}
+              className="inline-flex items-center gap-1 bg-slate-900 hover:bg-blue-600 text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors shadow-sm"
+            >
+              <span>Details</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

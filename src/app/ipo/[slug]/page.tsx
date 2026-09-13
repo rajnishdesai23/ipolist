@@ -33,6 +33,7 @@ import { getStatusBadgeConfig } from "@/lib/utils/status";
 
 import { IpoLogo } from "@/components/ui/IpoLogo";
 import { TimelineStepper } from "@/components/ipo/TimelineStepper";
+import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
@@ -138,6 +139,31 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                   {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
                 </strong>
               </span>
+
+              {/* Direct Action CTAs (No Fluff) */}
+              <div className="mt-3 flex items-center gap-2">
+                {ipo.status === "LIVE" ? (
+                  <a
+                    href="https://zerodha.com/open-account"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow-md transition-all"
+                  >
+                    <span>Apply via Zerodha</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                ) : (
+                  <a
+                    href={getRegistrarPortalUrl(ipo.registrar?.name, ipo.registrar?.website)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow-md transition-all"
+                  >
+                    <span>Check Allotment Status</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 
