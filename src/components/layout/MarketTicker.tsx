@@ -7,10 +7,15 @@ import { IPO } from "@/types/ipo";
 import { formatINR, formatPercentage } from "@/lib/utils/formatters";
 
 export function MarketTicker({ ipos }: { ipos: IPO[] }) {
-  if (!ipos || ipos.length === 0) return null;
+  // Filter out zero / 0 GMP items
+  const activeGmpIpos = ipos.filter(
+    (ipo) => (ipo.gmp?.value ?? 0) > 0 || (ipo.gmp?.percentage ?? 0) > 0
+  );
+
+  const displayList = activeGmpIpos.length > 0 ? activeGmpIpos : ipos;
 
   // Double list for continuous seamless infinite marquee
-  const tickerItems = [...ipos, ...ipos];
+  const tickerItems = [...displayList, ...displayList];
 
   return (
     <div className="bg-slate-900 border-b border-slate-800 text-slate-200 text-xs py-2 overflow-hidden select-none">
