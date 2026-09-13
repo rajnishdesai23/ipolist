@@ -17,6 +17,7 @@ import { formatINR } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig, sortIposByStatusPriority } from "@/lib/utils/status";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
+import { IpoCard } from "@/components/ipo/IpoCard";
 
 interface IpoTableProps {
   ipos: IPO[];
@@ -220,118 +221,14 @@ export function IpoTable({
         </div>
       )}
 
-      {/* Mobile Card List View (Visible on small screens or when Card View is active) */}
+      {/* Card Grid View (Matching reference design format) */}
       {filtered.length > 0 && (
-        <div className={`${viewMode === "cards" ? "block" : "block md:hidden"} space-y-3`}>
-          {filtered.map((ipo) => {
-            const statusConfig = getStatusBadgeConfig(ipo.status);
-            const isSme = ipo.type === "SME";
-            const gmpVal = ipo.gmp?.value ?? 0;
-            const gmpPct = ipo.gmp?.percentage ?? 0;
-            const isPositive = gmpVal > 0;
-
-            return (
-              <div
-                key={ipo.id}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all space-y-3"
-              >
-                {/* Header with Title and Badges */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
-                    <div>
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span
-                          className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded ${
-                            isSme
-                              ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
-                              : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                          }`}
-                        >
-                          {ipo.type}
-                        </span>
-                        {ipo.issueDetails?.listingExchange && (
-                          <span className="text-[10px] text-slate-400 font-medium">
-                            {ipo.issueDetails.listingExchange}
-                          </span>
-                        )}
-                      </div>
-                      <Link
-                        href={`/ipo/${ipo.slug}`}
-                        className="font-bold text-sm text-slate-900 dark:text-white hover:text-blue-600 block line-clamp-1 mt-0.5"
-                      >
-                        {ipo.name}
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border flex-shrink-0 ${statusConfig.className}`}
-                  >
-                    <span className={`w-1.5 h-1.5 rounded-full ${statusConfig.dotColor}`} />
-                    <span>{statusConfig.label}</span>
-                  </div>
-                </div>
-
-                {/* Key Stats Grid */}
-                <div className="grid grid-cols-2 gap-2 p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 text-xs">
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Price Band</span>
-                    <span className="font-bold text-slate-900 dark:text-white">
-                      {ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA")}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Lot Size</span>
-                    <span className="font-bold text-slate-900 dark:text-white">
-                      {ipo.lotSize ? `${ipo.lotSize} shares` : "TBA"}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Issue Size</span>
-                    <span className="font-bold text-slate-900 dark:text-white truncate block">
-                      {ipo.issueDetails?.issueSize || "TBA"}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Est. Gain</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                      {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "—")}
-                    </span>
-                  </div>
-                </div>
-
-                {/* GMP & Action Footer */}
-                <div className="flex items-center justify-between gap-2 pt-1">
-                  <div className="flex items-center gap-1.5">
-                    <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
-                    <span className="text-xs font-bold text-slate-500">GMP:</span>
-                    <span
-                      className={`px-2 py-0.5 rounded-lg text-xs font-black ${
-                        isPositive
-                          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
-                          : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                      }`}
-                    >
-                      {isPositive ? `+₹${gmpVal}` : "₹0"}
-                      {gmpPct > 0 && <span className="ml-1 text-[10px]">({gmpPct}%)</span>}
-                    </span>
-                  </div>
-
-                  <Link
-                    href={`/ipo/${ipo.slug}`}
-                    className="inline-flex items-center gap-1 bg-slate-900 hover:bg-blue-600 text-white dark:bg-slate-800 dark:hover:bg-blue-600 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors"
-                  >
-                    <span>Details</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+        <div className={`${viewMode === "cards" ? "block" : "block md:hidden"}`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filtered.map((ipo) => (
+              <IpoCard key={ipo.id} ipo={ipo} />
+            ))}
+          </div>
         </div>
       )}
 
