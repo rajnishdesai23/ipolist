@@ -30,19 +30,19 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
     }
     if (ipo.status === "LIVE") {
       return {
-        label: "● Live Now",
-        className: "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border-blue-200 font-extrabold animate-pulse",
+        label: "● Live",
+        className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 font-bold animate-pulse",
       };
     }
     if (ipo.status === "UPCOMING") {
       return {
         label: "● Pre-Apply",
-        className: "bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border-indigo-200",
+        className: "bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border-indigo-200 font-bold",
       };
     }
     return {
       label: "● Closed",
-      className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200",
+      className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 font-semibold",
     };
   };
 
@@ -57,10 +57,10 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         {/* Top Header Row: Logo, Title, Dates & Badges */}
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-start gap-3 min-w-0 flex-1">
-            <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="md" />
+            <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
             <div className="min-w-0 flex-1">
               <Link href={`/ipo/${ipo.slug}`} className="block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight line-clamp-1 font-heading">
+                <h3 className="text-lg sm:text-[20px] font-bold text-slate-900 dark:text-white tracking-tight line-clamp-1">
                   {ipo.name}
                 </h3>
               </Link>

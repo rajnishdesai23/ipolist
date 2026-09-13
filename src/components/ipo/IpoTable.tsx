@@ -93,7 +93,7 @@ export function IpoTable({
 
   const statusTabs: { label: string; value: "ALL" | IPOStatus; count: number }[] = [
     { label: "All IPOs", value: "ALL", count: counts.all },
-    { label: "🔥 Live Now", value: "LIVE", count: counts.live },
+    { label: "🔥 Live", value: "LIVE", count: counts.live },
     { label: "📅 Upcoming", value: "UPCOMING", count: counts.upcoming },
     { label: "📁 Closed", value: "CLOSED", count: counts.closed },
   ];
