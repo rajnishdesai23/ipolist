@@ -45,18 +45,12 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-3">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-                <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.5]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
-                  IPO<span className="text-blue-600 dark:text-blue-400">List</span>
-                </span>
-                <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest -mt-1 hidden xs:inline">
-                  India GMP & Allotment
-                </span>
-              </div>
+            <Link href="/" className="flex items-center flex-shrink-0 group">
+              <img
+                src="/ipolistlogo.png"
+                alt="IPO List"
+                className="h-8 sm:h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+              />
             </Link>
 
             {/* Desktop Navigation Links */}
