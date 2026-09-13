@@ -58,7 +58,7 @@ const config: Config = {
         "card-hover": "0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
       },
       animation: {
-        ticker: "ticker 35s linear infinite",
+        ticker: "ticker 65s linear infinite",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {

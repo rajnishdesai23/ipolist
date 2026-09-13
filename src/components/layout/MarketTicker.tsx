@@ -20,7 +20,7 @@ export function MarketTicker({ ipos }: { ipos: IPO[] }) {
           <span className="hidden sm:inline uppercase tracking-wider text-[11px]">Live GMP</span>
         </div>
 
-        <div className="flex items-center gap-8 animate-ticker whitespace-nowrap will-change-transform">
+        <div className="flex items-center gap-8 animate-ticker hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
           {tickerItems.map((ipo, idx) => {
             const gmpVal = ipo.gmp?.value ?? 0;
             const gmpPct = ipo.gmp?.percentage ?? 0;
