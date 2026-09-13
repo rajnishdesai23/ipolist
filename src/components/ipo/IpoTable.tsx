@@ -39,7 +39,7 @@ export function IpoTable({
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState<"priority" | "name" | "gmp">("priority");
   const [sortAsc, setSortAsc] = useState(false);
-  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   // Status counts
   const counts = {
