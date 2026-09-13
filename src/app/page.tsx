@@ -69,15 +69,10 @@ export default async function HomePage() {
       )}
 
       {/* Clean Minimal Hero Section */}
-      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-10 lg:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-6 lg:py-10 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Tagline */}
-            <div className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-              SIMPLE &bull; REAL-TIME &bull; RELIABLE
-            </div>
-
+          <div className="lg:col-span-7 space-y-5 text-left">
             {/* Title */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white font-heading leading-tight sm:leading-none">
               Track <span className="text-blue-600 dark:text-blue-400">IPO GMP</span>, Allotment &amp; More
