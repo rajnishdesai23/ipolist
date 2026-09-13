@@ -5,42 +5,72 @@ import { formatINR, formatPercentage } from "../utils/formatters";
 
 export const SITE_CONFIG = {
   name: "IPO List",
-  title: "IPO List | Live IPO GMP, Allotment Status, Dates & Subscription India",
+  title: "IPO List 2026 | Live IPO GMP Today, Allotment Status, Dates & Subscription",
   description:
-    "Track latest Mainboard & SME IPOs in India. Real-time Grey Market Premium (GMP), live subscription status, allotment link checker, expected listing gains and IPO reviews.",
+    "Real-time Indian IPO tracking platform. Check live IPO GMP today, official registrar allotment status links (Link Intime, KFintech, Bigshare), live subscription demand, price bands, and expected listing gains.",
   url: "https://ipolist.in",
   ogImage: "https://ipolist.in/og-image.png",
   twitterHandle: "@IPOListIndia",
 };
 
+/**
+ * Generates dynamic high-CTR metadata for any IPO with real-time GMP & dates
+ */
 export function constructIpoMetadata(ipo: IPO): Metadata {
   const gmpVal = ipo.gmp?.value ?? 0;
   const gmpPct = ipo.gmp?.percentage ?? 0;
-  const gmpText = gmpVal > 0 ? `GMP Today ${formatINR(gmpVal)} (${formatPercentage(gmpPct)})` : "GMP & Price";
-  const title = `${ipo.name} ${gmpText}, Price Band, Dates & Allotment | IPO List`;
-  const description = `${ipo.name} GMP today is ${formatINR(gmpVal)}. Check price band (${ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}), lot size (${ipo.lotSize || "TBA"}), allotment date, and expected listing price.`;
+  const priceBand = ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA");
+  const lotSize = ipo.lotSize ? `${ipo.lotSize} Shares` : "TBA";
+  const estListing = ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA");
+  const registrar = ipo.registrar?.name || "Official Registrar";
+  const dates = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ");
+
+  // High-CTR Dynamic Title Template matching #1 Google SERP Patterns
+  const gmpSnippet = gmpVal > 0 ? `GMP Today: +₹${gmpVal} (+${gmpPct}%)` : "Live GMP & Review";
+  const title = `${ipo.name} IPO ${gmpSnippet} | Allotment Status, Dates & Price Band`;
+
+  // Search-Intent Focused Meta Description (under 160 chars)
+  const description = `Live ${ipo.name} IPO GMP today is +₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}), expected listing at ${estListing}. Check price band ${priceBand}, lot size ${lotSize}, bidding dates (${dates}) & ${registrar} allotment status link.`;
+
+  // Comprehensive Keyword Cluster
+  const keywords = [
+    `${ipo.name.toLowerCase()} ipo gmp`,
+    `${ipo.name.toLowerCase()} ipo gmp today`,
+    `${ipo.name.toLowerCase()} ipo allotment status`,
+    `${ipo.name.toLowerCase()} ipo allotment date`,
+    `${ipo.name.toLowerCase()} ipo allotment link`,
+    `${ipo.name.toLowerCase()} expected listing price`,
+    `${ipo.name.toLowerCase()} ipo subscription status`,
+    `${ipo.name.toLowerCase()} ipo review`,
+    `${ipo.name.toLowerCase()} ipo price band`,
+    `${ipo.name.toLowerCase()} ipo dates`,
+    `${ipo.name.toLowerCase()} ipo lot size`,
+    `${ipo.name.toLowerCase()} registrar ${registrar.toLowerCase()}`,
+    `${ipo.type.toLowerCase()} ipo india`,
+    "ipo gmp today",
+    "ipo allotment status check online",
+    "latest ipo gmp 2026",
+  ];
+
+  const canonicalUrl = `${SITE_CONFIG.url}/ipo/${ipo.slug}`;
 
   return {
     title,
     description,
-    keywords: [
-      `${ipo.name.toLowerCase()} gmp`,
-      `${ipo.name.toLowerCase()} allotment`,
-      `${ipo.name.toLowerCase()} price band`,
-      `${ipo.name.toLowerCase()} review`,
-    ],
+    keywords,
     openGraph: {
       title,
       description,
-      url: `${SITE_CONFIG.url}/ipo/${ipo.slug}`,
+      url: canonicalUrl,
       siteName: SITE_CONFIG.name,
       type: "website",
+      locale: "en_IN",
       images: [
         {
           url: SITE_CONFIG.ogImage,
           width: 1200,
           height: 630,
-          alt: `${ipo.name} GMP & Details`,
+          alt: `${ipo.name} IPO GMP Today, Price Band & Allotment Status`,
         },
       ],
     },
@@ -49,30 +79,49 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
       title,
       description,
       creator: SITE_CONFIG.twitterHandle,
+      images: [SITE_CONFIG.ogImage],
     },
     alternates: {
-      canonical: `${SITE_CONFIG.url}/ipo/${ipo.slug}`,
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   };
 }
 
+/**
+ * Generates SEO metadata for Blog Posts & Guides
+ */
 export function constructBlogMetadata(post: BlogPost): Metadata {
   const title = post.seo?.metaTitle || `${post.title} | IPO List`;
   const description = post.seo?.metaDescription || post.excerpt;
+  const canonicalUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
 
   return {
     title,
     description,
-    keywords: post.tags,
+    keywords: [
+      ...(post.tags || []),
+      "ipo guide india",
+      "how to apply for ipo",
+      "ipo investment strategy",
+      "stock market ipo 2026",
+    ],
     openGraph: {
       title,
       description,
-      url: `${SITE_CONFIG.url}/blog/${post.slug}`,
+      url: canonicalUrl,
       siteName: SITE_CONFIG.name,
       type: "article",
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
       authors: [post.author.name],
+      locale: "en_IN",
       images: [
         {
           url: post.coverImage || SITE_CONFIG.ogImage,
@@ -86,10 +135,17 @@ export function constructBlogMetadata(post: BlogPost): Metadata {
       card: "summary_large_image",
       title,
       description,
+      creator: SITE_CONFIG.twitterHandle,
       images: [post.coverImage || SITE_CONFIG.ogImage],
     },
     alternates: {
-      canonical: `${SITE_CONFIG.url}/blog/${post.slug}`,
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   };
 }

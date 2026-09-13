@@ -34,14 +34,13 @@ import { getStatusBadgeConfig } from "@/lib/utils/status";
 import { IpoLogo } from "@/components/ui/IpoLogo";
 import { TimelineStepper } from "@/components/ipo/TimelineStepper";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
+import { constructIpoMetadata } from "@/lib/seo/metadata";
+import { generateIpoJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from "@/lib/seo/schema";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
-  if (!ipo) return { title: "IPO Details" };
-  return {
-    title: `${ipo.name} IPO Details, Live GMP, Dates, Price Band & Lot Size | IPO List`,
-    description: `Check live ${ipo.name} IPO GMP today, price band, market lot size, reservation, key dates, financials, valuation, and registrar allotment details.`,
-  };
+  if (!ipo) return { title: "IPO Details | IPO List" };
+  return constructIpoMetadata(ipo);
 }
 
 export async function generateStaticParams() {
@@ -61,8 +60,51 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
   const gmpPct = ipo.gmp?.percentage ?? 0;
   const isPositive = gmpVal > 0;
 
+  // Generate dynamic, search-optimized FAQs if none are attached
+  const resolvedFaqs = (ipo.faqs && ipo.faqs.length > 0) ? ipo.faqs : [
+    {
+      question: `What is ${ipo.name} IPO GMP today?`,
+      answer: `${ipo.name} IPO GMP today is ₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}). The expected listing price is ${ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}.`,
+    },
+    {
+      question: `How can I check ${ipo.name} IPO allotment status?`,
+      answer: `You can check ${ipo.name} IPO allotment status directly on the ${ipo.registrar?.name || "official registrar"} portal or on the BSE India website using your 10-digit PAN number or IPO Application Number.`,
+    },
+    {
+      question: `What is the price band and market lot size for ${ipo.name} IPO?`,
+      answer: `${ipo.name} IPO price band is ${ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA")}. The minimum market lot size is ${ipo.lotSize ? `${ipo.lotSize} shares` : "1 lot"}.`,
+    },
+    {
+      question: `Where will ${ipo.name} IPO be listed?`,
+      answer: `${ipo.name} IPO shares will be listed on ${ipo.issueDetails?.listingExchange || "NSE & BSE stock exchanges"}.`,
+    },
+  ];
+
+  // Full-Spectrum Structured Data for Google SERP
+  const ipoJsonLd = generateIpoJsonLd(ipo);
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: isSme ? "SME IPOs" : "Mainboard IPOs", url: isSme ? "/ipo/sme" : "/ipo/mainboard" },
+    { name: ipo.name, url: `/ipo/${ipo.slug}` },
+  ]);
+  const faqJsonLd = generateFaqJsonLd(resolvedFaqs);
+
   return (
     <div className="space-y-8 pb-16">
+      {/* Search Engine Structured Data (JSON-LD) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ipoJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <Breadcrumb
         items={[
           { name: "All IPOs", url: "/ipo" },
@@ -441,15 +483,15 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         {/* Broker CTA Card */}
         <BrokerCtaCard variant="horizontal" broker="zerodha" />
 
-        {/* FAQ Section */}
-        {ipo.faqs && ipo.faqs.length > 0 && (
+        {/* Search-Optimized FAQ Section for Google Rich Accordions */}
+        {resolvedFaqs.length > 0 && (
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-blue-600" />
-              Frequently Asked Questions on {ipo.name}
+              Frequently Asked Questions on {ipo.name} IPO
             </h2>
             <div className="space-y-3 pt-2">
-              {ipo.faqs.map((faq, idx) => (
+              {resolvedFaqs.map((faq, idx) => (
                 <div
                   key={idx}
                   className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5"
