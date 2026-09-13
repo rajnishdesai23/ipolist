@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     "Track all upcoming Mainboard and SME IPOs scheduled to open in India. Check price bands, issue sizes, tentative dates, and initial Grey Market Premium (GMP).",
 };
 
+export const revalidate = 60;
+
 export default async function UpcomingIposPage() {
   const upcomingIpos = await getUpcomingIpos();
 

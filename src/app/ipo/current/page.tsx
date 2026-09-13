@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     "Check all IPOs currently open for subscription today. Live bidding multiple, Grey Market Premium (GMP), minimum lot investment, and closing dates.",
 };
 
+export const revalidate = 60;
+
 export default async function CurrentIposPage() {
   const liveIpos = await getLiveIpos();
 

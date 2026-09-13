@@ -34,21 +34,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Check auth session on load
+  // Fast auth check: read cookie presence synchronously — no network round-trip
   useEffect(() => {
-    async function checkAuth() {
-      try {
-        const res = await fetch("/api/admin/verify");
-        if (res.ok) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (err) {
-        setIsAuthenticated(false);
-      }
+    const hasCookie = document.cookie
+      .split(";")
+      .some((c) => c.trim().startsWith("ipolist_admin_session="));
+    if (hasCookie) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
     }
-    checkAuth();
   }, []);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {

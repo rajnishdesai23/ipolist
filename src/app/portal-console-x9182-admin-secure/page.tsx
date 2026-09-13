@@ -15,14 +15,17 @@ import { getAllBlogs } from "@/lib/data/blogRepository";
 import { getScrapeLogs } from "@/lib/scrapers/orchestrator";
 import { formatDate } from "@/lib/utils/formatters";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: revalidate admin dashboard every 30 seconds
 
 export default async function AdminDashboardPage() {
-  const allIpos = await getAllIpos();
-  const liveIpos = await getLiveIpos();
-  const upcomingIpos = await getUpcomingIpos();
-  const blogs = await getAllBlogs();
-  const scrapeLogs = await getScrapeLogs();
+  // Parallelise all data fetches — one round-trip instead of 5 sequential ones
+  const [allIpos, liveIpos, upcomingIpos, blogs, scrapeLogs] = await Promise.all([
+    getAllIpos(),
+    getLiveIpos(),
+    getUpcomingIpos(),
+    getAllBlogs(),
+    getScrapeLogs(),
+  ]);
   const lastLog = scrapeLogs[0];
 
   const cards = [

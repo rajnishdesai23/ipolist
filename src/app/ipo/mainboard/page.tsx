@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     "Check all Mainboard IPOs listing on NSE & BSE. Compare price bands, issue sizes, GMP trends, retail quotas, and basis of allotment.",
 };
 
+export const revalidate = 60;
+
 export default async function MainboardIposPage() {
   const ipos = await getMainboardIpos();
 

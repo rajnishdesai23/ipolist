@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     "Complete list of SME IPOs on NSE Emerge and BSE SME platforms. Check SME Grey Market Premium (GMP), minimum lot investment values, subscription multiples, and allotment dates.",
 };
 
+export const revalidate = 60;
+
 export default async function SmeIposPage() {
   const ipos = await getSmeIpos();
 

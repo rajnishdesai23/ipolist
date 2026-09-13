@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     "Complete list of all Mainboard and SME IPOs in India. Check live GMP, price band, lot size, subscription status, issue dates, and allotment links.",
 };
 
+export const revalidate = 60; // Cache IPO listing for 60 seconds
+
 export default async function AllIposPage() {
   const ipos = await getAllIpos();
 
