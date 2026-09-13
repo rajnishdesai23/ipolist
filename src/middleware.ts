@@ -5,9 +5,9 @@ import { ADMIN_SESSION_COOKIE, isValidAdminToken } from "@/lib/adminAuth";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Block legacy /admin route completely (return 404 rewrite)
+  // 1. Block legacy /admin route completely (return 404 response)
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
-    return NextResponse.rewrite(new URL("/not-found", request.url));
+    return new NextResponse("404 Page Not Found", { status: 404 });
   }
 
   // 2. Protect /api/admin endpoints (excluding login endpoint)
