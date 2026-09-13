@@ -437,17 +437,6 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           </section>
         )}
 
-        {/* About Company */}
-        {ipo.aboutCompany && (
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-3">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-              About {ipo.name}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {ipo.aboutCompany}
-            </p>
-          </section>
-        )}
 
         {/* Broker CTA Card */}
         <BrokerCtaCard variant="horizontal" broker="zerodha" />
