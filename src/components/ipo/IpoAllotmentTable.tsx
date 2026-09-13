@@ -75,38 +75,31 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-card p-5 sm:p-7 space-y-5">
-      {/* Header & Controls Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-        <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-heading flex items-center gap-2">
-            <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
-            <span>Allotment Status by IPO</span>
-          </h2>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
+    <div className="w-full space-y-4">
+      {/* Sticky Controls Bar */}
+      <div className="sticky top-16 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1">
           {/* Search bar */}
-          <div className="relative">
+          <div className="relative flex-1 sm:w-56 sm:flex-none">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search company or registrar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 w-44 sm:w-52"
+              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           {/* Status Filter Toggle */}
-          <div className="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold">
+          <div className="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold shrink-0">
             <button
               onClick={() => setStatusFilter("ALL")}
               className={`px-2.5 py-1 rounded-lg transition-colors ${
                 statusFilter === "ALL" ? "bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-sm" : "text-slate-500"
               }`}
             >
-              All
+              All ({ipos.length})
             </button>
             <button
               onClick={() => setStatusFilter("OUT")}
@@ -125,7 +118,9 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
               Awaited
             </button>
           </div>
+        </div>
 
+        <div className="flex items-center gap-2 justify-between sm:justify-end shrink-0">
           {/* Download CSV */}
           <button
             onClick={downloadAllotmentCsv}
@@ -157,7 +152,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                   ? "bg-blue-600 text-white shadow-sm"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
-              title="List View (Table)"
+              title="List View"
             >
               <List className="w-3.5 h-3.5" />
               <span>List</span>
@@ -188,55 +183,58 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
               return (
                 <div
                   key={ipo.id}
-                  className={`bg-white dark:bg-slate-900 border rounded-3xl p-5 sm:p-6 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group ${
+                  className={`bg-white dark:bg-slate-900 border rounded-3xl p-4 sm:p-6 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group ${
                     isOut
                       ? "border-purple-300 dark:border-purple-800 hover:border-purple-500"
                       : "border-slate-200 dark:border-slate-800 hover:border-blue-500"
                   }`}
                 >
                   <div className="space-y-4">
-                    {/* Card Header: Logo, Name, Status Badge */}
+                    {/* Header: Company Name, Status Pill & Type */}
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
-                        <div className="min-w-0 flex-1">
-                          <Link
-                            href={`/ipo/${ipo.slug}`}
-                            className="font-black text-xl sm:text-2xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
-                          >
-                            {ipo.name}
-                          </Link>
-                          <div className="flex flex-wrap items-center gap-2 mt-1">
-                            <span className="text-xs font-black px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                              {ipo.type}
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          href={`/ipo/${ipo.slug}`}
+                          className="font-black text-xl sm:text-2xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
+                        >
+                          {ipo.name}
+                        </Link>
+                        <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                          <span className="text-xs font-black px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                            {ipo.type}
+                          </span>
+                          {ipo.issueDetails?.listingExchange && (
+                            <span className="text-xs font-semibold text-slate-400">
+                              {ipo.issueDetails.listingExchange}
                             </span>
-                            {ipo.issueDetails?.listingExchange && (
-                              <span className="text-xs font-semibold text-slate-400">
-                                {ipo.issueDetails.listingExchange}
-                              </span>
-                            )}
-                          </div>
+                          )}
                         </div>
                       </div>
 
+                      {/* Prominent Allotment Status Badge */}
                       <span
-                        className={`inline-flex items-center px-3 py-1 rounded-xl text-xs font-black uppercase shrink-0 shadow-sm ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black shrink-0 shadow-sm ${
                           isOut
-                            ? "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-800 animate-pulse"
-                            : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
+                            ? "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-300 dark:border-purple-700"
+                            : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
                         }`}
                       >
-                        {isOut ? "ALLOTMENT OUT" : "AWAITED"}
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            isOut ? "bg-purple-500 animate-pulse" : "bg-amber-500"
+                          }`}
+                        />
+                        <span>{isOut ? "Allotment Out" : "Awaited"}</span>
                       </span>
                     </div>
 
-                    {/* Metadata Grid with Prominent Numbers */}
+                    {/* Financial & Allotment Metadata Box */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                       <div>
                         <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
                           Allotment Date
                         </span>
-                        <span className={`font-black text-sm sm:text-base block ${isEstimated ? "text-blue-600 dark:text-blue-400" : "text-slate-900 dark:text-white"}`}>
+                        <span className="font-black text-xs sm:text-sm text-slate-900 dark:text-white block truncate">
                           {allotmentDateText}
                         </span>
                       </div>
@@ -268,10 +266,10 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                   </div>
 
                   {/* Card Action Footer */}
-                  <div className="pt-4 mt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+                  <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
                     <Link
                       href={`/ipo/${ipo.slug}`}
-                      className="text-xs font-bold text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="text-xs font-medium text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-center sm:text-left"
                     >
                       View Full Analysis
                     </Link>
@@ -280,7 +278,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                       href={portalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black px-4 py-2 rounded-xl text-xs transition-all shadow-sm group-hover:shadow-md"
+                      className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm group-hover:shadow-md w-full sm:w-auto"
                     >
                       <span>Check Allotment Status</span>
                       <ExternalLink className="w-3.5 h-3.5" />

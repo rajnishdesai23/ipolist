@@ -253,16 +253,16 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
 
       {/* Mobile & Tablet Vertical Step Track (4 Steps) */}
       <div className="block md:hidden space-y-4">
-        <div className="relative pl-6 space-y-4 before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
+        <div className="relative pl-8 space-y-4 before:absolute before:left-[11px] before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
           {steps.map((step, idx) => {
             const isCompleted = step.state === "COMPLETED";
             const isCurrent = step.state === "CURRENT" || (idx === activeIndex && !isCompleted && !isAllCompleted);
 
             return (
-              <div key={step.key} className="relative flex items-start gap-4">
+              <div key={step.key} className="relative flex items-start">
                 {/* Node circle */}
                 <div
-                  className={`absolute -left-6 top-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                  className={`absolute -left-8 top-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                     isCurrent
                       ? "bg-blue-600 text-white ring-4 ring-blue-500/20"
                       : isCompleted
@@ -284,20 +284,20 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-sm text-slate-900 dark:text-white">
+                    <span className="font-semibold text-sm text-slate-900 dark:text-white">
                       {step.label}
                     </span>
                     {isCompleted ? (
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                         Completed
                       </span>
                     ) : isCurrent ? (
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-600 text-white">
                         Active Today
                       </span>
                     ) : null}
                   </div>
-                  <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold mt-1 block">
+                  <span className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-1 block">
                     {step.dateText}
                   </span>
                 </div>

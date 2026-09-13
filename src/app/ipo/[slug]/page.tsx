@@ -116,10 +116,10 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         <LeaderboardAd />
 
         {/* Hero Header Card — Clean, Airy, Elegant & De-cluttered */}
-        <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-card space-y-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
+        <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-4 sm:p-8 lg:p-10 shadow-card space-y-6 sm:space-y-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-8">
             {/* Left side: Logo + Bigger Thinner Title + Badges */}
-            <div className="flex items-start gap-4 sm:gap-5 flex-1 min-w-0">
+            <div className="flex items-start gap-3.5 sm:gap-5 flex-1 min-w-0">
               <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" className="mt-1 shrink-0 shadow-sm" />
               <div className="space-y-2 flex-1 min-w-0">
                 {/* Badges row with refined spacing */}
@@ -149,12 +149,12 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 </div>
 
                 {/* Company Name: BIGGER, THINNER, SLEEK! */}
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
                   {ipo.name}
                 </h1>
 
                 {/* Subtitle with proper breathing room */}
-                <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+                <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal flex-wrap">
                   {ipo.issueDetails?.issueType && (
                     <span>Issue Type: <strong className="text-slate-700 dark:text-slate-300 font-medium">{ipo.issueDetails.issueType}</strong></span>
                   )}
@@ -169,7 +169,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             </div>
 
             {/* Right side: Sleek, Uncluttered Live GMP Card */}
-            <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 dark:from-slate-800/60 dark:to-emerald-950/20 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col items-start lg:items-end shrink-0 shadow-sm space-y-3 min-w-[260px]">
+            <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 dark:from-slate-800/60 dark:to-emerald-950/20 p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col items-start lg:items-end shrink-0 shadow-sm space-y-3 w-full lg:w-auto lg:min-w-[260px]">
               <div>
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block lg:text-right">
                   Live Grey Market Premium (GMP)

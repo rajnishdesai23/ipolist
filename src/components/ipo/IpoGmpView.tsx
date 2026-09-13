@@ -60,23 +60,23 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
 
   return (
     <div className="space-y-4">
-      {/* Controls Bar: Search, Category, Download & View Mode Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 shadow-sm">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Controls Bar: Sticky Search, Category, Download & View Mode Toggle */}
+      <div className="sticky top-16 z-30 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-sm">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1">
           {/* Search input */}
-          <div className="relative">
+          <div className="relative flex-1 sm:w-56 sm:flex-none">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search IPO name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 w-44 sm:w-56"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           {/* Type filters */}
-          <div className="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold">
+          <div className="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold shrink-0">
             <button
               onClick={() => setFilterType("ALL")}
               className={`px-2.5 py-1 rounded-lg transition-colors ${
@@ -104,7 +104,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2 justify-between sm:justify-end shrink-0">
           {/* Download CSV */}
           <button
             onClick={downloadCsv}
@@ -259,7 +259,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
               return (
                 <div
                   key={ipo.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-6 shadow-card hover:shadow-card-hover hover:border-blue-500/50 transition-all flex flex-col justify-between group"
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-card hover:shadow-card-hover hover:border-blue-500/50 transition-all flex flex-col justify-between group"
                 >
                   <div className="space-y-4">
                     {/* Header: Company Name, Badges & GMP */}

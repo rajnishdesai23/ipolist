@@ -61,15 +61,16 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6 pb-10">
-      {/* Clean Minimal Hero Section */}
-      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
-        {/* JSON-LD Schema for FAQs - inside hero so no top gap from space-y */}
-        {faqSchema && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-          />
-        )}
+      {/* JSON-LD Schema for FAQs - Top Level */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+
+      {/* Clean Minimal Hero Section — Visible on Desktop (md:), Hidden on Mobile to prioritize live market data */}
+      <section className="hidden md:block relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
           <div className="lg:col-span-7 space-y-5 text-left">
@@ -156,7 +157,7 @@ export default async function HomePage() {
       </section>
 
       {/* Top GMP Gainers Carousel / Strip */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 md:pt-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
