@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { IPO } from "@/types/ipo";
-import { formatINR } from "@/lib/utils/formatters";
+import { formatINR, formatIssueSize } from "@/lib/utils/formatters";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
 
@@ -124,8 +124,8 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
               Issue Size
             </span>
-            <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white truncate block">
-              {ipo.issueDetails?.issueSize || "TBA"}
+            <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white block whitespace-nowrap">
+              {formatIssueSize(ipo.issueDetails?.issueSize)}
             </span>
           </div>
         </div>

@@ -48,3 +48,18 @@ export function calculateEstimatedProfit(lotSize: number, gmp: number, lotsCount
 export function calculateEstimatedListingPrice(cutOffPrice: number, gmp: number): number {
   return cutOffPrice + gmp;
 }
+
+export function formatIssueSize(rawSize?: string): string {
+  if (!rawSize || rawSize.trim() === "" || rawSize.toLowerCase().includes("tba")) {
+    return "TBA";
+  }
+
+  let cleaned = rawSize
+    .replace(/^approx\s*/i, "")
+    .replace(/\s*crores?/i, " Cr")
+    .replace(/\s*cr$/i, " Cr")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return cleaned;
+}

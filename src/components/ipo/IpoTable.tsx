@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { IPO, IPOStatus } from "@/types/ipo";
-import { formatINR } from "@/lib/utils/formatters";
+import { formatINR, formatIssueSize } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig, sortIposByStatusPriority } from "@/lib/utils/status";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
@@ -363,7 +363,7 @@ export function IpoTable({
 
                     {/* Issue Size */}
                     <td className="py-4 px-4 font-semibold text-slate-900 dark:text-white whitespace-nowrap">
-                      {ipo.issueDetails?.issueSize || "TBA"}
+                      {formatIssueSize(ipo.issueDetails?.issueSize)}
                     </td>
 
                     {/* Dates */}
