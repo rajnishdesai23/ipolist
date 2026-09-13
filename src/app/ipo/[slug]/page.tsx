@@ -32,6 +32,7 @@ import { formatINR } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig } from "@/lib/utils/status";
 
 import { IpoLogo } from "@/components/ui/IpoLogo";
+import { TimelineStepper } from "@/components/ipo/TimelineStepper";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
@@ -172,59 +173,8 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           </div>
         </section>
 
-        {/* Timeline Dates Card */}
-        <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-blue-600" />
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-              {ipo.name} Important IPO Dates & Timeline
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-2">
-            <div className="p-3.5 bg-blue-50/50 dark:bg-slate-800/60 rounded-xl border border-blue-100 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">IPO Open</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                {ipo.dates?.open || "TBA"}
-              </span>
-            </div>
-
-            <div className="p-3.5 bg-blue-50/50 dark:bg-slate-800/60 rounded-xl border border-blue-100 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">IPO Close</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                {ipo.dates?.close || "TBA"}
-              </span>
-            </div>
-
-            <div className="p-3.5 bg-purple-50/50 dark:bg-slate-800/60 rounded-xl border border-purple-100 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">Basis of Allotment</span>
-              <span className="text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300">
-                {ipo.dates?.allotment || "TBA"}
-              </span>
-            </div>
-
-            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">Initiation of Refunds</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                {ipo.dates?.refunds || "TBA"}
-              </span>
-            </div>
-
-            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">Credit to Demat</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                {ipo.dates?.creditToDemat || "TBA"}
-              </span>
-            </div>
-
-            <div className="p-3.5 bg-emerald-50/50 dark:bg-slate-800/60 rounded-xl border border-emerald-100 dark:border-slate-700">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">Listing Date</span>
-              <span className="text-xs sm:text-sm font-extrabold text-emerald-700 dark:text-emerald-300">
-                {ipo.dates?.listing || "TBA"}
-              </span>
-            </div>
-          </div>
-        </section>
+        {/* Timeline Dates Stepper Component */}
+        <TimelineStepper dates={ipo.dates} status={ipo.status} />
 
         {/* Market Lot Size Table */}
         {ipo.marketLot && ipo.marketLot.length > 0 && (
