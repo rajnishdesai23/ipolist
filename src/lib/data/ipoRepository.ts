@@ -73,7 +73,7 @@ export const getAllIpos = cache(async (options?: IPOFilterOptions): Promise<IPO[
   }
 
   return list;
-}
+});
 
 export const getIpoBySlug = cache(async (slug: string): Promise<IPO | null> => {
   const ipos = await getAllIpos();
