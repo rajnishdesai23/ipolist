@@ -2,40 +2,22 @@ import { cache } from "react";
 import { IPO, IPOFilterOptions } from "@/types/ipo";
 import { db } from "@/lib/firebase/client";
 import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
-import { scrapeAllIpos } from "@/lib/scrapers/ipowatch";
 import { sortIposByStatusPriority } from "@/lib/utils/status";
-import { mockIpos } from "@/lib/data/mockIpos";
 
 // In-memory cache for fast SSR / Edge delivery
-let inMemoryIpos: IPO[] = [...mockIpos];
-let isScrapingInProgress = false;
+let inMemoryIpos: IPO[] = [];
 
 export const getAllIpos = cache(async (options?: IPOFilterOptions): Promise<IPO[]> => {
-  // If only mock data is in memory, attempt fast async Firestore fetch
-  if (inMemoryIpos === mockIpos && db) {
+  // Load directly from Firestore DB if memory cache is empty
+  if (inMemoryIpos.length === 0 && db) {
     try {
       const snapshot = await getDocs(collection(db, "ipos"));
       if (!snapshot.empty) {
         inMemoryIpos = snapshot.docs.map((d: any) => d.data() as IPO);
       }
     } catch (e: any) {
-      // Permission might be pending in Firebase Console rules
+      console.warn("Firestore fetch notice:", e?.message || e);
     }
-  }
-
-  // Trigger background scrape if needed (non-blocking)
-  if (!isScrapingInProgress && inMemoryIpos.length <= mockIpos.length) {
-    isScrapingInProgress = true;
-    scrapeAllIpos()
-      .then((scraped) => {
-        if (scraped.length > 0) {
-          saveAllIpos(scraped).catch(() => {});
-        }
-      })
-      .catch((err) => console.error("Background scrape notice:", err))
-      .finally(() => {
-        isScrapingInProgress = false;
-      });
   }
 
   let list = [...inMemoryIpos];
