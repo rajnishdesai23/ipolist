@@ -82,7 +82,7 @@ export default async function IpoSubscriptionPage() {
                           {ipo.priceBand?.raw || "TBA"}
                         </td>
                         <td className="py-4 px-4 text-slate-500">
-                          {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
+                          {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ")}
                         </td>
                         <td className="py-4 px-4 text-right">
                           <Link
@@ -138,7 +138,7 @@ export default async function IpoSubscriptionPage() {
                           {ipo.issueDetails?.issueSize || "TBA"}
                         </td>
                         <td className="py-3 px-4 text-slate-500">
-                          {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
+                          {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ")}
                         </td>
                         <td className="py-3 px-4 text-right">
                           <Link

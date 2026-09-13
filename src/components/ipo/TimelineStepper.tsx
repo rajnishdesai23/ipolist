@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Check, Calendar, Clock, Sparkles } from "lucide-react";
+import { Check, Calendar, Clock } from "lucide-react";
 import { IPODates, IPOStatus } from "@/types/ipo";
+import { parseFlexibleDate, addBusinessDays, formatDateDisplay } from "@/lib/utils/dates";
 
 interface TimelineStepperProps {
   dates?: IPODates;
@@ -12,25 +13,6 @@ interface TimelineStepperProps {
 export function TimelineStepper({ dates, status }: TimelineStepperProps) {
   if (!dates) return null;
 
-  const rawSteps = [
-    { label: "IPO Open", date: dates.open, key: "open" },
-    { label: "IPO Close", date: dates.close, key: "close" },
-    { label: "Basis of Allotment", date: dates.allotment, key: "allotment" },
-    { label: "Initiation of Refunds", date: dates.refunds, key: "refunds" },
-    { label: "Credit to Demat", date: dates.creditToDemat, key: "demat" },
-    { label: "Listing Date", date: dates.listing, key: "listing" },
-  ];
-
-  // Parse dates like "September 12, 2026", "12 Sep 2026", "2026-09-12"
-  const parseDate = (dateStr?: string): Date | null => {
-    if (!dateStr || dateStr.toLowerCase().includes("tba") || dateStr.toLowerCase().includes("n/a")) {
-      return null;
-    }
-    const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/i, "$1");
-    const parsed = new Date(cleaned);
-    return isNaN(parsed.getTime()) ? null : parsed;
-  };
-
   const today = useMemo(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -38,19 +20,100 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
   }, []);
 
   const stepsWithState = useMemo(() => {
+    const openParsed = parseFlexibleDate(dates.open, "start");
+    const closeParsed = parseFlexibleDate(dates.close, "end");
+
+    // Compute SEBI T+3 tentative dates if dates are TBA but close date is known
+    let computedAllotment = parseFlexibleDate(dates.allotment, "end");
+    let computedRefunds = parseFlexibleDate(dates.refunds, "end");
+    let computedDemat = parseFlexibleDate(dates.creditToDemat, "end");
+    let computedListing = parseFlexibleDate(dates.listing, "end");
+
+    let isAllotmentTentative = false;
+    let isRefundsTentative = false;
+    let isDematTentative = false;
+    let isListingTentative = false;
+
+    if (closeParsed) {
+      if (!computedAllotment) {
+        computedAllotment = addBusinessDays(closeParsed, 1);
+        isAllotmentTentative = true;
+      }
+      if (!computedRefunds) {
+        computedRefunds = addBusinessDays(closeParsed, 2);
+        isRefundsTentative = true;
+      }
+      if (!computedDemat) {
+        computedDemat = addBusinessDays(closeParsed, 2);
+        isDematTentative = true;
+      }
+      if (!computedListing) {
+        computedListing = addBusinessDays(closeParsed, 3);
+        isListingTentative = true;
+      }
+    }
+
+    const isTba = (s?: string | null) => !s || s.trim().toLowerCase().includes("tba") || s.trim().toLowerCase().includes("n/a");
+
+    const rawSteps = [
+      {
+        label: "IPO Open",
+        dateText: !isTba(dates.open) ? dates.open!.replace(/[–—]/g, " to ") : (openParsed ? formatDateDisplay(openParsed) : "TBA"),
+        parsed: openParsed,
+        key: "open",
+      },
+      {
+        label: "IPO Close",
+        dateText: !isTba(dates.close) ? dates.close!.replace(/[–—]/g, " to ") : (closeParsed ? formatDateDisplay(closeParsed) : "TBA"),
+        parsed: closeParsed,
+        key: "close",
+      },
+      {
+        label: "Basis of Allotment",
+        dateText: !isTba(dates.allotment)
+          ? dates.allotment!.replace(/[–—]/g, " to ")
+          : (computedAllotment ? `${formatDateDisplay(computedAllotment)} (Expected)` : "TBA"),
+        parsed: computedAllotment,
+        key: "allotment",
+      },
+      {
+        label: "Initiation of Refunds",
+        dateText: !isTba(dates.refunds)
+          ? dates.refunds!.replace(/[–—]/g, " to ")
+          : (computedRefunds ? `${formatDateDisplay(computedRefunds)} (Expected)` : "TBA"),
+        parsed: computedRefunds,
+        key: "refunds",
+      },
+      {
+        label: "Credit to Demat",
+        dateText: !isTba(dates.creditToDemat)
+          ? dates.creditToDemat!.replace(/[–—]/g, " to ")
+          : (computedDemat ? `${formatDateDisplay(computedDemat)} (Expected)` : "TBA"),
+        parsed: computedDemat,
+        key: "demat",
+      },
+      {
+        label: "Listing Date",
+        dateText: !isTba(dates.listing)
+          ? dates.listing!.replace(/[–—]/g, " to ")
+          : (computedListing ? `${formatDateDisplay(computedListing)} (Expected)` : "TBA"),
+        parsed: computedListing,
+        key: "listing",
+      },
+    ];
+
     let lastPassedIndex = -1;
     let currentActiveIndex = -1;
 
     const evaluated = rawSteps.map((step, idx) => {
-      const parsed = parseDate(step.date);
       let stepState: "COMPLETED" | "CURRENT" | "UPCOMING" = "UPCOMING";
 
-      if (parsed) {
-        parsed.setHours(0, 0, 0, 0);
-        if (parsed < today) {
+      if (step.parsed) {
+        step.parsed.setHours(0, 0, 0, 0);
+        if (step.parsed < today) {
           stepState = "COMPLETED";
           lastPassedIndex = idx;
-        } else if (parsed.getTime() === today.getTime()) {
+        } else if (step.parsed.getTime() === today.getTime()) {
           stepState = "CURRENT";
           currentActiveIndex = idx;
         }
@@ -58,29 +121,31 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
 
       return {
         ...step,
-        parsedDate: parsed,
         state: stepState,
       };
     });
 
-    // Fallbacks if dates couldn't be parsed or IPO status dictates state
-    if (status === "CLOSED" && lastPassedIndex < 5) {
-      evaluated.forEach((s) => (s.state = "COMPLETED"));
-      lastPassedIndex = 5;
-    } else if (status === "LIVE" && currentActiveIndex === -1) {
-      if (evaluated[0]) evaluated[0].state = "COMPLETED";
-      if (evaluated[1]) evaluated[1].state = "CURRENT";
-      currentActiveIndex = 1;
-      lastPassedIndex = 0;
+    // If IPO status is CLOSED, we know bidding closed (Step 0 and Step 1 are completed)
+    if (status === "CLOSED" || status === "ALLOTMENT") {
+      if (evaluated[0] && evaluated[0].state === "UPCOMING") evaluated[0].state = "COMPLETED";
+      if (evaluated[1] && evaluated[1].state === "UPCOMING") evaluated[1].state = "COMPLETED";
+      if (lastPassedIndex < 1) lastPassedIndex = 1;
+    } else if (status === "LIVE") {
+      if (evaluated[0] && evaluated[0].state === "UPCOMING") evaluated[0].state = "COMPLETED";
+      if (evaluated[1] && evaluated[1].state === "UPCOMING") evaluated[1].state = "CURRENT";
+      if (currentActiveIndex === -1) currentActiveIndex = 1;
+      if (lastPassedIndex < 0) lastPassedIndex = 0;
     }
 
+    // Determine active index for progress bar
     const activeIndex = currentActiveIndex >= 0 ? currentActiveIndex : Math.max(0, lastPassedIndex);
     const fillPercent = Math.min(100, Math.max(0, (activeIndex / (rawSteps.length - 1)) * 100));
+    const isAllCompleted = evaluated.every((s) => s.state === "COMPLETED");
 
-    return { steps: evaluated, activeIndex, fillPercent, currentActiveIndex };
+    return { steps: evaluated, activeIndex, fillPercent, currentActiveIndex, isAllCompleted };
   }, [dates, status, today]);
 
-  const { steps, activeIndex, fillPercent } = stepsWithState;
+  const { steps, activeIndex, fillPercent, isAllCompleted } = stepsWithState;
 
   return (
     <section className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-6">
@@ -100,14 +165,16 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
           </div>
         </div>
 
-        {/* Live status badge */}
+        {/* Status Badge */}
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800 self-start sm:self-auto">
-          <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 animate-spin" />
+          <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           <span>
-            {status === "LIVE"
-              ? "IPO Currently Open"
-              : status === "CLOSED"
+            {isAllCompleted
               ? "All Events Completed"
+              : status === "LIVE"
+              ? "Bidding Live (Open)"
+              : status === "CLOSED"
+              ? "Bidding Closed (Allotment / Listing In Progress)"
               : "Upcoming Schedule"}
           </span>
         </div>
@@ -120,19 +187,19 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
 
         {/* Animated Progress Fill Line */}
         <div
-          className="absolute top-10 left-8 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 rounded-full z-0 transition-all duration-1000 ease-out shadow-sm"
+          className="absolute top-10 left-8 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 rounded-full z-0 transition-all duration-700 ease-out shadow-sm"
           style={{ width: `calc(${fillPercent}% * 0.88)` }}
         />
 
         {/* Step Nodes Grid */}
         <div className="relative z-10 grid grid-cols-6 gap-2">
           {steps.map((step, idx) => {
-            const isCompleted = step.state === "COMPLETED" || (status === "CLOSED" && idx <= activeIndex);
-            const isCurrent = step.state === "CURRENT" || (idx === activeIndex && status !== "CLOSED");
+            const isCompleted = step.state === "COMPLETED";
+            const isCurrent = step.state === "CURRENT" || (idx === activeIndex && !isCompleted && !isAllCompleted);
 
             return (
               <div key={step.key} className="flex flex-col items-center text-center group">
-                {/* Node Button Circle */}
+                {/* Node Button Circle — Simple & Clean, NO logo or sparkles */}
                 <div className="relative mb-3">
                   {isCurrent && (
                     <span className="absolute -inset-1.5 rounded-full bg-blue-500/30 dark:bg-blue-400/20 animate-ping" />
@@ -140,7 +207,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${
                       isCurrent
-                        ? "bg-gradient-to-tr from-blue-600 to-indigo-600 text-white ring-4 ring-blue-500/30 scale-110"
+                        ? "bg-blue-600 text-white ring-4 ring-blue-500/20 scale-105"
                         : isCompleted
                         ? "bg-emerald-500 text-white shadow-emerald-500/20"
                         : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700"
@@ -148,8 +215,6 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                   >
                     {isCompleted ? (
                       <Check className="w-4 h-4 stroke-[3]" />
-                    ) : isCurrent ? (
-                      <Sparkles className="w-4 h-4 animate-pulse text-amber-300" />
                     ) : (
                       <span>{idx + 1}</span>
                     )}
@@ -171,7 +236,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                       Step {idx + 1}
                     </span>
                     {isCurrent && (
-                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-blue-600 text-white animate-pulse">
+                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-blue-600 text-white">
                         Active
                       </span>
                     )}
@@ -180,7 +245,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                     {step.label}
                   </span>
                   <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 mt-1 block truncate">
-                    {step.date || "TBA"}
+                    {step.dateText}
                   </span>
                 </div>
               </div>
@@ -193,8 +258,8 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
       <div className="block lg:hidden space-y-4">
         <div className="relative pl-6 space-y-4 before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
           {steps.map((step, idx) => {
-            const isCompleted = step.state === "COMPLETED" || (status === "CLOSED" && idx <= activeIndex);
-            const isCurrent = step.state === "CURRENT" || (idx === activeIndex && status !== "CLOSED");
+            const isCompleted = step.state === "COMPLETED";
+            const isCurrent = step.state === "CURRENT" || (idx === activeIndex && !isCompleted && !isAllCompleted);
 
             return (
               <div key={step.key} className="relative flex items-start gap-4">
@@ -202,7 +267,7 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                 <div
                   className={`absolute -left-6 top-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                     isCurrent
-                      ? "bg-blue-600 text-white ring-4 ring-blue-500/30 animate-pulse"
+                      ? "bg-blue-600 text-white ring-4 ring-blue-500/20"
                       : isCompleted
                       ? "bg-emerald-500 text-white"
                       : "bg-slate-200 dark:bg-slate-800 text-slate-400"
@@ -226,13 +291,13 @@ export function TimelineStepper({ dates, status }: TimelineStepperProps) {
                       {step.label}
                     </span>
                     {isCurrent && (
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-600 text-white animate-pulse">
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-600 text-white">
                         Active Today
                       </span>
                     )}
                   </div>
                   <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold mt-1 block">
-                    {step.date || "TBA"}
+                    {step.dateText}
                   </span>
                 </div>
               </div>

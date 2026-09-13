@@ -468,7 +468,7 @@ export function IpoTable({
 
                     {/* Dates */}
                     <td className="py-4 px-4 whitespace-nowrap text-[11px] text-slate-500 dark:text-slate-400">
-                      {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "Dates TBA")}
+                      {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "Dates TBA")).replace(/[–—]/g, " to ")}
                     </td>
 
                     {/* Action Links */}

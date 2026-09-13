@@ -124,7 +124,7 @@ export default function AdminIposListPage() {
                       ₹{gmpVal} ({gmpPct > 0 ? `+${gmpPct}%` : "0%"})
                     </td>
                     <td className="py-4 px-4 text-slate-400 text-[11px]">
-                      {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
+                      {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ")}
                     </td>
                     <td className="py-4 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-2">

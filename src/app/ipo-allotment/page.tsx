@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { CheckCircle, ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
+import { ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
 import { getAllIpos } from "@/lib/data/ipoRepository";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
@@ -59,10 +59,6 @@ export default async function IpoAllotmentPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-200">
-              <CheckCircle className="w-3.5 h-3.5 text-purple-600" />
-              <span>Official Direct Allotment Gateway</span>
-            </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
               IPO Allotment Status Check
             </h1>

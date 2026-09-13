@@ -216,7 +216,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                         </td>
 
                         <td className="py-4 px-4 text-[11px] text-slate-500 whitespace-nowrap">
-                          {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
+                          {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ")}
                         </td>
 
                         <td className="py-4 px-4 text-right whitespace-nowrap">
@@ -250,80 +250,121 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
               const gmpVal = ipo.gmp?.value ?? 0;
               const gmpPct = ipo.gmp?.percentage ?? 0;
               const isPositive = gmpVal > 0;
+              const rawPrice = ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA");
+              const estListing = ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA");
+              const lot = ipo.lotSize || Number(ipo.marketLot?.[0]?.shares) || 0;
+              const estProfit = lot > 0 && gmpVal > 0 ? lot * gmpVal : null;
+              const dateRange = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ");
 
               return (
                 <div
                   key={ipo.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-card hover:shadow-card-hover hover:border-blue-500/50 transition-all flex flex-col justify-between group"
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-6 shadow-card hover:shadow-card-hover hover:border-blue-500/50 transition-all flex flex-col justify-between group"
                 >
-                  <div className="space-y-3">
+                  <div className="space-y-4">
+                    {/* Header: Company Name, Badges & GMP */}
                     <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <Link
                           href={`/ipo/${ipo.slug}`}
-                          className="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block truncate"
+                          className="font-black text-xl sm:text-2xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
                         >
                           {ipo.name}
                         </Link>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                          <span className="text-xs font-black px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                             {ipo.type}
                           </span>
                           {ipo.issueDetails?.listingExchange && (
-                            <span className="text-[10px] text-slate-400 font-semibold">
+                            <span className="text-xs font-semibold text-slate-400">
                               {ipo.issueDetails.listingExchange}
+                            </span>
+                          )}
+                          {ipo.status && (
+                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                              ipo.status === "LIVE"
+                                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                                : ipo.status === "UPCOMING"
+                                ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
+                                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                            }`}>
+                              ● {ipo.status}
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-lg font-black text-xs shrink-0 ${
-                          isPositive
-                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
-                            : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                        }`}
-                      >
-                        {isPositive ? `+₹${gmpVal}` : "₹0"}
-                      </span>
+                      {/* Prominent GMP Badge */}
+                      <div className="flex flex-col items-end shrink-0">
+                        <span
+                          className={`inline-flex items-center px-3.5 py-1.5 rounded-xl font-black text-base sm:text-lg shrink-0 shadow-sm ${
+                            isPositive
+                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                              : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
+                          }`}
+                        >
+                          {isPositive ? `+₹${gmpVal}` : "₹0"}
+                        </span>
+                        <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                          {gmpPct > 0 ? `+${gmpPct}% Est.` : "GMP"}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Financial Metrics Box */}
-                    <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-xs">
+                    {/* High-Impact Financial Metrics Box */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Issue Price</span>
-                        <span className="font-bold text-slate-800 dark:text-slate-200">
-                          {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                          Issue Price
+                        </span>
+                        <span className="font-black text-base sm:text-lg text-slate-900 dark:text-white block">
+                          {rawPrice}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Est. Listing Price</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                          {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                          Est. Listing
+                        </span>
+                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
+                          {estListing}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Expected Gain</span>
-                        <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                          Est. Gain
+                        </span>
+                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
                           {gmpPct > 0 ? `+${gmpPct}%` : "0%"}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Dates</span>
-                        <span className="font-semibold text-slate-600 dark:text-slate-300 text-[11px] truncate block">
-                          {ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "TBA")}
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5">
+                          {estProfit ? "Est. Profit/Lot" : "Lot Size"}
+                        </span>
+                        <span className="font-black text-base sm:text-lg text-emerald-600 dark:text-emerald-400 block">
+                          {estProfit ? `+${formatINR(estProfit)}` : (lot > 0 ? `${lot} Shares` : "1 Lot")}
                         </span>
                       </div>
                     </div>
+
+                    {/* Schedule & Lot Size row */}
+                    <div className="flex items-center justify-between text-xs px-1 text-slate-500 dark:text-slate-400 font-medium">
+                      <span>Dates: <strong className="text-slate-800 dark:text-slate-200 font-bold">{dateRange}</strong></span>
+                      {lot > 0 && <span>Lot: <strong className="text-slate-800 dark:text-slate-200 font-bold">{lot} Shares</strong></span>}
+                    </div>
                   </div>
 
+                  {/* Card Action Footer */}
                   <div className="pt-4 mt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400 font-medium">GMP Updated Live</span>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Live GMP Tracker</span>
+                    </div>
                     <Link
                       href={`/ipo/${ipo.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 group-hover:translate-x-0.5 transition-transform"
+                      className="inline-flex items-center gap-1.5 text-xs font-black text-blue-600 dark:text-blue-400 hover:text-blue-500 group-hover:translate-x-0.5 transition-transform"
                     >
-                      <span>Full Details</span>
+                      <span>Full Details & Analysis</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>

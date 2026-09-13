@@ -53,7 +53,7 @@ export default async function HomePage() {
     {
       question: "What is the difference between Mainboard and SME IPOs?",
       answer:
-        "Mainboard IPOs are larger issues listed on the main exchange with smaller lot sizes (approx ₹14,000–₹15,000 per application). SME IPOs are listed on NSE Emerge or BSE SME with minimum application values of ₹1,00,000 to ₹1,40,000.",
+        "Mainboard IPOs are larger issues listed on the main exchange with smaller lot sizes (approx ₹14,000 to ₹15,000 per application). SME IPOs are listed on NSE Emerge or BSE SME with minimum application values of ₹1,00,000 to ₹1,40,000.",
     },
   ];
 

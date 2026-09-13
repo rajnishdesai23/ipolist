@@ -47,7 +47,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
   };
 
   const statusPill = getPillBadge();
-  const dateRange = ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} – ${ipo.dates.close || ""}` : "Dates TBA");
+  const dateRange = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "Dates TBA")).replace(/[–—]/g, " to ");
   const portalUrl = getRegistrarPortalUrl(ipo.registrar?.name, ipo.registrar?.website);
   const subscriptionText = ipo.subscription?.total ? `${ipo.subscription.total}x` : undefined;
 
