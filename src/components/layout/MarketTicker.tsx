@@ -27,28 +27,55 @@ export function MarketTicker({ ipos }: { ipos: IPO[] }) {
 
         <div className="flex items-center gap-8 animate-ticker hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
           {tickerItems.map((ipo, idx) => {
+            const isClone = idx >= displayList.length;
             const gmpVal = ipo.gmp?.value ?? 0;
             const gmpPct = ipo.gmp?.percentage ?? 0;
             const isPositive = gmpVal > 0;
-            return (
-              <Link
-                key={`${ipo.id}-${idx}`}
-                href={`/ipo/${ipo.slug}`}
-                className="inline-flex items-center gap-2 hover:text-white transition-colors text-xs"
-              >
-                <span className="font-semibold text-slate-100">{ipo.name}</span>
+
+            if (isClone) {
+              return (
                 <span
-                  className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] font-bold ${
-                    isPositive
-                      ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800/50"
-                      : "bg-slate-800 text-slate-300"
-                  }`}
+                  key={`${ipo.id}-clone-${idx}`}
+                  aria-hidden="true"
+                  className="inline-flex items-center gap-2 select-none"
                 >
-                  <TrendingUp className="w-3 h-3" />
-                  {formatINR(gmpVal)} ({formatPercentage(gmpPct)})
+                  <span className="font-semibold text-slate-100">{ipo.name}</span>
+                  <span
+                    className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] font-bold ${
+                      isPositive
+                        ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800/50"
+                        : "bg-slate-800 text-slate-300"
+                    }`}
+                  >
+                    <TrendingUp className="w-3 h-3" />
+                    {formatINR(gmpVal)} ({formatPercentage(gmpPct)})
+                  </span>
+                  <span className="text-slate-600 ml-4">•</span>
                 </span>
-                <span className="text-slate-600">•</span>
-              </Link>
+              );
+            }
+
+            return (
+              <span key={`${ipo.id}-${idx}`} className="inline-flex items-center gap-2">
+                <Link
+                  href={`/ipo/${ipo.slug}`}
+                  aria-label={`Live GMP for ${ipo.name}`}
+                  className="inline-flex items-center gap-2 hover:text-white transition-colors text-xs"
+                >
+                  <span className="font-semibold text-slate-100">{ipo.name}</span>
+                  <span
+                    className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] font-bold ${
+                      isPositive
+                        ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800/50"
+                        : "bg-slate-800 text-slate-300"
+                    }`}
+                  >
+                    <TrendingUp className="w-3 h-3" />
+                    {formatINR(gmpVal)} ({formatPercentage(gmpPct)})
+                  </span>
+                </Link>
+                <span className="text-slate-600 ml-4">•</span>
+              </span>
             );
           })}
         </div>

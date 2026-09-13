@@ -11,7 +11,11 @@ export function BlogCard({ post }: { post: BlogPost }) {
       {/* Thumbnail */}
       <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
         <img
-          src={post.coverImage || "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"}
+          src={
+            post.coverImage && !post.coverImage.startsWith("data:")
+              ? post.coverImage
+              : "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=75"
+          }
           alt={post.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
@@ -58,9 +62,10 @@ export function BlogCard({ post }: { post: BlogPost }) {
 
           <Link
             href={`/blog/${post.slug}`}
+            aria-label={`Read article: ${post.title}`}
             className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
           >
-            <span>Read</span>
+            <span className="sr-only">{post.title} </span><span>Read</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

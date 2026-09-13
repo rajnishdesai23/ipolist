@@ -92,9 +92,31 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const ipos = await getAllIpos();
-  const blogs = await getAllBlogs();
+  const rawIpos = await getAllIpos();
+  const rawBlogs = await getAllBlogs();
   const websiteSchema = generateWebSiteJsonLd();
+
+  // Strip huge unused data (balance sheets, financials, markdown content, base64 images)
+  // before serializing into the Client Component RSC Flight payload in HTML.
+  const tickerIpos = rawIpos.map((ipo) => ({
+    id: ipo.id,
+    name: ipo.name,
+    slug: ipo.slug,
+    type: ipo.type,
+    status: ipo.status,
+    dates: ipo.dates ? { rawRange: ipo.dates.rawRange, open: ipo.dates.open, close: ipo.dates.close } : undefined,
+    priceBand: ipo.priceBand ? { raw: ipo.priceBand.raw, max: ipo.priceBand.max } : undefined,
+    gmp: ipo.gmp ? { value: ipo.gmp.value, percentage: ipo.gmp.percentage } : undefined,
+  })) as any[];
+
+  const searchBlogs = rawBlogs.map((b) => ({
+    id: b.id,
+    title: b.title,
+    slug: b.slug,
+    category: b.category,
+    readingTimeMinutes: b.readingTimeMinutes,
+    tags: b.tags || [],
+  })) as any[];
 
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
@@ -106,10 +128,10 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
         {/* Top Live GMP Ticker Marquee */}
-        <MarketTicker ipos={ipos} />
+        <MarketTicker ipos={tickerIpos} />
 
         {/* Global Navigation Header */}
-        <Navbar ipos={ipos} blogs={blogs} />
+        <Navbar ipos={tickerIpos} blogs={searchBlogs} />
 
         {/* Main Content Area */}
         <main className="flex-grow">{children}</main>

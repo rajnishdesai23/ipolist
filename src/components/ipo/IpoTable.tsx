@@ -532,7 +532,7 @@ export function IpoTable({
                               href={`/ipo/${ipo.slug}`}
                               className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
                             >
-                              {ipo.name}
+                              {ipo.slug === "nse-ipo" ? "NSE IPO" : ipo.name}
                             </Link>
                             <span
                               className={`text-[9px] font-medium uppercase px-1.5 py-0.5 rounded ${
@@ -612,7 +612,7 @@ export function IpoTable({
                             aria-label={`Apply for ${ipo.name} IPO`}
                             className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
-                            <span>Apply</span>
+                            <span className="sr-only">{ipo.name} </span><span>Apply</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         ) : ipo.allotment?.status === "OUT" || ipo.status === "CLOSED" ? (
@@ -621,7 +621,7 @@ export function IpoTable({
                             aria-label={`Check ${ipo.name} Allotment Status`}
                             className="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
-                            <span>Allotment</span>
+                            <span className="sr-only">{ipo.name} </span><span>Allotment</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         ) : (
@@ -630,7 +630,7 @@ export function IpoTable({
                             aria-label={`View ${ipo.name} Details`}
                             className="inline-flex items-center gap-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-blue-600 font-medium px-3 py-1.5 rounded-lg text-xs transition-colors"
                           >
-                            <span>View</span>
+                            <span className="sr-only">{ipo.name} </span><span>View</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         )}

@@ -28,7 +28,7 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const rawIpos = await getAllIpos();
-  // Sanitize IPO list payload to eliminate deep unused records and drop HTML size by 95%
+  // Sanitize IPO list payload to eliminate deep unused records, base64 images, and drop HTML size by 95%
   const allIpos = rawIpos.map((ipo) => ({
     id: ipo.id,
     name: ipo.name,
@@ -36,7 +36,7 @@ export default async function HomePage() {
     type: ipo.type,
     status: ipo.status,
     rawStatus: ipo.rawStatus,
-    logoUrl: ipo.logoUrl,
+    logoUrl: ipo.logoUrl && !ipo.logoUrl.startsWith("data:") ? ipo.logoUrl : undefined,
     dates: ipo.dates ? { open: ipo.dates.open, close: ipo.dates.close, rawRange: ipo.dates.rawRange } : undefined,
     priceBand: ipo.priceBand ? { max: ipo.priceBand.max, min: ipo.priceBand.min, raw: ipo.priceBand.raw } : undefined,
     lotSize: ipo.lotSize,
@@ -49,8 +49,30 @@ export default async function HomePage() {
 
   const liveIpos = allIpos.filter((i) => i.status === "LIVE");
   const upcomingIpos = allIpos.filter((i) => i.status === "UPCOMING");
-  const topGmpIpos = await getTopGmpIpos(6);
-  const recentBlogs = await getRecentBlogs(3);
+  
+  const rawTopGmp = await getTopGmpIpos(6);
+  const topGmpIpos = rawTopGmp.map((ipo) => ({
+    id: ipo.id,
+    name: ipo.name,
+    slug: ipo.slug,
+    priceBand: ipo.priceBand ? { max: ipo.priceBand.max, min: ipo.priceBand.min, raw: ipo.priceBand.raw } : undefined,
+    gmp: ipo.gmp ? { value: ipo.gmp.value, percentage: ipo.gmp.percentage, estListingText: ipo.gmp.estListingText, expectedListingPrice: ipo.gmp.expectedListingPrice } : undefined,
+  }));
+
+  const rawBlogs = await getRecentBlogs(3);
+  const recentBlogs = rawBlogs.map((b) => ({
+    id: b.id,
+    title: b.title,
+    slug: b.slug,
+    excerpt: b.excerpt,
+    category: b.category,
+    publishedAt: b.publishedAt,
+    readingTimeMinutes: b.readingTimeMinutes,
+    author: { name: b.author?.name || "IPO Research Team" },
+    coverImage: b.coverImage && !b.coverImage.startsWith("data:")
+      ? b.coverImage
+      : "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=75",
+  })) as any[];
 
   const mainboardIpos = allIpos.filter((i) => i.type === "MAINBOARD");
   const smeIpos = allIpos.filter((i) => i.type === "SME");
@@ -90,15 +112,11 @@ export default async function HomePage() {
         />
       )}
 
-      {/* Top Semantic Title Header (Thin, Sleek, Mobile & Desktop Responsive) */}
-      <section className="px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 max-w-7xl mx-auto">
+      {/* Top Semantic Title Header & Social Signals (Preserved in DOM for 100-point SEO, Visually Hidden with sr-only) */}
+      <section className="sr-only">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800/60">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
               <span>Live Market Feed • Verified Today</span>
             </div>
             <h1 className="text-xl sm:text-3xl lg:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -115,7 +133,7 @@ export default async function HomePage() {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-normal text-slate-700 dark:text-slate-200 transition-colors"
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Check Allotment</span>
+              <span>Check Allotment Status</span>
             </Link>
             <Link
               href="/ipo-gmp"
@@ -163,8 +181,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Clean Minimal Hero Section — Visible on Desktop (md:) */}
-      <section className="hidden md:block relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
+      {/* Clean Minimal Hero Section — Sleek & Visible */}
+      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
           <div className="lg:col-span-7 space-y-5 text-left">
@@ -288,7 +306,7 @@ export default async function HomePage() {
                     href={`/ipo/${ipo.slug}`}
                     className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
                   >
-                    {ipo.name}
+                    <span>{ipo.name} GMP</span>
                   </Link>
                   <div className="text-xs text-slate-500 flex items-center gap-2">
                     <span>Price: {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}</span>
