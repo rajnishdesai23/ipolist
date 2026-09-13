@@ -103,85 +103,106 @@ export function IpoTable({
   ];
 
   return (
-    <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      {/* Left Sidebar Filter Column (Matching Reference Design) */}
-      <div className="lg:col-span-3 space-y-3">
+    <div className="w-full flex flex-col lg:flex-row gap-5 lg:gap-6 items-start">
+      {/* Left Sidebar Filter Column (Thinner & Sleek Horizontal Rows) */}
+      <div className="w-full lg:w-44 xl:w-48 flex-shrink-0 space-y-2">
         {/* Filter Box Header */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-center font-extrabold text-sm text-slate-800 dark:text-white shadow-sm flex items-center justify-center gap-2">
-          <Filter className="w-4 h-4 text-indigo-600" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl py-2 px-3 text-center font-bold text-xs text-slate-800 dark:text-slate-200 shadow-sm flex items-center justify-center gap-1.5">
+          <Filter className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
           <span>Filter</span>
         </div>
 
-        {/* Vertical Status Tab Cards */}
-        <div className="flex lg:flex-col gap-2.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
+        {/* Status Filter Buttons - Sleek horizontal row layout */}
+        <div className="flex lg:flex-col gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
           {/* Current IPOs (LIVE) */}
           <button
             onClick={() => setSelectedStatus("LIVE")}
-            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+            className={`flex-1 lg:w-full px-3 py-2.5 rounded-xl border text-left transition-all flex items-center justify-between gap-2 whitespace-nowrap ${
               selectedStatus === "LIVE"
-                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
-                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+                ? "bg-indigo-50/90 border-indigo-500 text-indigo-700 font-bold dark:bg-indigo-950/70 dark:border-indigo-500 dark:text-indigo-300 shadow-sm ring-1 ring-indigo-500/20"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:border-slate-300"
             }`}
           >
-            <div className="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center">
-              <Radio className="w-5 h-5 animate-pulse" />
+            <div className="flex items-center gap-2 min-w-0">
+              <Radio className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0 animate-pulse" />
+              <span className="text-xs truncate font-semibold">Current IPOs</span>
             </div>
-            <div>
-              <span className="font-extrabold text-xs sm:text-sm block">Current IPOs</span>
-              <span className="text-[10px] text-slate-400 font-semibold">({counts.live})</span>
-            </div>
+            <span
+              className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${
+                selectedStatus === "LIVE"
+                  ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+                  : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              }`}
+            >
+              {counts.live}
+            </span>
           </button>
 
           {/* Upcoming IPOs */}
           <button
             onClick={() => setSelectedStatus("UPCOMING")}
-            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+            className={`flex-1 lg:w-full px-3 py-2.5 rounded-xl border text-left transition-all flex items-center justify-between gap-2 whitespace-nowrap ${
               selectedStatus === "UPCOMING"
-                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
-                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+                ? "bg-indigo-50/90 border-indigo-500 text-indigo-700 font-bold dark:bg-indigo-950/70 dark:border-indigo-500 dark:text-indigo-300 shadow-sm ring-1 ring-indigo-500/20"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:border-slate-300"
             }`}
           >
-            <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center">
-              <Calendar className="w-5 h-5" />
+            <div className="flex items-center gap-2 min-w-0">
+              <Calendar className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+              <span className="text-xs truncate font-semibold">Upcoming IPOs</span>
             </div>
-            <div>
-              <span className="font-extrabold text-xs sm:text-sm block">Upcoming IPOs</span>
-              <span className="text-[10px] text-slate-400 font-semibold">({counts.upcoming})</span>
-            </div>
+            <span
+              className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${
+                selectedStatus === "UPCOMING"
+                  ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+                  : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              }`}
+            >
+              {counts.upcoming}
+            </span>
           </button>
 
           {/* Listed / Closed IPOs */}
           <button
             onClick={() => setSelectedStatus("CLOSED")}
-            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+            className={`flex-1 lg:w-full px-3 py-2.5 rounded-xl border text-left transition-all flex items-center justify-between gap-2 whitespace-nowrap ${
               selectedStatus === "CLOSED"
-                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
-                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+                ? "bg-indigo-50/90 border-indigo-500 text-indigo-700 font-bold dark:bg-indigo-950/70 dark:border-indigo-500 dark:text-indigo-300 shadow-sm ring-1 ring-indigo-500/20"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:border-slate-300"
             }`}
           >
-            <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center">
-              <ListChecks className="w-5 h-5" />
+            <div className="flex items-center gap-2 min-w-0">
+              <ListChecks className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+              <span className="text-xs truncate font-semibold">Listed IPOs</span>
             </div>
-            <div>
-              <span className="font-extrabold text-xs sm:text-sm block">Listed IPOs</span>
-              <span className="text-[10px] text-slate-400 font-semibold">({counts.closed})</span>
-            </div>
+            <span
+              className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${
+                selectedStatus === "CLOSED"
+                  ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+                  : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              }`}
+            >
+              {counts.closed}
+            </span>
           </button>
 
-          {/* Show All Reset Button */}
-          {selectedStatus !== "ALL" && (
-            <button
-              onClick={() => setSelectedStatus("ALL")}
-              className="w-full text-center text-xs font-bold text-slate-500 hover:text-indigo-600 py-1 transition-colors"
-            >
-              Show All ({counts.all})
-            </button>
-          )}
+          {/* Show All Option */}
+          <button
+            onClick={() => setSelectedStatus("ALL")}
+            className={`flex-1 lg:w-full px-3 py-2 rounded-xl border text-left transition-all flex items-center justify-between gap-2 whitespace-nowrap ${
+              selectedStatus === "ALL"
+                ? "bg-slate-100 border-slate-300 text-slate-900 font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                : "bg-transparent border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <span className="text-xs font-semibold">All IPOs</span>
+            <span className="text-[10px] text-slate-400 font-bold">({counts.all})</span>
+          </button>
         </div>
       </div>
 
-      {/* Right Column: Content Grid */}
-      <div className="lg:col-span-9 space-y-4">
+      {/* Right Column: Main Content Area */}
+      <div className="flex-1 min-w-0 space-y-4">
         {/* Top Controls Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-sm">
           {/* Mainboard vs SME Segment Switcher */}
