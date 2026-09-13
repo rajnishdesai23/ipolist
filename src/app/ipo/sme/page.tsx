@@ -38,7 +38,7 @@ export default async function SmeIposPage() {
         <LeaderboardAd />
 
         <div className="hidden md:block">
-          <IpoTable ipos={ipos} title="SME Platform Issues" showAllColumns={true} />
+          <IpoTable ipos={ipos} initialSegment="SME" title="SME Platform Issues" showAllColumns={true} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">

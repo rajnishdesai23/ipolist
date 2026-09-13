@@ -206,38 +206,61 @@ export function IpoTable({
         {/* Top Controls Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-sm">
           {/* Mainboard, All Market & SME Segment Switcher */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto scrollbar-none w-full sm:w-auto">
-            <button
-              onClick={() => setSelectedSegment("MAINBOARD")}
-              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
-                selectedSegment === "MAINBOARD"
-                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-              }`}
-            >
-              Mainboard ({ipos.filter((i) => i.type === "MAINBOARD").length})
-            </button>
-            <button
-              onClick={() => setSelectedSegment("ALL")}
-              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
-                selectedSegment === "ALL"
-                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-              }`}
-            >
-              All Market ({ipos.length})
-            </button>
-            <button
-              onClick={() => setSelectedSegment("SME")}
-              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
-                selectedSegment === "SME"
-                  ? "bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-              }`}
-            >
-              SME ({ipos.filter((i) => i.type === "SME").length})
-            </button>
-          </div>
+          {(() => {
+            const mainboardCount = ipos.filter((i) => i.type === "MAINBOARD").length;
+            const smeCount = ipos.filter((i) => i.type === "SME").length;
+            const hasMultipleTypes = mainboardCount > 0 && smeCount > 0;
+
+            if (!hasMultipleTypes && (mainboardCount === 0 || smeCount === 0)) {
+              // Only one segment type exists in this dataset
+              return (
+                <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl w-full sm:w-auto">
+                  <span className="px-3.5 py-1.5 rounded-lg text-xs font-extrabold bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm">
+                    {smeCount > 0 ? `SME (${smeCount})` : `Mainboard (${mainboardCount})`}
+                  </span>
+                </div>
+              );
+            }
+
+            return (
+              <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto scrollbar-none w-full sm:w-auto">
+                {mainboardCount > 0 && (
+                  <button
+                    onClick={() => setSelectedSegment("MAINBOARD")}
+                    className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
+                      selectedSegment === "MAINBOARD"
+                        ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                    }`}
+                  >
+                    Mainboard ({mainboardCount})
+                  </button>
+                )}
+                <button
+                  onClick={() => setSelectedSegment("ALL")}
+                  className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
+                    selectedSegment === "ALL"
+                      ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
+                >
+                  All Market ({ipos.length})
+                </button>
+                {smeCount > 0 && (
+                  <button
+                    onClick={() => setSelectedSegment("SME")}
+                    className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
+                      selectedSegment === "SME"
+                        ? "bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                    }`}
+                  >
+                    SME ({smeCount})
+                  </button>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Quick Action Buttons & Search */}
           <div className="flex items-center gap-2 w-full lg:w-auto">

@@ -35,7 +35,7 @@ export default async function MainboardIposPage() {
         <LeaderboardAd />
 
         <div className="hidden md:block">
-          <IpoTable ipos={ipos} title="Mainboard Issues" showAllColumns={true} />
+          <IpoTable ipos={ipos} initialSegment="MAINBOARD" title="Mainboard Issues" showAllColumns={true} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
