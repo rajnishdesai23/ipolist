@@ -1,15 +1,26 @@
 import { IPOStatus, IPO } from "@/types/ipo";
 
-export const STATUS_PRIORITY_ORDER: Record<IPOStatus, number> = {
-  LIVE: 1, // Live / Open Now
-  UPCOMING: 2, // Upcoming
-  CLOSED: 3, // Closed / Historical
-};
+export function getIpoStatusPriority(ipo: IPO): number {
+  // 1. Live IPOs first
+  if (ipo.status === "LIVE") return 1;
+
+  // 2. Allotment Out IPOs second
+  if (ipo.allotment?.status === "OUT" || ipo.rawStatus?.toLowerCase().includes("allotment out")) return 2;
+
+  // 3. Allotment Awaited IPOs third
+  if (ipo.allotment?.status === "AWAITED" || ipo.rawStatus?.toLowerCase().includes("awaited")) return 3;
+
+  // 4. Upcoming IPOs fourth
+  if (ipo.status === "UPCOMING" || ipo.rawStatus?.toLowerCase().includes("upcoming")) return 4;
+
+  // 5. Closed / Historical fifth
+  return 5;
+}
 
 export function sortIposByStatusPriority(ipos: IPO[]): IPO[] {
   return [...ipos].sort((a, b) => {
-    const pA = STATUS_PRIORITY_ORDER[a.status] || 99;
-    const pB = STATUS_PRIORITY_ORDER[b.status] || 99;
+    const pA = getIpoStatusPriority(a);
+    const pB = getIpoStatusPriority(b);
     if (pA !== pB) return pA - pB;
     // Secondary sort: highest GMP percentage first
     return (b.gmp?.percentage || 0) - (a.gmp?.percentage || 0);

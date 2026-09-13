@@ -2,6 +2,7 @@ import { IPO, IPOFilterOptions } from "@/types/ipo";
 import { db } from "@/lib/firebase/client";
 import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { scrapeAllIpos } from "@/lib/scrapers/ipowatch";
+import { sortIposByStatusPriority } from "@/lib/utils/status";
 
 // In-memory cache for fast SSR / Edge delivery
 let inMemoryIpos: IPO[] = [];
@@ -61,7 +62,13 @@ export async function getAllIpos(options?: IPOFilterOptions): Promise<IPO[]> {
       list.sort((a, b) => ((a.gmp?.percentage || 0) - (b.gmp?.percentage || 0)) * dir);
     } else if (options.sortBy === "date") {
       list.sort((a, b) => ((a.dates?.open || "") > (b.dates?.open || "") ? 1 : -1) * dir);
+    } else if (options.sortBy === "status") {
+      list = sortIposByStatusPriority(list);
+      if (options.sortDirection === "asc") list.reverse();
     }
+  } else {
+    // Default sorting: Live -> Allotment Out -> Allotment Awaited -> Upcoming -> Closed
+    list = sortIposByStatusPriority(list);
   }
 
   return list;

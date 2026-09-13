@@ -62,7 +62,7 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
             {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-1">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(`${link.href}/`));
                 const Icon = link.icon;
                 return (
                   <Link
@@ -116,7 +116,7 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
           <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-1 shadow-xl animate-in slide-in-from-top duration-200">
             {navLinks.map((link) => {
               const Icon = link.icon;
-              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(`${link.href}/`));
               return (
                 <Link
                   key={link.href}
