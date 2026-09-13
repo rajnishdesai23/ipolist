@@ -46,29 +46,36 @@ export default function AdminEditIpoPage({ params }: { params: { id: string } })
       const data = await res.json();
       if (data.success) {
         alert("IPO updated successfully!");
-        router.push("/admin/ipos");
+        router.push("/portal-console-x9182-admin-secure/ipos");
+      } else {
+        alert("Failed to save: " + data.error);
       }
-    } catch (e) {
-      alert("Failed to update IPO");
+    } catch (e: any) {
+      alert("Error saving IPO: " + e.message);
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
+    return <PageLoader message="Loading IPO Editor..." />;
+  }
+  if (!ipo) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <PageLoader message="Loading IPO Details..." subMessage="Fetching company information, live GMP, and dates" />
+      <div className="text-center py-12 space-y-4">
+        <h2 className="text-xl font-bold text-white">IPO Not Found</h2>
+        <Link href="/portal-console-x9182-admin-secure/ipos" className="text-blue-400 hover:underline text-xs">
+          ← Back to IPOs List
+        </Link>
       </div>
     );
   }
-  if (!ipo) return <div className="p-8 text-white text-xs">IPO not found.</div>;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
       <div className="flex items-center justify-between">
         <Link
-          href="/admin/ipos"
+          href="/portal-console-x9182-admin-secure/ipos"
           className="text-xs text-slate-400 hover:text-white flex items-center gap-1.5"
         >
           <ArrowLeft className="w-3.5 h-3.5" />

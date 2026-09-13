@@ -143,6 +143,13 @@ export function Footer() {
           <p>© {new Date().getFullYear()} IPO List India. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Built for Indian Retail & HNI Investors with <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
+            <Link
+              href="/portal-console-x9182-admin-secure"
+              className="opacity-15 hover:opacity-90 transition-opacity text-[10px] ml-0.5 font-mono text-slate-500 hover:text-slate-300"
+              title="Admin Portal"
+            >
+              •
+            </Link>
           </p>
         </div>
       </div>

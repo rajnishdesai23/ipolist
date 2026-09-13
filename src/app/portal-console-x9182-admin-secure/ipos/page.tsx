@@ -64,7 +64,7 @@ export default function AdminIposListPage() {
             <span>Refresh</span>
           </button>
           <Link
-            href="/admin/ipos/new"
+            href="/portal-console-x9182-admin-secure/ipos/new"
             className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow"
           >
             <PlusCircle className="w-4 h-4" />
@@ -100,7 +100,7 @@ export default function AdminIposListPage() {
                       <div className="flex items-center gap-3">
                         <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
                         <div>
-                          <Link href={`/admin/ipos/${ipo.slug || ipo.id}`} className="font-bold text-white hover:text-blue-400 block text-sm">
+                          <Link href={`/portal-console-x9182-admin-secure/ipos/${ipo.slug || ipo.id}`} className="font-bold text-white hover:text-blue-400 block text-sm">
                             {ipo.name}
                           </Link>
                           <span className="font-mono text-[10px] text-slate-400">/ipo/{ipo.slug}</span>
@@ -129,7 +129,7 @@ export default function AdminIposListPage() {
                     <td className="py-4 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/ipos/${ipo.slug || ipo.id}`}
+                          href={`/portal-console-x9182-admin-secure/ipos/${ipo.slug || ipo.id}`}
                           className="px-2.5 py-1.5 inline-flex items-center gap-1 text-blue-400 hover:text-white bg-blue-950/60 hover:bg-blue-600 rounded-lg font-bold text-xs transition-colors"
                           title="Edit IPO Details & Logo"
                         >

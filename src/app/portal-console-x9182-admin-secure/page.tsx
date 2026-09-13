@@ -71,14 +71,14 @@ export default async function AdminDashboardPage() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/admin/gmp"
+            href="/portal-console-x9182-admin-secure/gmp"
             className="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition-transform hover:scale-105"
           >
             <TrendingUp className="w-4 h-4" />
             <span>GMP Quick Update</span>
           </Link>
           <Link
-            href="/admin/ipos/new"
+            href="/portal-console-x9182-admin-secure/ipos/new"
             className="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition-transform hover:scale-105"
           >
             <PlusCircle className="w-4 h-4" />
@@ -127,7 +127,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           <Link
-            href="/admin/scraper"
+            href="/portal-console-x9182-admin-secure/scraper"
             className="text-xs font-bold text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>Open Scraper Console</span>
@@ -160,7 +160,7 @@ export default async function AdminDashboardPage() {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-base text-white">Recently Updated IPOs</h3>
-          <Link href="/admin/ipos" className="text-xs font-bold text-blue-400 hover:underline">
+          <Link href="/portal-console-x9182-admin-secure/ipos" className="text-xs font-bold text-blue-400 hover:underline">
             View All IPOs →
           </Link>
         </div>
@@ -190,7 +190,7 @@ export default async function AdminDashboardPage() {
                     </td>
                     <td className="py-3 px-3 text-right">
                       <Link
-                        href={`/admin/ipos/${ipo.id}`}
+                        href={`/portal-console-x9182-admin-secure/ipos/${ipo.id}`}
                         className="text-blue-400 hover:underline font-bold text-xs"
                       >
                         Edit IPO

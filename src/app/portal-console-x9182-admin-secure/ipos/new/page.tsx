@@ -80,7 +80,7 @@ export default function AdminNewIpoPage() {
       });
       const data = await res.json();
       if (data.success) {
-        router.push("/admin/ipos");
+        router.push("/portal-console-x9182-admin-secure/ipos");
       }
     } catch (error) {
       alert("Failed to save IPO");
@@ -93,7 +93,7 @@ export default function AdminNewIpoPage() {
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
       <div className="flex items-center justify-between">
         <Link
-          href="/admin/ipos"
+          href="/portal-console-x9182-admin-secure/ipos"
           className="text-xs text-slate-400 hover:text-white flex items-center gap-1.5"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
