@@ -60,17 +60,16 @@ export default async function HomePage() {
   const faqSchema = generateFaqJsonLd(homeFaqs);
 
   return (
-    <div className="space-y-8 sm:space-y-10 pb-16">
-      {/* JSON-LD Schema for FAQs */}
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
-
+    <div className="space-y-6 pb-10">
       {/* Clean Minimal Hero Section */}
-      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-6 lg:py-10 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
+        {/* JSON-LD Schema for FAQs — inside hero so no top gap from space-y */}
+        {faqSchema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          />
+        )}
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
           <div className="lg:col-span-7 space-y-5 text-left">
