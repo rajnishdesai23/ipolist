@@ -73,81 +73,95 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <LeaderboardAd />
 
-        {/* Hero Header Card */}
-        <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="xl" className="mt-1" />
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 flex-wrap">
+        {/* Hero Header Card — Clean, Airy, Elegant & De-cluttered */}
+        <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-card space-y-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
+            {/* Left side: Logo + Bigger Thinner Title + Badges */}
+            <div className="flex items-start gap-4 sm:gap-5 flex-1 min-w-0">
+              <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" className="mt-1 shrink-0 shadow-sm" />
+              <div className="space-y-2 flex-1 min-w-0">
+                {/* Badges row with refined spacing */}
+                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
                   <span
-                    className={`text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${
+                    className={`text-xs font-semibold px-3 py-0.5 rounded-full border ${
                       isSme
-                        ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300"
-                        : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300"
+                        ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800"
+                        : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800"
                     }`}
                   >
                     {ipo.type} IPO
                   </span>
+
                   {ipo.issueDetails?.listingExchange && (
-                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/70 px-2.5 py-0.5 rounded-full border border-slate-200/60 dark:border-slate-700/60">
                       Listing: {ipo.issueDetails.listingExchange}
                     </span>
                   )}
+
                   <div
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusConfig.className}`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold border ${statusConfig.className}`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${statusConfig.dotColor}`} />
                     <span>{statusConfig.label}</span>
                   </div>
                 </div>
 
-                <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+                {/* Company Name: BIGGER, THINNER, SLEEK! */}
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
                   {ipo.name}
                 </h1>
 
-                {ipo.issueDetails?.issueType && (
-                  <p className="text-xs sm:text-sm text-slate-500">
-                    Issue Type: <strong className="text-slate-700 dark:text-slate-300">{ipo.issueDetails.issueType}</strong>
-                  </p>
-                )}
+                {/* Subtitle with proper breathing room */}
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+                  {ipo.issueDetails?.issueType && (
+                    <span>Issue Type: <strong className="text-slate-700 dark:text-slate-300 font-medium">{ipo.issueDetails.issueType}</strong></span>
+                  )}
+                  {ipo.lotSize && (
+                    <>
+                      <span>•</span>
+                      <span>Lot Size: <strong className="text-slate-700 dark:text-slate-300 font-medium">{ipo.lotSize} Shares</strong></span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Live GMP Display */}
-            <div className="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col items-start md:items-end flex-shrink-0">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Live Grey Market Premium (GMP)
-              </span>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`text-2xl sm:text-3xl font-black ${
-                    isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-slate-300"
-                  }`}
-                >
-                  {isPositive ? `+₹${gmpVal}` : "₹0"}
+            {/* Right side: Sleek, Uncluttered Live GMP Card */}
+            <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 dark:from-slate-800/60 dark:to-emerald-950/20 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col items-start lg:items-end shrink-0 shadow-sm space-y-3 min-w-[260px]">
+              <div>
+                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block lg:text-right">
+                  Live Grey Market Premium (GMP)
                 </span>
-                {gmpPct > 0 && (
-                  <span className="text-xs font-extrabold px-2 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 rounded-lg">
-                    +{gmpPct}%
+                <div className="flex items-baseline gap-2 mt-1 lg:justify-end">
+                  <span
+                    className={`text-3xl sm:text-4xl font-light sm:font-normal tracking-tight ${
+                      isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-slate-300"
+                    }`}
+                  >
+                    {isPositive ? `+₹${gmpVal}` : "₹0"}
                   </span>
-                )}
+                  {gmpPct > 0 && (
+                    <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 rounded-full border border-emerald-200/60">
+                      +{gmpPct}%
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 lg:text-right font-normal">
+                  Expected Listing:{" "}
+                  <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                    {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
+                  </strong>
+                </p>
               </div>
-              <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Expected Listing:{" "}
-                <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
-                  {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
-                </strong>
-              </span>
 
-              {/* Direct Action CTAs (No Fluff) */}
-              <div className="mt-3 flex items-center gap-2">
+              {/* Action Button */}
+              <div className="w-full lg:w-auto pt-1">
                 {ipo.status === "LIVE" ? (
                   <a
                     href="https://zerodha.com/open-account"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow-md transition-all"
+                    className="inline-flex items-center justify-center gap-2 w-full lg:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-xl text-xs shadow-sm hover:shadow transition-all"
                   >
                     <span>Apply via Zerodha</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -157,7 +171,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                     href={getRegistrarPortalUrl(ipo.registrar?.name, ipo.registrar?.website)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow-md transition-all"
+                    className="inline-flex items-center justify-center gap-2 w-full lg:w-auto bg-slate-900 hover:bg-blue-600 text-white dark:bg-slate-800 dark:hover:bg-blue-600 font-medium px-5 py-2.5 rounded-xl text-xs shadow-sm hover:shadow transition-all"
                   >
                     <span>Check Allotment Status</span>
                     <ExternalLink className="w-3.5 h-3.5" />
