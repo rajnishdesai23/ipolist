@@ -31,9 +31,6 @@ export default async function IpoCalendarPage() {
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
             IPO Calendar &amp; Timeline Schedule
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl">
-            Track opening, closing, allotment, and listing dates on a monthly calendar grid or timeline agenda.
-          </p>
         </div>
 
         <LeaderboardAd />

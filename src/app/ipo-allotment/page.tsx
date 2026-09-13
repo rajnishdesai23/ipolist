@@ -77,9 +77,6 @@ export default async function IpoAllotmentPage() {
             <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
               IPO Allotment Status Check
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Direct official registrar portals. Click to verify your allotment status instantly using your PAN Card number.
-            </p>
           </div>
         </div>
 

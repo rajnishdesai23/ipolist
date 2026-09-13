@@ -30,9 +30,6 @@ export default async function MainboardIposPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
             Mainboard IPOs (NSE & BSE)
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Large-cap and mid-cap initial public offerings available for Retail, HNI, and Institutional bidding.
-          </p>
         </div>
 
         <LeaderboardAd />

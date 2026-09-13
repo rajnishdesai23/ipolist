@@ -34,9 +34,6 @@ export default async function CurrentIposPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
             Open IPOs Today in India
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Apply before the 5:00 PM closing cut-off time. Check live subscription status and latest GMP movements.
-          </p>
         </div>
 
         <LeaderboardAd />

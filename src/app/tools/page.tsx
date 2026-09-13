@@ -25,9 +25,6 @@ export default function ToolsPage() {
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
             IPO Financial Calculators
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl">
-            Compute your expected listing returns, retail allotment odds, and leveraged borrowing costs before placing your bids.
-          </p>
         </div>
 
         <LeaderboardAd />

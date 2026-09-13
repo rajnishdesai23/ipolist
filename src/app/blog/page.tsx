@@ -29,9 +29,6 @@ export default async function BlogPage() {
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
             IPO Reviews, News & Educational Guides
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl">
-            In-depth fundamental analysis, grey market momentum tracking, and beginner-friendly tutorials.
-          </p>
         </div>
 
         <LeaderboardAd />

@@ -27,9 +27,6 @@ export default async function AllIposPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
               IPO List India (2026) — Mainboard & SME
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Browse all open, upcoming, and recently listed initial public offerings with live GMP and subscription tracking.
-            </p>
           </div>
 
           <div className="flex items-center gap-2">

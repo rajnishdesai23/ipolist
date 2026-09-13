@@ -33,9 +33,6 @@ export default async function SmeIposPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
             SME IPO List (Small & Medium Enterprises)
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Track high-growth emerging companies. Note: SME IPOs require minimum application investments of ₹1,00,000–₹1,40,000.
-          </p>
         </div>
 
         <LeaderboardAd />

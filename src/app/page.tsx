@@ -78,11 +78,6 @@ export default async function HomePage() {
               Track <span className="text-blue-600 dark:text-blue-400">IPO GMP</span>, Allotment &amp; More
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal">
-              Get real-time updates, allotment status, key dates and everything about IPOs — all in one place.
-            </p>
-
             {/* CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
@@ -231,9 +226,6 @@ export default async function HomePage() {
             <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
               Current & Upcoming IPOs in India
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Live updates for Mainboard & SME issues on NSE & BSE
-            </p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
@@ -268,9 +260,6 @@ export default async function HomePage() {
             <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
               Latest IPO Reviews & Educational Guides
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Fundamental analysis, GMP daily bulletins, and bidding strategies
-            </p>
           </div>
           <Link
             href="/blog"

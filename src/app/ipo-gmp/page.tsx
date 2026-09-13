@@ -34,9 +34,6 @@ export default async function IpoGmpPage() {
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
             IPO GMP Today (Grey Market Premium Live)
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl">
-            Real-time Grey Market Premium rates, estimated listing gains, and status for all Mainboard & SME IPOs in India.
-          </p>
         </div>
 
         <LeaderboardAd />

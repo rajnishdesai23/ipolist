@@ -30,9 +30,6 @@ export default async function UpcomingIposPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">
             Upcoming IPOs in India (2026 Pipeline)
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Stay ahead of the market with upcoming Mainboard and SME initial public offerings approved by SEBI.
-          </p>
         </div>
 
         <LeaderboardAd />
