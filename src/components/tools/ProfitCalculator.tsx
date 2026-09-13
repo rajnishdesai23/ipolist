@@ -56,7 +56,7 @@ export function ProfitCalculator() {
             <Calculator className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-heading">
+            <h3 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading">
               IPO Profit &amp; Listing Gain Calculator
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -69,19 +69,19 @@ export function ProfitCalculator() {
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
           <button
             onClick={() => applyPreset("RETAIL")}
-            className="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 rounded-xl text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 transition-colors whitespace-nowrap"
           >
             Retail 1 Lot (₹15k)
           </button>
           <button
             onClick={() => applyPreset("SME")}
-            className="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 rounded-xl text-xs font-medium bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 transition-colors whitespace-nowrap"
           >
             SME Issue (₹1.4L)
           </button>
           <button
             onClick={() => applyPreset("HNI_SMALL")}
-            className="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300 transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 rounded-xl text-xs font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300 transition-colors whitespace-nowrap"
           >
             sHNI (₹2L+)
           </button>
@@ -93,9 +93,9 @@ export function ProfitCalculator() {
         <div className="lg:col-span-7 space-y-5">
           {/* Issue Price Input */}
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300">
+            <div className="flex justify-between items-center text-xs font-medium text-slate-700 dark:text-slate-300">
               <label>Issue Price (Cut-off Price)</label>
-              <span className="text-blue-600 dark:text-blue-400 font-black text-sm">{formatINR(issuePrice)}</span>
+              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">{formatINR(issuePrice)}</span>
             </div>
             <div className="flex items-center gap-3">
               <input
@@ -111,16 +111,16 @@ export function ProfitCalculator() {
                 type="number"
                 value={issuePrice}
                 onChange={(e) => setIssuePrice(Math.max(1, Number(e.target.value)))}
-                className="w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
+                className="w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
               />
             </div>
           </div>
 
           {/* Grey Market Premium (GMP) Input */}
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300">
+            <div className="flex justify-between items-center text-xs font-medium text-slate-700 dark:text-slate-300">
               <label>Grey Market Premium (GMP)</label>
-              <span className="text-emerald-600 dark:text-emerald-400 font-black text-sm">{formatINR(gmp)}</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-sm">{formatINR(gmp)}</span>
             </div>
             <div className="flex items-center gap-3">
               <input
@@ -136,7 +136,7 @@ export function ProfitCalculator() {
                 type="number"
                 value={gmp}
                 onChange={(e) => setGmp(Math.max(0, Number(e.target.value)))}
-                className="w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold text-emerald-600 dark:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                className="w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-emerald-600 dark:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
               />
             </div>
           </div>
@@ -144,26 +144,26 @@ export function ProfitCalculator() {
           {/* Lot Size & Lots Applied Inputs */}
           <div className="grid grid-cols-2 gap-4 pt-1">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
                 Lot Size (Shares)
               </label>
               <input
                 type="number"
                 value={lotSize}
                 onChange={(e) => setLotSize(Math.max(1, Number(e.target.value)))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+              <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
                 Lots Applied
               </label>
               <input
                 type="number"
                 value={lotsApplied}
                 onChange={(e) => setLotsApplied(Math.max(1, Number(e.target.value)))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -174,18 +174,18 @@ export function ProfitCalculator() {
           <div className="space-y-5">
             {/* Gain Pill Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <span className="text-xs text-slate-400 font-extrabold uppercase tracking-wider">
+              <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
                 Expected Listing Return
               </span>
-              <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-black px-3 py-1 rounded-full">
+              <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold px-3 py-1 rounded-full">
                 {formatPercentage(expectedGainPercent)}
               </span>
             </div>
 
             {/* Net Profit Metric */}
             <div>
-              <span className="text-xs text-slate-400 font-bold block mb-1">Estimated Net Profit</span>
-              <div className="text-3xl sm:text-4xl font-black text-emerald-400 flex items-center gap-1.5">
+              <span className="text-xs text-slate-400 font-medium block mb-1">Estimated Net Profit</span>
+              <div className="text-3xl sm:text-4xl font-light sm:font-normal text-emerald-400 flex items-center gap-1.5">
                 <TrendingUp className="w-8 h-8 flex-shrink-0" />
                 <span>{formatINR(estimatedGmpGain)}</span>
               </div>
@@ -194,10 +194,10 @@ export function ProfitCalculator() {
             {/* Total Investment & Expected Listing Price Grid */}
             <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
               <div className="bg-slate-800/80 p-3.5 rounded-2xl border border-slate-700/60">
-                <span className="text-[10px] text-slate-400 uppercase font-extrabold block mb-0.5">
+                <span className="text-[10px] text-slate-400 uppercase font-medium block mb-0.5">
                   Total Investment
                 </span>
-                <span className="font-extrabold text-white text-sm sm:text-base">
+                <span className="font-semibold text-white text-sm sm:text-base">
                   {formatINR(totalInvestment)}
                 </span>
                 <span className="text-[10px] text-slate-400 block mt-0.5 font-medium">
@@ -206,10 +206,10 @@ export function ProfitCalculator() {
               </div>
 
               <div className="bg-slate-800/80 p-3.5 rounded-2xl border border-slate-700/60">
-                <span className="text-[10px] text-slate-400 uppercase font-extrabold block mb-0.5">
+                <span className="text-[10px] text-slate-400 uppercase font-medium block mb-0.5">
                   Exp. Listing Price
                 </span>
-                <span className="font-extrabold text-white text-sm sm:text-base">
+                <span className="font-semibold text-white text-sm sm:text-base">
                   {formatINR(expectedListingPrice)}
                 </span>
                 <span className="text-[10px] text-emerald-400 block mt-0.5 font-semibold">

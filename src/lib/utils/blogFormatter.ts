@@ -41,7 +41,7 @@ export function formatBlogContent(content: string = ""): string {
   // Step 5: Detect numbered steps like "01 Login", "06 Approve the UPI Mandate"
   text = text.replace(
     /^(\d{2})\s+([A-Z].*?)$/gm,
-    '<div class="step-card"><div class="flex items-center gap-2.5 mb-2"><span class="step-badge">$1</span><h3 class="!m-0 text-base font-extrabold text-slate-900 dark:text-white">$2</h3></div>'
+    '<div class="step-card"><div class="flex items-center gap-2.5 mb-2"><span class="step-badge">$1</span><h3 class="!m-0 text-base font-normal sm:font-medium text-slate-900 dark:text-white">$2</h3></div>'
   );
 
   // Step 6: Detect Checkmarks / Status like "✓ Shares Allotted" or "↹ No Allotment"

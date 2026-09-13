@@ -149,7 +149,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 </div>
 
                 {/* Company Name: BIGGER, THINNER, SLEEK! */}
-                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-light sm:font-normal text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
                   {ipo.name}
                 </h1>
 
@@ -226,29 +226,29 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800">
             <div>
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Price Band</span>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white">
+              <span className="text-[10px] font-medium uppercase text-slate-400 block">Price Band</span>
+              <span className="text-base font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA")}
               </span>
             </div>
 
             <div>
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Lot Size</span>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white">
+              <span className="text-[10px] font-medium uppercase text-slate-400 block">Lot Size</span>
+              <span className="text-base font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.lotSize ? `${ipo.lotSize} Shares` : "TBA"}
               </span>
             </div>
 
             <div>
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Issue Size</span>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white">
+              <span className="text-[10px] font-medium uppercase text-slate-400 block">Issue Size</span>
+              <span className="text-base font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.issueDetails?.issueSize || "TBA"}
               </span>
             </div>
 
             <div>
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Face Value</span>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white">
+              <span className="text-[10px] font-medium uppercase text-slate-400 block">Face Value</span>
+              <span className="text-base font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.issueDetails?.faceValue || "₹10 per share"}
               </span>
             </div>
@@ -263,7 +263,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <Layers className="w-5 h-5 text-blue-600" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.name} Market Lot Size & Application Amounts
               </h2>
             </div>
@@ -284,7 +284,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                       <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{lot.application}</td>
                       <td className="py-3 px-4 text-slate-700 dark:text-slate-300">{lot.lots}</td>
                       <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">{lot.shares}</td>
-                      <td className="py-3 px-4 text-right font-extrabold text-blue-600 dark:text-blue-400">{lot.amount}</td>
+                      <td className="py-3 px-4 text-right font-medium sm:font-semibold text-blue-600 dark:text-blue-400">{lot.amount}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -298,7 +298,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <PieChart className="w-5 h-5 text-indigo-600" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.name} IPO Reservation / Investor Portions
               </h2>
             </div>
@@ -317,7 +317,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                     <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                       <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{res.category}</td>
                       <td className="py-3 px-4 text-slate-700 dark:text-slate-300">{res.sharesOffered}</td>
-                      <td className="py-3 px-4 text-right font-extrabold text-purple-600 dark:text-purple-400">{res.percentage}</td>
+                      <td className="py-3 px-4 text-right font-medium sm:font-semibold text-purple-600 dark:text-purple-400">{res.percentage}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -331,7 +331,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.name} Financial Performance (Amount in ₹ Crores)
               </h2>
             </div>
@@ -353,7 +353,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                       <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{fin.period || fin["Period Ended"] || `FY ${idx}`}</td>
                       <td className="py-3 px-4 text-slate-800 dark:text-slate-200 font-semibold">{fin.revenue || fin["Revenue"] || "N/A"}</td>
                       <td className="py-3 px-4 text-slate-600 dark:text-slate-400">{fin.expense || fin["Expense"] || "N/A"}</td>
-                      <td className="py-3 px-4 font-extrabold text-emerald-600 dark:text-emerald-400">{fin.pat || fin["PAT"] || "N/A"}</td>
+                      <td className="py-3 px-4 font-medium sm:font-semibold text-emerald-600 dark:text-emerald-400">{fin.pat || fin["PAT"] || "N/A"}</td>
                       <td className="py-3 px-4 text-right font-semibold text-slate-800 dark:text-slate-200">{fin.assets || fin["Assets"] || "N/A"}</td>
                     </tr>
                   ))}
@@ -368,7 +368,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-amber-500" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                 {ipo.name} Valuation & Key Performance Indicators (KPIs)
               </h2>
             </div>
@@ -380,7 +380,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 return (
                   <div key={idx} className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
                     <span className="text-[10px] font-bold text-slate-400 block uppercase">{formattedKey}</span>
-                    <span className="text-sm font-extrabold text-slate-900 dark:text-white mt-0.5 block">{val}</span>
+                    <span className="text-sm font-medium sm:font-semibold text-slate-900 dark:text-white mt-0.5 block">{val}</span>
                   </div>
                 );
               })}
@@ -393,7 +393,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5 text-rose-500" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                 Objects of the Issue & Utilisation of Proceeds
               </h2>
             </div>
@@ -406,7 +406,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                     <span>{obj.purpose}</span>
                   </div>
                   {obj.amount && obj.amount !== "₹-" && (
-                    <span className="font-extrabold text-blue-600 dark:text-blue-400 whitespace-nowrap">{obj.amount} Cr</span>
+                    <span className="font-medium sm:font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">{obj.amount} Cr</span>
                   )}
                 </li>
               ))}
@@ -422,7 +422,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block">
                   Official Registrar
                 </span>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
                   {ipo.name} Allotment Status & Registrar
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -486,7 +486,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         {/* Search-Optimized FAQ Section for Google Rich Accordions */}
         {resolvedFaqs.length > 0 && (
           <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-blue-600" />
               Frequently Asked Questions on {ipo.name} IPO
             </h2>
@@ -496,7 +496,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                   key={idx}
                   className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5"
                 >
-                  <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                  <h3 className="font-normal sm:font-medium text-xs sm:text-sm text-slate-900 dark:text-white">
                     {faq.question}
                   </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">

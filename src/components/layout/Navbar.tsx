@@ -61,7 +61,7 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
+                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                       isActive
                         ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400 shadow-sm"
                         : "text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -115,7 +115,7 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium ${
                     isActive
                       ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
                       : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"

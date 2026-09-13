@@ -164,7 +164,7 @@ export default async function HomePage() {
               <Flame className="w-5 h-5 fill-amber-500" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-base sm:text-lg font-normal sm:font-medium text-slate-900 dark:text-white">
                 Top Grey Market Premium (GMP) Gainers
               </h2>
               <p className="text-xs text-slate-500">Highest expected listing returns right now</p>
@@ -192,7 +192,7 @@ export default async function HomePage() {
                 <div className="space-y-1">
                   <Link
                     href={`/ipo/${ipo.slug}`}
-                    className="font-semibold text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
+                    className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
                   >
                     {ipo.name}
                   </Link>
@@ -224,7 +224,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
               Current & Upcoming IPOs in India
             </h2>
           </div>
@@ -258,7 +258,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
               Latest IPO Reviews & Educational Guides
             </h2>
           </div>
@@ -282,7 +282,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-10 shadow-card space-y-6 sm:space-y-8">
           <div className="max-w-3xl space-y-2 sm:space-y-3">
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
               Frequently Asked Questions (FAQs) & Market Guide
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
@@ -296,7 +296,7 @@ export default async function HomePage() {
                 key={idx}
                 className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 space-y-2"
               >
-                <h3 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white flex items-start gap-2">
+                <h3 className="font-normal sm:font-medium text-xs sm:text-sm text-slate-900 dark:text-white flex items-start gap-2">
                   <HelpCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>{faq.question}</span>
                 </h3>

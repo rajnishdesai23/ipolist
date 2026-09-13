@@ -17,7 +17,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
           loading="lazy"
           decoding="async"
         />
-        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">
+        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full">
           {post.category}
         </div>
       </div>
@@ -35,7 +35,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
           </div>
 
           <Link href={`/blog/${post.slug}`} className="block">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
+            <h3 className="text-base font-normal sm:font-medium text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
               {post.title}
             </h3>
           </Link>

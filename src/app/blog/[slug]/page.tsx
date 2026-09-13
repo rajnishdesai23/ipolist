@@ -60,11 +60,11 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
 
         {/* Article Header */}
         <div className="space-y-4 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
             {post.category}
           </div>
 
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white font-heading leading-tight">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white font-heading leading-tight">
             {post.title}
           </h1>
 

@@ -202,3 +202,5 @@ export function generateBlogJsonLd(post: BlogPost) {
     },
   };
 }
+
+export const generateArticleJsonLd = generateBlogJsonLd;

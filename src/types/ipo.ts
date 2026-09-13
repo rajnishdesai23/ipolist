@@ -150,6 +150,7 @@ export interface IPO {
   id: string;
   name: string;
   slug: string;
+  symbol?: string;
   type: IPOType; // MAINBOARD or SME
   status: IPOStatus; // LIVE | UPCOMING | CLOSED
   rawStatus?: string;

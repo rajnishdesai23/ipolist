@@ -26,7 +26,7 @@ export default async function BlogPage() {
             <BookOpen className="w-3.5 h-3.5" />
             <span>Editorial Research & Market Insights</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h1 className="text-2xl sm:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white font-heading">
             IPO Reviews, News & Educational Guides
           </h1>
         </div>

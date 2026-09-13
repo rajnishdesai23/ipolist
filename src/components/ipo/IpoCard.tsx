@@ -60,7 +60,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
             <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
             <div className="min-w-0 flex-1">
               <Link href={`/ipo/${ipo.slug}`} className="block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                <h3 className="text-lg sm:text-[20px] font-medium sm:font-semibold text-slate-900 dark:text-white tracking-tight line-clamp-1">
+                <h3 className="text-base sm:text-lg font-normal sm:font-medium text-slate-900 dark:text-white tracking-tight line-clamp-1">
                   {ipo.name}
                 </h3>
               </Link>
@@ -92,39 +92,39 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         {/* Middle Metrics Row: Offer Price, Lot Size, Subscription, Issue Size */}
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 py-3 border-y border-slate-100 dark:border-slate-800/80 my-3">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+            <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block mb-0.5">
               Offer Price
             </span>
-            <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+            <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white">
               {ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA")}
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+            <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block mb-0.5">
               Lot Size
             </span>
-            <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+            <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white">
               {ipo.lotSize || "TBA"}
             </span>
           </div>
 
           {subscriptionText && (
             <div className="hidden sm:block">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+              <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block mb-0.5">
                 Subscription
               </span>
-              <span className="text-xs sm:text-sm font-extrabold text-indigo-600 dark:text-indigo-400">
+              <span className="text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
                 {subscriptionText}
               </span>
             </div>
           )}
 
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+            <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block mb-0.5">
               Issue Size
             </span>
-            <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white block whitespace-nowrap">
+            <span className="text-xs sm:text-sm font-medium text-slate-900 dark:text-white block whitespace-nowrap">
               {formatIssueSize(ipo.issueDetails?.issueSize)}
             </span>
           </div>
@@ -135,16 +135,16 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
       <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Expected Premium / GMP */}
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
             Exp. Premium
           </span>
           <span
-            className={`text-sm font-black ${
+            className={`text-sm font-semibold ${
               isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-slate-600 dark:text-slate-400"
             }`}
           >
             {isPositive ? `+₹${gmpVal}` : "₹0"}{" "}
-            {gmpPct > 0 && <span className="text-xs font-bold">({gmpPct}%)</span>}
+            {gmpPct > 0 && <span className="text-xs font-normal">({gmpPct}%)</span>}
           </span>
         </div>
 
@@ -152,7 +152,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         <div className="flex items-center gap-2">
           <Link
             href={`/ipo/${ipo.slug}`}
-            className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-extrabold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors text-center"
+            className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors text-center"
           >
             View
           </Link>
@@ -162,7 +162,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
               href={portalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-extrabold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
               <span>Check Allotment</span>
               <ExternalLink className="w-3 h-3" />
@@ -172,7 +172,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
               href="https://zerodha.com/open-account"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-extrabold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
               <span>Apply Now</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
               href="https://zerodha.com/open-account"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-extrabold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
               <span>Pre-Apply</span>
               <ArrowRight className="w-3.5 h-3.5" />

@@ -530,12 +530,12 @@ export function IpoTable({
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <Link
                               href={`/ipo/${ipo.slug}`}
-                              className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                              className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
                             >
                               {ipo.name}
                             </Link>
                             <span
-                              className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
+                              className={`text-[9px] font-medium uppercase px-1.5 py-0.5 rounded ${
                                 isSme
                                   ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
                                   : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
@@ -545,7 +545,7 @@ export function IpoTable({
                             </span>
                           </div>
                           {ipo.issueDetails?.listingExchange && (
-                            <span className="text-[10px] text-slate-400 mt-0.5 font-medium">
+                            <span className="text-[10px] text-slate-400 mt-0.5 font-normal">
                               {ipo.issueDetails.listingExchange}
                             </span>
                           )}
@@ -564,13 +564,13 @@ export function IpoTable({
                     </td>
 
                     {/* Price Band */}
-                    <td className="py-4 px-4 font-semibold text-slate-900 dark:text-white whitespace-nowrap">
+                    <td className="py-4 px-4 font-normal text-slate-900 dark:text-white whitespace-nowrap">
                       {ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA")}
                     </td>
 
                     {/* Lot Size */}
                     <td className="py-4 px-4 whitespace-nowrap">
-                      <div className="font-semibold text-slate-900 dark:text-white">
+                      <div className="font-normal text-slate-900 dark:text-white">
                         {ipo.lotSize ? `${ipo.lotSize} shares` : "TBA"}
                       </div>
                     </td>
@@ -578,7 +578,7 @@ export function IpoTable({
                     {/* GMP Today */}
                     <td className="py-4 px-4 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded font-extrabold text-xs ${
+                        className={`inline-flex items-center px-2 py-0.5 rounded font-semibold text-xs ${
                           isPositive
                             ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                             : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
@@ -589,17 +589,17 @@ export function IpoTable({
                     </td>
 
                     {/* Expected Listing */}
-                    <td className="py-4 px-4 font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                    <td className="py-4 px-4 font-medium text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                       {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                     </td>
 
                     {/* Issue Size */}
-                    <td className="py-4 px-4 font-semibold text-slate-900 dark:text-white whitespace-nowrap">
+                    <td className="py-4 px-4 font-normal text-slate-900 dark:text-white whitespace-nowrap">
                       {formatIssueSize(ipo.issueDetails?.issueSize)}
                     </td>
 
                     {/* Dates */}
-                    <td className="py-4 px-4 whitespace-nowrap text-[11px] text-slate-500 dark:text-slate-400">
+                    <td className="py-4 px-4 whitespace-nowrap text-[11px] text-slate-500 dark:text-slate-400 font-normal">
                       {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "Dates TBA")).replace(/[–—]/g, " to ")}
                     </td>
 
@@ -611,7 +611,7 @@ export function IpoTable({
                             href="https://zerodha.com/open-account"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
+                            className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
                             <span>Apply</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -621,7 +621,7 @@ export function IpoTable({
                             href={getRegistrarPortalUrl(ipo.registrar?.name, ipo.registrar?.website)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white font-extrabold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
+                            className="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
                             <span>Allotment</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -629,7 +629,7 @@ export function IpoTable({
                         ) : (
                           <Link
                             href={`/ipo/${ipo.slug}`}
-                            className="inline-flex items-center gap-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-blue-600 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors"
+                            className="inline-flex items-center gap-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-blue-600 font-medium px-3 py-1.5 rounded-lg text-xs transition-colors"
                           >
                             <span>View</span>
                             <ArrowRight className="w-3.5 h-3.5" />
