@@ -279,7 +279,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                     {/* Top Row: Logo, Company Name, Category & Trend */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3 min-w-0">
-                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="md" />
+                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} slug={ipo.slug} size="md" />
                         <div className="min-w-0">
                           <Link href={`/ipo/${ipo.slug}`} className="block hover:text-blue-600 transition-colors">
                             <h3 className="font-normal sm:font-medium text-base sm:text-lg text-slate-900 dark:text-white tracking-tight line-clamp-1">

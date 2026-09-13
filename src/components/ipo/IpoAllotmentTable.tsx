@@ -333,7 +333,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                     >
                       <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
                         <div className="flex items-center gap-2.5">
-                          <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
+                          <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} slug={ipo.slug} size="sm" />
                           <Link href={`/ipo/${ipo.slug}`} className="hover:text-blue-600 line-clamp-1 font-bold">
                             <span>{displayName}</span>
                             <span className="sr-only"> Allotment Info</span>

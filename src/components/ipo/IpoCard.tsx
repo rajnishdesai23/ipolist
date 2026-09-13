@@ -59,7 +59,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         {/* Top Header Row: Logo, Title, Dates & Badges */}
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-start gap-3 min-w-0 flex-1">
-            <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
+            <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} slug={ipo.slug} size="lg" />
             <div className="min-w-0 flex-1">
               <Link href={`/ipo/${ipo.slug}`} className="block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 <span className="text-base sm:text-lg font-normal sm:font-medium text-slate-900 dark:text-white tracking-tight line-clamp-1 block">

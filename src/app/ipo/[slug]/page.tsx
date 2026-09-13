@@ -147,7 +147,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-8">
             {/* Left side: Logo + Bigger Thinner Title + Badges */}
             <div className="flex items-start gap-3.5 sm:gap-5 flex-1 min-w-0">
-              <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" className="mt-1 shrink-0 shadow-sm" />
+              <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} slug={ipo.slug} size="lg" className="mt-1 shrink-0 shadow-sm" />
               <div className="space-y-2 flex-1 min-w-0">
                 {/* Badges row with refined spacing */}
                 <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">

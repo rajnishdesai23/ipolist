@@ -527,7 +527,7 @@ export function IpoTable({
                     {/* Company Column */}
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
-                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
+                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} slug={ipo.slug} size="sm" />
                         <div className="flex flex-col">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <Link

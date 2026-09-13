@@ -36,7 +36,7 @@ export default async function HomePage() {
     type: ipo.type,
     status: ipo.status,
     rawStatus: ipo.rawStatus,
-    logoUrl: ipo.logoUrl && !ipo.logoUrl.startsWith("data:") ? ipo.logoUrl : undefined,
+    logoUrl: ipo.logoUrl ? (ipo.logoUrl.startsWith("http") ? ipo.logoUrl : `/api/ipo-logo/${ipo.slug}`) : undefined,
     dates: ipo.dates ? { open: ipo.dates.open, close: ipo.dates.close, rawRange: ipo.dates.rawRange } : undefined,
     priceBand: ipo.priceBand ? { max: ipo.priceBand.max, min: ipo.priceBand.min, raw: ipo.priceBand.raw } : undefined,
     lotSize: ipo.lotSize,
