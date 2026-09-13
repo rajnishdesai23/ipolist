@@ -134,12 +134,14 @@ export function ProfitCalculator({
           <div className="space-y-1.5">
             <div className="flex justify-between items-center text-xs font-medium text-slate-700 dark:text-slate-300">
               <label>Grey Market Premium (GMP)</label>
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-sm">{formatINR(gmp)}</span>
+              <span className={`font-semibold text-sm ${gmp < 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"}`}>
+                {formatINR(gmp)}
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <input
                 type="range"
-                min="0"
+                min="-1000"
                 max="1500"
                 step="1"
                 value={gmp}
@@ -149,8 +151,10 @@ export function ProfitCalculator({
               <input
                 type="number"
                 value={gmp}
-                onChange={(e) => setGmp(Math.max(0, Number(e.target.value)))}
-                className="w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-emerald-600 dark:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                onChange={(e) => setGmp(Number(e.target.value))}
+                className={`w-24 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold ${
+                  gmp < 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"
+                } focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right`}
               />
             </div>
           </div>

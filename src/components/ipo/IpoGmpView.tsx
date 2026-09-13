@@ -185,6 +185,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                     const gmpVal = ipo.gmp?.value ?? 0;
                     const gmpPct = ipo.gmp?.percentage ?? 0;
                     const isPositive = gmpVal > 0;
+                    const isNegative = gmpVal < 0;
 
                     return (
                       <tr
@@ -212,14 +213,16 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                             className={`inline-flex items-center px-2 py-0.5 rounded font-medium text-xs ${
                               isPositive
                                 ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                : isNegative
+                                ? "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
                                 : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
                             }`}
                           >
-                            {isPositive ? `+₹${gmpVal}` : "₹0"}
+                            {isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}
                           </span>
                         </td>
 
-                        <td className="py-4 px-4 font-medium sm:font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                        <td className={`py-4 px-4 font-medium sm:font-semibold ${isNegative ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"} whitespace-nowrap`}>
                           {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                         </td>
 
@@ -244,9 +247,9 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
         </div>
       )}
 
-      {/* VIEW 2: CARDS VIEW (Visual, Detailed, Informative) */}
+      {/* VIEW 2: CARDS VIEW (Visual, Detailed, Informative - 2 per row for premium look) */}
       {viewMode === "cards" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {filteredIpos.length === 0 ? (
             <div className="col-span-full py-16 text-center text-slate-400 text-xs bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
               No IPOs match your search or filter.
@@ -256,11 +259,12 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
               const gmpVal = ipo.gmp?.value ?? 0;
               const gmpPct = ipo.gmp?.percentage ?? 0;
               const isPositive = gmpVal > 0;
+              const isNegative = gmpVal < 0;
               const rawPrice = ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0);
               const estListing = ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA");
               const dateRange = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "Dates TBA")).replace(/[–—]/g, " to ");
               const lot = ipo.lotSize || 0;
-              const estProfit = (lot > 0 && gmpVal > 0) ? lot * gmpVal : null;
+              const estProfit = lot > 0 ? lot * gmpVal : null;
 
               return (
                 <div
@@ -302,23 +306,37 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                     </div>
 
                     {/* GMP Hero Strip */}
-                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50/70 to-teal-50/70 dark:from-emerald-950/40 dark:to-teal-950/40 border border-emerald-200/80 dark:border-emerald-800/80 flex items-center justify-between">
+                    <div className={`p-3.5 rounded-2xl border flex items-center justify-between ${
+                      isNegative
+                        ? "bg-gradient-to-r from-rose-50/70 to-red-50/70 dark:from-rose-950/40 dark:to-red-950/40 border-rose-200/80 dark:border-rose-800/80"
+                        : "bg-gradient-to-r from-emerald-50/70 to-teal-50/70 dark:from-emerald-950/40 dark:to-teal-950/40 border-emerald-200/80 dark:border-emerald-800/80"
+                    }`}>
                       <div>
-                        <span className="text-[10px] text-emerald-800 dark:text-emerald-300 block font-bold uppercase tracking-wider">
+                        <span className={`text-[10px] block font-bold uppercase tracking-wider ${
+                          isNegative ? "text-rose-800 dark:text-rose-300" : "text-emerald-800 dark:text-emerald-300"
+                        }`}>
                           GMP Today (Live)
                         </span>
-                        <div className="text-2xl font-light sm:font-normal tracking-tight text-emerald-700 dark:text-emerald-300 flex items-baseline gap-1 mt-0.5">
-                          <span>{isPositive ? `+₹${gmpVal}` : "₹0"}</span>
-                          <span className="text-xs font-normal text-emerald-600 dark:text-emerald-400">/share</span>
+                        <div className={`text-2xl font-light sm:font-normal tracking-tight flex items-baseline gap-1 mt-0.5 ${
+                          isNegative ? "text-rose-700 dark:text-rose-300" : "text-emerald-700 dark:text-emerald-300"
+                        }`}>
+                          <span>{isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}</span>
+                          <span className={`text-xs font-normal ${
+                            isNegative ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"
+                          }`}>/share</span>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <span className="text-[10px] text-emerald-800 dark:text-emerald-300 block font-bold uppercase tracking-wider">
-                          Listing Gain
+                        <span className={`text-[10px] block font-bold uppercase tracking-wider ${
+                          isNegative ? "text-rose-800 dark:text-rose-300" : "text-emerald-800 dark:text-emerald-300"
+                        }`}>
+                          {isNegative ? "Listing Discount" : "Listing Gain"}
                         </span>
-                        <span className="text-lg font-normal sm:font-medium text-emerald-700 dark:text-emerald-300 block mt-0.5">
-                          {gmpPct > 0 ? `+${gmpPct}%` : "0%"}
+                        <span className={`text-lg font-normal sm:font-medium block mt-0.5 ${
+                          isNegative ? "text-rose-700 dark:text-rose-300" : "text-emerald-700 dark:text-emerald-300"
+                        }`}>
+                          {gmpPct !== 0 ? (gmpPct > 0 ? `+${gmpPct}%` : `${gmpPct}%`) : "0%"}
                         </span>
                       </div>
                     </div>

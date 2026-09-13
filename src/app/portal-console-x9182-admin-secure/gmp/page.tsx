@@ -9,7 +9,7 @@ import { IpoTableSkeleton } from "@/components/ui/IpoSkeleton";
 export default function AdminGmpPage() {
   const [ipos, setIpos] = useState<IPO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [gmpEdits, setGmpEdits] = useState<Record<string, number>>({});
+  const [gmpEdits, setGmpEdits] = useState<Record<string, number | string>>({});
   const [savedStatus, setSavedStatus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function AdminGmpPage() {
       const data = await res.json();
       if (data.ipos) {
         setIpos(data.ipos);
-        const initialEdits: Record<string, number> = {};
+        const initialEdits: Record<string, number | string> = {};
         data.ipos.forEach((i: IPO) => {
           initialEdits[i.id] = i.gmp?.value ?? 0;
         });
@@ -36,12 +36,13 @@ export default function AdminGmpPage() {
     }
   };
 
-  const handleGmpChange = (id: string, value: number) => {
+  const handleGmpChange = (id: string, value: number | string) => {
     setGmpEdits((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSaveGmp = async (id: string) => {
-    const newValue = gmpEdits[id];
+    const rawVal = gmpEdits[id];
+    const newValue = rawVal === "" || rawVal === "-" ? 0 : Number(rawVal);
     try {
       const res = await fetch("/api/admin/gmp", {
         method: "POST",
@@ -105,9 +106,11 @@ export default function AdminGmpPage() {
               </thead>
               <tbody className="divide-y divide-slate-800 text-slate-300">
                 {ipos.map((ipo) => {
-                  const currentVal = gmpEdits[ipo.id] ?? ipo.gmp?.value ?? 0;
+                  const rawVal = gmpEdits[ipo.id] !== undefined ? gmpEdits[ipo.id] : (ipo.gmp?.value ?? 0);
+                  const currentVal = rawVal === "" || rawVal === "-" ? 0 : Number(rawVal);
                   const priceMax = ipo.priceBand?.max || 100;
-                  const expListing = priceMax + currentVal;
+                  const expListing = Math.max(0, priceMax + currentVal);
+                  const isNegative = currentVal < 0;
                   const isSaved = savedStatus[ipo.id];
 
                   return (
@@ -127,16 +130,29 @@ export default function AdminGmpPage() {
                         <div className="flex items-center gap-2">
                           <span className="text-slate-500">₹</span>
                           <input
-                            type="number"
-                            value={currentVal}
-                            onChange={(e) => handleGmpChange(ipo.id, Number(e.target.value))}
-                            className="w-24 px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-extrabold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            type="text"
+                            inputMode="numeric"
+                            value={rawVal}
+                            onChange={(e) => {
+                              const val = e.target.value.trim();
+                              if (val === "" || val === "-" || /^-?\d*$/.test(val)) {
+                                handleGmpChange(ipo.id, val);
+                              }
+                            }}
+                            className={`w-24 px-2.5 py-1.5 rounded-lg bg-slate-800 border ${
+                              isNegative ? "border-rose-500 text-rose-400" : "border-slate-700 text-white"
+                            } font-extrabold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500`}
                           />
                         </div>
                       </td>
 
-                      <td className="py-4 px-4 font-bold text-emerald-400">
+                      <td className={`py-4 px-4 font-bold ${isNegative ? "text-rose-400" : "text-emerald-400"}`}>
                         {formatINR(expListing)}
+                        {isNegative && (
+                          <span className="block text-[10px] text-rose-400/80 font-normal">
+                            Discount ({currentVal})
+                          </span>
+                        )}
                       </td>
 
                       <td className="py-4 px-4 text-right">

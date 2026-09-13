@@ -296,6 +296,7 @@ export default async function HomePage() {
             const gmpVal = ipo.gmp?.value ?? 0;
             const gmpPct = ipo.gmp?.percentage ?? 0;
             const isPositive = gmpVal > 0;
+            const isNegative = gmpVal < 0;
             return (
               <div
                 key={ipo.id}
@@ -311,7 +312,7 @@ export default async function HomePage() {
                   <div className="text-xs text-slate-500 flex items-center gap-2">
                     <span>Price: {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}</span>
                     <span>•</span>
-                    <span className="text-emerald-600 font-medium">
+                    <span className={isNegative ? "text-rose-600 font-medium" : "text-emerald-600 font-medium"}>
                       Exp: {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                     </span>
                   </div>
@@ -320,11 +321,13 @@ export default async function HomePage() {
                   className={`px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold ${
                     isPositive
                       ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                      : isNegative
+                      ? "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800"
                       : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
                   }`}
                 >
-                  {isPositive ? `+₹${gmpVal}` : "₹0"}
-                  {gmpPct > 0 && <span className="ml-1 text-[10px]">({gmpPct}%)</span>}
+                  {isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}
+                  {gmpPct !== 0 && <span className="ml-1 text-[10px]">({gmpPct > 0 ? `+${gmpPct}` : gmpPct}%)</span>}
                 </div>
               </div>
             );

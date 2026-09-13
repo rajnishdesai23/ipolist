@@ -13,6 +13,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
   const gmpVal = ipo.gmp?.value ?? 0;
   const gmpPct = ipo.gmp?.percentage ?? 0;
   const isPositive = gmpVal > 0;
+  const isNegative = gmpVal < 0;
 
   // Determine status pill badge configuration matching reference image
   const getPillBadge = () => {
@@ -140,11 +141,19 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
           </span>
           <span
             className={`text-sm font-semibold ${
-              isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-slate-600 dark:text-slate-400"
+              isPositive
+                ? "text-emerald-600 dark:text-emerald-400"
+                : isNegative
+                ? "text-rose-600 dark:text-rose-400"
+                : "text-slate-600 dark:text-slate-400"
             }`}
           >
-            {isPositive ? `+₹${gmpVal}` : "₹0"}{" "}
-            {gmpPct > 0 && <span className="text-xs font-normal">({gmpPct}%)</span>}
+            {isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}{" "}
+            {gmpPct !== 0 && (
+              <span className="text-xs font-normal">
+                ({gmpPct > 0 ? `+${gmpPct}` : gmpPct}%)
+              </span>
+            )}
           </span>
         </div>
 

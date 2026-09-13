@@ -2,10 +2,13 @@ import { format, parseISO } from "date-fns";
 
 export function formatINR(value: number | undefined | null, showSymbol = true): string {
   if (value === undefined || value === null || isNaN(value)) return "₹0";
+  const isNegative = value < 0;
+  const absVal = Math.abs(value);
   const formatted = new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 2,
-  }).format(value);
-  return showSymbol ? `₹${formatted}` : formatted;
+  }).format(absVal);
+  if (!showSymbol) return isNegative ? `-${formatted}` : formatted;
+  return isNegative ? `-₹${formatted}` : `₹${formatted}`;
 }
 
 export function formatCrores(value: number | undefined | null): string {

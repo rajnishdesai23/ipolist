@@ -63,12 +63,13 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
   const gmpVal = ipo.gmp?.value ?? 0;
   const gmpPct = ipo.gmp?.percentage ?? 0;
   const isPositive = gmpVal > 0;
+  const isNegative = gmpVal < 0;
 
   // Generate dynamic, search-optimized FAQs if none are attached
   const resolvedFaqs = (ipo.faqs && ipo.faqs.length > 0) ? ipo.faqs : [
     {
       question: `What is ${ipo.name} IPO GMP today?`,
-      answer: `${ipo.name} IPO GMP today is ₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}). The expected listing price is ${ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}.`,
+      answer: `${ipo.name} IPO GMP today is ${isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"} (${gmpPct !== 0 ? (gmpPct > 0 ? `+${gmpPct}%` : `${gmpPct}%`) : "0%"}). The expected listing price is ${ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}.`,
     },
     {
       question: `How can I check ${ipo.name} IPO allotment status?`,
@@ -203,20 +204,28 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 <div className="flex items-baseline gap-2 mt-1 lg:justify-end">
                   <span
                     className={`text-3xl sm:text-4xl font-light sm:font-normal tracking-tight ${
-                      isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-slate-300"
+                      isPositive
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : isNegative
+                        ? "text-rose-600 dark:text-rose-400"
+                        : "text-slate-700 dark:text-slate-300"
                     }`}
                   >
-                    {isPositive ? `+₹${gmpVal}` : "₹0"}
+                    {isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}
                   </span>
-                  {gmpPct > 0 && (
-                    <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 rounded-full border border-emerald-200/60">
-                      +{gmpPct}%
+                  {gmpPct !== 0 && (
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${
+                      isNegative
+                        ? "bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border-rose-200/60"
+                        : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200/60"
+                    }`}>
+                      {gmpPct > 0 ? `+${gmpPct}%` : `${gmpPct}%`}
                     </span>
                   )}
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 lg:text-right font-normal">
-                  Expected Listing:{" "}
-                  <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                  {isNegative ? "Expected Discount: " : "Expected Listing: "}
+                  <strong className={isNegative ? "text-rose-600 dark:text-rose-400 font-semibold" : "text-emerald-600 dark:text-emerald-400 font-semibold"}>
                     {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                   </strong>
                 </p>

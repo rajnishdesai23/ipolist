@@ -37,13 +37,11 @@ export function GmpTrendBadge({
       <div
         className={`inline-flex items-center gap-1 font-bold rounded-lg border shadow-sm ${sizeClasses} ${colorClasses}`}
       >
-        {movement === "UP" ? (
-          <TrendingUp className="w-3.5 h-3.5" />
-        ) : movement === "DOWN" ? (
-          <TrendingDown className="w-3.5 h-3.5" />
-        ) : (
-          <Minus className="w-3.5 h-3.5" />
-        )}
+        {isPositive ? (
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        ) : isNegative ? (
+          <TrendingDown className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+        ) : null}
         <span>{formatINR(value)}</span>
         <span className="opacity-80">({formatPercentage(percentage)})</span>
       </div>

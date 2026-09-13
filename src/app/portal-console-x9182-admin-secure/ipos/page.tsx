@@ -120,8 +120,8 @@ export default function AdminIposListPage() {
                     <td className="py-4 px-4 font-semibold">
                       {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}
                     </td>
-                    <td className="py-4 px-4 font-bold text-emerald-400">
-                      ₹{gmpVal} ({gmpPct > 0 ? `+${gmpPct}%` : "0%"})
+                    <td className={`py-4 px-4 font-bold ${gmpVal > 0 ? "text-emerald-400" : gmpVal < 0 ? "text-rose-400" : "text-slate-400"}`}>
+                      {gmpVal > 0 ? `+₹${gmpVal}` : gmpVal < 0 ? `-₹${Math.abs(gmpVal)}` : "₹0"} ({gmpPct !== 0 ? (gmpPct > 0 ? `+${gmpPct}%` : `${gmpPct}%`) : "0%"})
                     </td>
                     <td className="py-4 px-4 text-slate-400 text-[11px]">
                       {(ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ")}

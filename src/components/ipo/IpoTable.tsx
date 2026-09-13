@@ -516,6 +516,7 @@ export function IpoTable({
                 const isSme = ipo.type === "SME";
                 const gmpVal = ipo.gmp?.value ?? 0;
                 const isPositive = gmpVal > 0;
+                const isNegative = gmpVal < 0;
 
                 return (
                   <tr
@@ -581,15 +582,17 @@ export function IpoTable({
                         className={`inline-flex items-center px-2 py-0.5 rounded font-semibold text-xs ${
                           isPositive
                             ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                            : isNegative
+                            ? "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
                             : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
                         }`}
                       >
-                        {isPositive ? `+₹${gmpVal}` : "₹0"}
+                        {isPositive ? `+₹${gmpVal}` : isNegative ? `-₹${Math.abs(gmpVal)}` : "₹0"}
                       </span>
                     </td>
 
                     {/* Expected Listing */}
-                    <td className="py-4 px-4 font-medium text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                    <td className={`py-4 px-4 font-medium ${isNegative ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"} whitespace-nowrap`}>
                       {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                     </td>
 
