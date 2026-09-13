@@ -35,7 +35,7 @@ export function IpoTable({
   ipos,
   title,
   showAllColumns = true,
-  initialSegment = "ALL",
+  initialSegment = "MAINBOARD",
   initialStatus = "ALL",
 }: IpoTableProps) {
   const [selectedSegment, setSelectedSegment] = useState<"ALL" | "MAINBOARD" | "SME">(initialSegment);
@@ -205,21 +205,11 @@ export function IpoTable({
       <div className="flex-1 min-w-0 space-y-4">
         {/* Top Controls Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-sm">
-          {/* Mainboard vs SME Segment Switcher */}
+          {/* Mainboard, All Market & SME Segment Switcher */}
           <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto scrollbar-none w-full sm:w-auto">
             <button
-              onClick={() => setSelectedSegment("ALL")}
-              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-                selectedSegment === "ALL"
-                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-              }`}
-            >
-              All Market ({ipos.length})
-            </button>
-            <button
               onClick={() => setSelectedSegment("MAINBOARD")}
-              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
                 selectedSegment === "MAINBOARD"
                   ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
@@ -228,8 +218,18 @@ export function IpoTable({
               Mainboard ({ipos.filter((i) => i.type === "MAINBOARD").length})
             </button>
             <button
+              onClick={() => setSelectedSegment("ALL")}
+              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
+                selectedSegment === "ALL"
+                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+              }`}
+            >
+              All Market ({ipos.length})
+            </button>
+            <button
               onClick={() => setSelectedSegment("SME")}
-              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 ease-in-out ${
                 selectedSegment === "SME"
                   ? "bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
@@ -248,7 +248,7 @@ export function IpoTable({
                 placeholder="Search by company..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
               />
               {searchQuery && (
                 <button
@@ -264,7 +264,7 @@ export function IpoTable({
             <div className="hidden sm:flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
               <button
                 onClick={() => setViewMode("table")}
-                className={`p-1.5 rounded-lg transition-all ${
+                className={`p-1.5 rounded-lg transition-all duration-200 ${
                   viewMode === "table"
                     ? "bg-white dark:bg-slate-900 text-indigo-600 shadow-sm"
                     : "text-slate-500 hover:text-slate-900"
@@ -275,7 +275,7 @@ export function IpoTable({
               </button>
               <button
                 onClick={() => setViewMode("cards")}
-                className={`p-1.5 rounded-lg transition-all ${
+                className={`p-1.5 rounded-lg transition-all duration-200 ${
                   viewMode === "cards"
                     ? "bg-white dark:bg-slate-900 text-indigo-600 shadow-sm"
                     : "text-slate-500 hover:text-slate-900"
@@ -290,14 +290,17 @@ export function IpoTable({
 
       {/* Empty State */}
       {filtered.length === 0 && (
-        <div className="py-12 text-center text-slate-400 text-xs bg-slate-50/50 dark:bg-slate-800/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+        <div className="py-12 text-center text-slate-400 text-xs bg-slate-50/50 dark:bg-slate-800/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 animate-fadeIn">
           No IPOs found for the selected filters. Try switching category or clearing your search.
         </div>
       )}
 
       {/* Card Grid View (Matching reference design format) */}
       {filtered.length > 0 && (
-        <div className={`${viewMode === "cards" ? "block" : "block md:hidden"}`}>
+        <div
+          key={`${selectedSegment}-${selectedStatus}-${searchQuery}-${viewMode}`}
+          className={`animate-fadeIn ${viewMode === "cards" ? "block" : "block md:hidden"}`}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filtered.map((ipo) => (
               <IpoCard key={ipo.id} ipo={ipo} />
