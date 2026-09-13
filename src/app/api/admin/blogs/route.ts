@@ -1,20 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllBlogs, saveBlog } from "@/lib/data/blogRepository";
-import { MOCK_BLOGS } from "@/lib/data/mockBlogs";
+import { getAllBlogsAdmin, saveBlog, deleteBlog } from "@/lib/data/blogRepository";
 import { BlogPost } from "@/types/blog";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    let blogs = await getAllBlogs();
-    if (blogs.length === 0) {
-      // Seed mock blogs if empty
-      for (const b of MOCK_BLOGS) {
-        await saveBlog(b);
-      }
-      blogs = await getAllBlogs();
-    }
+    const blogs = await getAllBlogsAdmin();
     return NextResponse.json({ success: true, blogs });
   } catch (error: any) {
     return NextResponse.json(
@@ -41,5 +33,19 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || "Failed to save blog" },
       { status: 500 }
     );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Missing blog ID or slug" }, { status: 400 });
+    }
+    const deleted = await deleteBlog(id);
+    return NextResponse.json({ success: deleted });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
