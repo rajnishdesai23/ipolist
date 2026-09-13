@@ -120,11 +120,11 @@ export default async function HomePage() {
 
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
-                  <Calendar className="w-5 h-5 fill-purple-500/20" />
+                  <Calculator className="w-5 h-5 fill-purple-500/20" />
                 </div>
                 <div>
-                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">IPO</span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Calendar</span>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Financial</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Calculators</span>
                 </div>
               </div>
 

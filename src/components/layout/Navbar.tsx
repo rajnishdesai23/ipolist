@@ -34,7 +34,6 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
     { name: "Live GMP", href: "/ipo-gmp", icon: TrendingUp, highlight: true },
     { name: "Allotment Status", href: "/ipo-allotment", icon: CheckCircle },
     { name: "SME IPOs", href: "/ipo/sme", icon: Sparkles },
-    { name: "Calendar", href: "/ipo-calendar", icon: Calendar },
     { name: "Calculators", href: "/tools", icon: Calculator },
     { name: "Blog & Guides", href: "/blog", icon: BookOpen },
   ];

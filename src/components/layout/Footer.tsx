@@ -96,11 +96,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/ipo-calendar" className="hover:text-blue-400 transition-colors">
-                  IPO Calendar Timeline
-                </Link>
-              </li>
-              <li>
                 <Link href="/blog" className="hover:text-blue-400 transition-colors">
                   IPO Reviews & Guides
                 </Link>
