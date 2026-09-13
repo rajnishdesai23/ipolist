@@ -154,6 +154,7 @@ export interface IPO {
   status: IPOStatus; // LIVE | UPCOMING | CLOSED
   rawStatus?: string;
   detailUrl?: string;
+  logoUrl?: string;
 
   // Price & Lot
   priceBand?: PriceBand;

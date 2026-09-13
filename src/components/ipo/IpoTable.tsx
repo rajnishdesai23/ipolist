@@ -15,6 +15,7 @@ import {
 import { IPO, IPOStatus } from "@/types/ipo";
 import { formatINR } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig, sortIposByStatusPriority } from "@/lib/utils/status";
+import { IpoLogo } from "@/components/ui/IpoLogo";
 
 interface IpoTableProps {
   ipos: IPO[];
@@ -235,29 +236,32 @@ export function IpoTable({
               >
                 {/* Header with Title and Badges */}
                 <div className="flex items-start justify-between gap-2">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span
-                        className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded ${
-                          isSme
-                            ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
-                            : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                        }`}
-                      >
-                        {ipo.type}
-                      </span>
-                      {ipo.issueDetails?.listingExchange && (
-                        <span className="text-[10px] text-slate-400 font-medium">
-                          {ipo.issueDetails.listingExchange}
+                  <div className="flex items-center gap-2">
+                    <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
+                    <div>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span
+                          className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded ${
+                            isSme
+                              ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+                              : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                          }`}
+                        >
+                          {ipo.type}
                         </span>
-                      )}
+                        {ipo.issueDetails?.listingExchange && (
+                          <span className="text-[10px] text-slate-400 font-medium">
+                            {ipo.issueDetails.listingExchange}
+                          </span>
+                        )}
+                      </div>
+                      <Link
+                        href={`/ipo/${ipo.slug}`}
+                        className="font-bold text-sm text-slate-900 dark:text-white hover:text-blue-600 block line-clamp-1 mt-0.5"
+                      >
+                        {ipo.name}
+                      </Link>
                     </div>
-                    <Link
-                      href={`/ipo/${ipo.slug}`}
-                      className="font-bold text-sm text-slate-900 dark:text-white hover:text-blue-600 block line-clamp-1"
-                    >
-                      {ipo.name}
-                    </Link>
                   </div>
 
                   <div
@@ -390,29 +394,32 @@ export function IpoTable({
                   >
                     {/* Company Column */}
                     <td className="py-4 px-4">
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <Link
-                            href={`/ipo/${ipo.slug}`}
-                            className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
-                          >
-                            {ipo.name}
-                          </Link>
-                          <span
-                            className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-                              isSme
-                                ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
-                                : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                            }`}
-                          >
-                            {ipo.type}
-                          </span>
+                      <div className="flex items-center gap-3">
+                        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <Link
+                              href={`/ipo/${ipo.slug}`}
+                              className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                            >
+                              {ipo.name}
+                            </Link>
+                            <span
+                              className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
+                                isSme
+                                  ? "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+                                  : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                              }`}
+                            >
+                              {ipo.type}
+                            </span>
+                          </div>
+                          {ipo.issueDetails?.listingExchange && (
+                            <span className="text-[10px] text-slate-400 mt-0.5 font-medium">
+                              {ipo.issueDetails.listingExchange}
+                            </span>
+                          )}
                         </div>
-                        {ipo.issueDetails?.listingExchange && (
-                          <span className="text-[10px] text-slate-400 mt-0.5 font-medium">
-                            {ipo.issueDetails.listingExchange}
-                          </span>
-                        )}
                       </div>
                     </td>
 

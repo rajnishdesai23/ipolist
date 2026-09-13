@@ -31,6 +31,8 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { formatINR } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig } from "@/lib/utils/status";
 
+import { IpoLogo } from "@/components/ui/IpoLogo";
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
   if (!ipo) return { title: "IPO Details" };
@@ -72,39 +74,42 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         {/* Hero Header Card */}
         <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span
-                  className={`text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${
-                    isSme
-                      ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300"
-                      : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300"
-                  }`}
-                >
-                  {ipo.type} IPO
-                </span>
-                {ipo.issueDetails?.listingExchange && (
-                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
-                    Listing: {ipo.issueDetails.listingExchange}
+            <div className="flex items-start gap-4">
+              <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="xl" className="mt-1" />
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span
+                    className={`text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${
+                      isSme
+                        ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300"
+                        : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300"
+                    }`}
+                  >
+                    {ipo.type} IPO
                   </span>
-                )}
-                <div
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusConfig.className}`}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${statusConfig.dotColor}`} />
-                  <span>{statusConfig.label}</span>
+                  {ipo.issueDetails?.listingExchange && (
+                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                      Listing: {ipo.issueDetails.listingExchange}
+                    </span>
+                  )}
+                  <div
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusConfig.className}`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${statusConfig.dotColor}`} />
+                    <span>{statusConfig.label}</span>
+                  </div>
                 </div>
+
+                <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+                  {ipo.name}
+                </h1>
+
+                {ipo.issueDetails?.issueType && (
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Issue Type: <strong className="text-slate-700 dark:text-slate-300">{ipo.issueDetails.issueType}</strong>
+                  </p>
+                )}
               </div>
-
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
-                {ipo.name}
-              </h1>
-
-              {ipo.issueDetails?.issueType && (
-                <p className="text-xs sm:text-sm text-slate-500">
-                  Issue Type: <strong className="text-slate-700 dark:text-slate-300">{ipo.issueDetails.issueType}</strong>
-                </p>
-              )}
             </div>
 
             {/* Live GMP Display */}

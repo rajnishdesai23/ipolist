@@ -7,12 +7,15 @@ import { ArrowLeft, Save } from "lucide-react";
 import { IPO, IPOType, IPOStatus } from "@/types/ipo";
 import { createSlug } from "@/lib/scrapers/normalizer";
 
+import { ImageUploader } from "@/components/ui/ImageUploader";
+
 export default function AdminNewIpoPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [type, setType] = useState<IPOType>("MAINBOARD");
   const [status, setStatus] = useState<IPOStatus>("UPCOMING");
+  const [logoUrl, setLogoUrl] = useState("");
   const [priceMin, setPriceMin] = useState(100);
   const [priceMax, setPriceMax] = useState(108);
   const [lotSize, setLotSize] = useState(130);
@@ -44,6 +47,7 @@ export default function AdminNewIpoPage() {
       slug: slug || `ipo-${Date.now()}`,
       type,
       status,
+      logoUrl: logoUrl || undefined,
       priceBand: { min: priceMin, max: priceMax },
       lotSize,
       minimumInvestment: minInvestment,
@@ -158,6 +162,15 @@ export default function AdminNewIpoPage() {
                 <option value="CLOSED">CLOSED</option>
               </select>
             </div>
+          </div>
+
+          <div className="pt-2">
+            <ImageUploader
+              label="Company Logo (Firebase Storage / Base64 Fallback)"
+              value={logoUrl}
+              onChange={(url) => setLogoUrl(url)}
+              folder="logos"
+            />
           </div>
         </div>
 

@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ArrowLeft, Save, ExternalLink } from "lucide-react";
 import { IPO, IPOStatus } from "@/types/ipo";
 
+import { ImageUploader } from "@/components/ui/ImageUploader";
+import { IpoLogo } from "@/components/ui/IpoLogo";
+
 export default function AdminEditIpoPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [ipo, setIpo] = useState<IPO | null>(null);
@@ -74,13 +77,16 @@ export default function AdminEditIpoPage({ params }: { params: { id: string } })
         </Link>
       </div>
 
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-heading">
-          Edit {ipo.name}
-        </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Update price band, live GMP, and dates.
-        </p>
+      <div className="flex items-center gap-4">
+        <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="lg" />
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-heading">
+            Edit {ipo.name}
+          </h1>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Update company details, logo, live GMP, and dates.
+          </p>
+        </div>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
@@ -109,6 +115,15 @@ export default function AdminEditIpoPage({ params }: { params: { id: string } })
                 <option value="CLOSED">CLOSED</option>
               </select>
             </div>
+          </div>
+
+          <div className="pt-2">
+            <ImageUploader
+              label="Company Logo (Firebase Storage / Base64 Fallback)"
+              value={ipo.logoUrl || ""}
+              onChange={(url) => setIpo({ ...ipo, logoUrl: url })}
+              folder="logos"
+            />
           </div>
         </div>
 

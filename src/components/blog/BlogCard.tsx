@@ -11,10 +11,11 @@ export function BlogCard({ post }: { post: BlogPost }) {
       {/* Thumbnail */}
       <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
         <img
-          src={post.coverImage}
+          src={post.coverImage || "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"}
           alt={post.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">
           {post.category}

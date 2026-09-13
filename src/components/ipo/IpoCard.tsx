@@ -11,6 +11,8 @@ import { IPO } from "@/types/ipo";
 import { formatINR } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig } from "@/lib/utils/status";
 
+import { IpoLogo } from "@/components/ui/IpoLogo";
+
 export function IpoCard({ ipo }: { ipo: IPO }) {
   const statusConfig = getStatusBadgeConfig(ipo.status);
   const isSme = ipo.type === "SME";
@@ -48,17 +50,22 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
           </div>
         </div>
 
-        {/* Company Title */}
-        <Link href={`/ipo/${ipo.slug}`} className="block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight line-clamp-1">
-            {ipo.name}
-          </h3>
-        </Link>
-        {ipo.issueDetails?.issueType && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
-            {ipo.issueDetails.issueType}
-          </p>
-        )}
+        {/* Company Title & Logo */}
+        <div className="flex items-start gap-3 my-1">
+          <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="md" />
+          <div className="min-w-0 flex-1">
+            <Link href={`/ipo/${ipo.slug}`} className="block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight line-clamp-1">
+                {ipo.name}
+              </h3>
+            </Link>
+            {ipo.issueDetails?.issueType && (
+              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                {ipo.issueDetails.issueType}
+              </p>
+            )}
+          </div>
+        </div>
 
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-2 gap-3 my-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
