@@ -8,6 +8,7 @@ import { IPO, IPOStatus } from "@/types/ipo";
 
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { IpoLogo } from "@/components/ui/IpoLogo";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 export default function AdminEditIpoPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -54,7 +55,13 @@ export default function AdminEditIpoPage({ params }: { params: { id: string } })
     }
   };
 
-  if (loading) return <div className="p-8 text-white text-xs">Loading IPO data...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <PageLoader message="Loading IPO Details..." subMessage="Fetching company information, live GMP, and dates" />
+      </div>
+    );
+  }
   if (!ipo) return <div className="p-8 text-white text-xs">IPO not found.</div>;
 
   return (

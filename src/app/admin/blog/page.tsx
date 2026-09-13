@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BookOpen, PlusCircle, Edit3, Trash2, ExternalLink, X, Save, Image as ImageIcon } from "lucide-react";
 import { BlogPost, BlogCategory } from "@/types/blog";
 import { ImageUploader } from "@/components/ui/ImageUploader";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { formatDate } from "@/lib/utils/formatters";
 
 export default function AdminBlogPage() {
@@ -145,7 +146,9 @@ export default function AdminBlogPage() {
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-xs text-slate-400">Loading articles...</div>
+          <div className="py-12 flex justify-center">
+            <PageLoader message="Loading Blog Articles..." subMessage="Fetching editorial guides and fundamental reviews" />
+          </div>
         ) : (
           <div className="divide-y divide-slate-800">
             {blogs.map((post) => (

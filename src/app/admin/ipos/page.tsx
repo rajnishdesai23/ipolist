@@ -7,6 +7,7 @@ import { IPO } from "@/types/ipo";
 import { formatINR } from "@/lib/utils/formatters";
 
 import { IpoLogo } from "@/components/ui/IpoLogo";
+import { IpoTableSkeleton } from "@/components/ui/IpoSkeleton";
 
 export default function AdminIposListPage() {
   const [ipos, setIpos] = useState<IPO[]>([]);
@@ -72,7 +73,10 @@ export default function AdminIposListPage() {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      {loading ? (
+        <IpoTableSkeleton rows={8} />
+      ) : (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
@@ -156,6 +160,7 @@ export default function AdminIposListPage() {
           </table>
         </div>
       </div>
+      )}
     </div>
   );
 }

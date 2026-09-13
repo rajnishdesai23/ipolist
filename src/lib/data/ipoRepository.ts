@@ -13,7 +13,7 @@ export async function getAllIpos(options?: IPOFilterOptions): Promise<IPO[]> {
     try {
       const snapshot = await getDocs(collection(db, "ipos"));
       if (!snapshot.empty) {
-        inMemoryIpos = snapshot.docs.map((d) => d.data() as IPO);
+        inMemoryIpos = snapshot.docs.map((d: any) => d.data() as IPO);
       }
     } catch (e: any) {
       // Permission might be pending in Firebase Console rules
