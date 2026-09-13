@@ -67,41 +67,89 @@ export default async function HomePage() {
         />
       )}
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-900 via-slate-900 to-slate-950 text-white py-10 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(37,99,235,0.25),rgba(255,255,255,0))]" />
-        
-        <div className="relative max-w-5xl mx-auto text-center space-y-4 sm:space-y-6">
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 text-blue-300 px-3.5 py-1 rounded-full text-xs font-bold tracking-wide backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>India&apos;s #1 Real-Time IPO & GMP Intelligence Hub</span>
+      {/* Premium Modern Hero Section (Without metric number boxes) */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-12 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+        {/* Glow & Mesh background graphics */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-600/20 via-indigo-600/10 to-transparent pointer-events-none" />
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="relative max-w-5xl mx-auto text-center space-y-6">
+          {/* Top Pill Badge */}
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/30 text-blue-300 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-inner backdrop-blur-md">
+            <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+            <span>India&apos;s Most Trusted IPO & GMP Intelligence Platform</span>
           </div>
 
-          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-heading leading-tight">
-            Track Live <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">IPO GMP</span>, Allotment & Dates
+          {/* Main Title */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-heading leading-tight sm:leading-none">
+            Track Real-Time <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">IPO GMP</span> & Instant Allotment
           </h1>
 
-          <p className="text-xs sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Real-time Grey Market Premium updates, market lot sizes, instant registrar allotment status, and institutional reviews for Mainboard & SME IPOs.
+          {/* Subtitle */}
+          <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+            Instant Grey Market Premium updates, market lot details, subscription status, and direct registrar allotment checking for Mainboard & SME IPOs.
           </p>
 
-          {/* Quick Metrics Ticker Counter */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 max-w-3xl mx-auto pt-2 sm:pt-4">
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 p-3 sm:p-3.5 rounded-2xl">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Open IPOs</span>
-              <span className="text-xl sm:text-2xl font-extrabold text-emerald-400">{liveIpos.length} Active</span>
+          {/* Action CTAs & Quick Feature Shortcuts (Without Numbers) */}
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto">
+            <Link
+              href="/ipo-gmp"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-6 py-3.5 rounded-2xl text-sm transition-all shadow-lg shadow-blue-600/30 hover:scale-[1.02]"
+            >
+              <Flame className="w-4 h-4 text-amber-300 fill-amber-300" />
+              <span>Explore Live GMP Board</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <Link
+              href="/ipo-allotment"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-extrabold px-6 py-3.5 rounded-2xl text-sm transition-all shadow-md hover:scale-[1.02]"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>Check Allotment Status</span>
+            </Link>
+          </div>
+
+          {/* Value Proposition Feature Cards (No raw numbers) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 max-w-4xl mx-auto">
+            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <Flame className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="font-extrabold text-xs text-white block">Live GMP Updates</span>
+                <span className="text-[10px] text-slate-400 font-medium">Daily listing gain trends</span>
+              </div>
             </div>
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 p-3 sm:p-3.5 rounded-2xl">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Upcoming</span>
-              <span className="text-xl sm:text-2xl font-extrabold text-blue-400">{upcomingIpos.length} Pipeline</span>
+
+            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="font-extrabold text-xs text-white block">Allotment Verification</span>
+                <span className="text-[10px] text-slate-400 font-medium">Official registrar links</span>
+              </div>
             </div>
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 p-3 sm:p-3.5 rounded-2xl">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Mainboard</span>
-              <span className="text-xl sm:text-2xl font-extrabold text-purple-400">{mainboardIpos.length} Issues</span>
+
+            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <Layers className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="font-extrabold text-xs text-white block">Mainboard & SME</span>
+                <span className="text-[10px] text-slate-400 font-medium">Complete IPO directory</span>
+              </div>
             </div>
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 p-3 sm:p-3.5 rounded-2xl">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">SME Segment</span>
-              <span className="text-xl sm:text-2xl font-extrabold text-amber-400">{smeIpos.length} Issues</span>
+
+            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="font-extrabold text-xs text-white block">Key Dates Tracker</span>
+                <span className="text-[10px] text-slate-400 font-medium">Open, Close & Listing</span>
+              </div>
             </div>
           </div>
         </div>
