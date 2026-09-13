@@ -112,7 +112,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
 
       <Breadcrumb
         items={[
-          { name: "All IPOs", url: "/ipo" },
+          { name: "IPO Directory", url: "/ipo" },
           { name: ipo.name, url: `/ipo/${ipo.slug}` },
         ]}
       />
@@ -585,7 +585,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm self-start sm:self-auto"
                 >
-                  <span>Check Allotment Status</span>
+                  <span>Open Official Registrar Portal</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               )}

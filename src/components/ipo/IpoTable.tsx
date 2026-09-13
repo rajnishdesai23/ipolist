@@ -17,7 +17,7 @@ import {
   Flame,
 } from "lucide-react";
 import { IPO, IPOStatus } from "@/types/ipo";
-import { formatINR, formatIssueSize } from "@/lib/utils/formatters";
+import { formatINR, formatIssueSize, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 import { getStatusBadgeConfig, sortIposByStatusPriority } from "@/lib/utils/status";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
@@ -512,6 +512,7 @@ export function IpoTable({
 
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
               {filtered.map((ipo) => {
+                const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
                 const statusConfig = getStatusBadgeConfig(ipo.status);
                 const isSme = ipo.type === "SME";
                 const gmpVal = ipo.gmp?.value ?? 0;
@@ -533,7 +534,8 @@ export function IpoTable({
                               href={`/ipo/${ipo.slug}`}
                               className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
                             >
-                              {ipo.slug === "nse-ipo" ? "NSE IPO" : ipo.name}
+                              <span>{displayName}</span>
+                              <span className="sr-only"> Overview</span>
                             </Link>
                             <span
                               className={`text-[9px] font-medium uppercase px-1.5 py-0.5 rounded ${
@@ -612,28 +614,28 @@ export function IpoTable({
                         {ipo.status === "LIVE" ? (
                           <Link
                             href={`/ipo/${ipo.slug}#overview`}
-                            aria-label={`Apply for ${ipo.name} IPO`}
+                            aria-label={`Apply for ${displayName} IPO`}
                             className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
-                            <span className="sr-only">{ipo.name} </span><span>Apply</span>
+                            <span className="sr-only">Bid {displayName} </span><span>Apply</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         ) : ipo.allotment?.status === "OUT" || ipo.status === "CLOSED" ? (
                           <Link
                             href={`/ipo/${ipo.slug}#allotment`}
-                            aria-label={`Check ${ipo.name} Allotment Status`}
+                            aria-label={`Check ${displayName} Allotment Status`}
                             className="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                           >
-                            <span className="sr-only">{ipo.name} </span><span>Allotment</span>
+                            <span className="sr-only">Status {displayName} </span><span>Allotment</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         ) : (
                           <Link
                             href={`/ipo/${ipo.slug}`}
-                            aria-label={`View ${ipo.name} Details`}
+                            aria-label={`View ${displayName} Details`}
                             className="inline-flex items-center gap-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-blue-600 font-medium px-3 py-1.5 rounded-lg text-xs transition-colors"
                           >
-                            <span className="sr-only">{ipo.name} </span><span>View</span>
+                            <span className="sr-only">Inspect {displayName} </span><span>View</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         )}

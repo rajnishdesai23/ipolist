@@ -4,11 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { IPO } from "@/types/ipo";
-import { formatINR, formatIssueSize } from "@/lib/utils/formatters";
+import { formatINR, formatIssueSize, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
 
 export function IpoCard({ ipo }: { ipo: IPO }) {
+  const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
   const isSme = ipo.type === "SME";
   const gmpVal = ipo.gmp?.value ?? 0;
   const gmpPct = ipo.gmp?.percentage ?? 0;
@@ -62,7 +63,7 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
             <div className="min-w-0 flex-1">
               <Link href={`/ipo/${ipo.slug}`} className="block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 <span className="text-base sm:text-lg font-normal sm:font-medium text-slate-900 dark:text-white tracking-tight line-clamp-1 block">
-                  {ipo.slug === "nse-ipo" ? "NSE IPO" : ipo.name}
+                  {displayName}
                 </span>
               </Link>
               <span className="text-xs font-normal text-slate-400 dark:text-slate-500 block truncate mt-0.5">
@@ -161,37 +162,37 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
         <div className="flex items-center gap-2">
           <Link
             href={`/ipo/${ipo.slug}`}
-            aria-label={`View ${ipo.name} Details`}
+            aria-label={`View ${displayName} Details`}
             className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors text-center"
           >
-            <span className="sr-only">{ipo.name} </span>Details
+            <span className="sr-only">{displayName} IPO </span>Details
           </Link>
 
           {ipo.allotment?.status === "OUT" || ipo.status === "CLOSED" ? (
             <Link
               href={`/ipo/${ipo.slug}#allotment`}
-              aria-label={`Check ${ipo.name} Allotment Status`}
+              aria-label={`Check ${displayName} Allotment Status`}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
-              <span className="sr-only">{ipo.name} </span><span>Allotment</span>
+              <span className="sr-only">Check {displayName} </span><span>Allotment</span>
               <ExternalLink className="w-3 h-3" />
             </Link>
           ) : ipo.status === "LIVE" ? (
             <Link
               href={`/ipo/${ipo.slug}#overview`}
-              aria-label={`Apply for ${ipo.name} IPO`}
+              aria-label={`Apply for ${displayName} IPO`}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
-              <span className="sr-only">{ipo.name} </span><span>Apply Now</span>
+              <span className="sr-only">Apply for {displayName} </span><span>Apply Now</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           ) : (
             <Link
               href={`/ipo/${ipo.slug}#overview`}
-              aria-label={`Pre-Apply for ${ipo.name} IPO`}
+              aria-label={`Pre-Apply for ${displayName} IPO`}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md text-center"
             >
-              <span className="sr-only">{ipo.name} </span><span>Pre-Apply</span>
+              <span className="sr-only">Pre-Apply for {displayName} </span><span>Pre-Apply</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           )}

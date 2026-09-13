@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { LayoutGrid, TableProperties, ArrowRight, Download, Search, TrendingUp, X } from "lucide-react";
 import { IPO } from "@/types/ipo";
-import { formatINR } from "@/lib/utils/formatters";
+import { formatINR, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 import { IpoLogo } from "@/components/ui/IpoLogo";
 import { GmpTrendBadge } from "@/components/ipo/GmpTrendBadge";
 
@@ -182,6 +182,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                   </tr>
                 ) : (
                   filteredIpos.map((ipo) => {
+                    const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
                     const gmpVal = ipo.gmp?.value ?? 0;
                     const gmpPct = ipo.gmp?.percentage ?? 0;
                     const isPositive = gmpVal > 0;
@@ -197,7 +198,8 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                             href={`/ipo/${ipo.slug}`}
                             className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block"
                           >
-                            {ipo.name}
+                            <span>{displayName}</span>
+                            <span className="sr-only"> GMP Summary</span>
                           </Link>
                           <span className="text-[10px] text-slate-400 font-normal">
                             {ipo.type} {ipo.issueDetails?.listingExchange ? `• ${ipo.issueDetails.listingExchange}` : ""}
@@ -256,15 +258,17 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
             </div>
           ) : (
             filteredIpos.map((ipo) => {
+              const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
               const gmpVal = ipo.gmp?.value ?? 0;
               const gmpPct = ipo.gmp?.percentage ?? 0;
               const isPositive = gmpVal > 0;
               const isNegative = gmpVal < 0;
-              const rawPrice = ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0);
-              const estListing = ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA");
-              const dateRange = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "Dates TBA")).replace(/[–—]/g, " to ");
               const lot = ipo.lotSize || 0;
-              const estProfit = lot > 0 ? lot * gmpVal : null;
+              const priceMax = ipo.priceBand?.max || 0;
+              const estListing = ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA");
+              const estProfit = (gmpVal > 0 && lot > 0) ? gmpVal * lot : null;
+              const rawPrice = ipo.priceBand?.raw || (priceMax > 0 ? formatINR(priceMax) : "TBA");
+              const dateRange = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ");
 
               return (
                 <div
@@ -279,7 +283,7 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                         <div className="min-w-0">
                           <Link href={`/ipo/${ipo.slug}`} className="block hover:text-blue-600 transition-colors">
                             <h3 className="font-normal sm:font-medium text-base sm:text-lg text-slate-900 dark:text-white tracking-tight line-clamp-1">
-                              {ipo.name}
+                              <span>{displayName}</span>
                             </h3>
                           </Link>
                           <div className="flex items-center gap-1.5 mt-0.5">
@@ -392,8 +396,10 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
                     </div>
                     <Link
                       href={`/ipo/${ipo.slug}`}
+                      aria-label={`View ${displayName} Full Details & Analysis`}
                       className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 group-hover:translate-x-0.5 transition-transform"
                     >
+                      <span className="sr-only">{displayName} </span>
                       <span>Full Details & Analysis</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>

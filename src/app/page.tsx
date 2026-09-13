@@ -21,7 +21,7 @@ import { IpoTable } from "@/components/ipo/IpoTable";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { ProfitCalculator } from "@/components/tools/ProfitCalculator";
 import { generateFaqJsonLd } from "@/lib/seo/schema";
-import { formatINR } from "@/lib/utils/formatters";
+import { formatINR, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 import { IPO } from "@/types/ipo";
 
 export const revalidate = 60;
@@ -197,7 +197,7 @@ export default async function HomePage() {
                 href="/ipo"
                 className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-normal px-7 py-3 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.01]"
               >
-                <span>Explore IPOs</span>
+                <span>Explore All Indian IPOs</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -205,7 +205,7 @@ export default async function HomePage() {
                 href="/ipo-allotment"
                 className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-normal px-7 py-3 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.01]"
               >
-                <span>Check Allotment</span>
+                <span>Check Allotment Records</span>
               </Link>
             </div>
 
@@ -293,6 +293,7 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {topGmpIpos.slice(0, 3).map((ipo) => {
+            const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
             const gmpVal = ipo.gmp?.value ?? 0;
             const gmpPct = ipo.gmp?.percentage ?? 0;
             const isPositive = gmpVal > 0;
@@ -307,7 +308,7 @@ export default async function HomePage() {
                     href={`/ipo/${ipo.slug}`}
                     className="font-normal sm:font-medium text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
                   >
-                    <span>{ipo.name} GMP</span>
+                    <span>{displayName} Live GMP</span>
                   </Link>
                   <div className="text-xs text-slate-500 flex items-center gap-2">
                     <span>Price: {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}</span>
@@ -349,13 +350,13 @@ export default async function HomePage() {
               href="/ipo-gmp"
               className="px-3 py-1.5 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors"
             >
-              Live GMP Board
+              <span>View Live GMP Tracker</span>
             </Link>
             <Link
               href="/ipo-allotment"
               className="px-3 py-1.5 rounded-xl text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors"
             >
-              Allotment Checker
+              <span>Allotment Verification Tool</span>
             </Link>
           </div>
         </div>

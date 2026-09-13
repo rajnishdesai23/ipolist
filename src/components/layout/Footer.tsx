@@ -45,7 +45,7 @@ export function Footer() {
             <ul className="space-y-2 text-slate-400">
               <li>
                 <Link href="/ipo" className="hover:text-blue-400 transition-colors">
-                  All IPOs
+                  Complete IPO Directory
                 </Link>
               </li>
               <li>

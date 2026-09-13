@@ -52,6 +52,11 @@ export function calculateEstimatedListingPrice(cutOffPrice: number, gmp: number)
   return cutOffPrice + gmp;
 }
 
+export function getCleanIpoDisplayName(name?: string, slug?: string): string {
+  if (slug === "nse-ipo") return "NSE Exchange";
+  return name || "IPO";
+}
+
 export function formatIssueSize(rawSize?: string): string {
   if (!rawSize || rawSize.trim() === "" || rawSize.toLowerCase().includes("tba")) {
     return "TBA";

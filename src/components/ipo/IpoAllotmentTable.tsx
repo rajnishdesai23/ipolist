@@ -7,7 +7,7 @@ import { IPO } from "@/types/ipo";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { IpoLogo } from "@/components/ui/IpoLogo";
 import { getAllotmentProximityScore, getSmartAllotmentDate } from "@/lib/utils/dates";
-import { formatINR } from "@/lib/utils/formatters";
+import { formatINR, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 
 interface IpoAllotmentTableProps {
   ipos: IPO[];
@@ -170,6 +170,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
             </div>
           ) : (
             filteredIpos.map((ipo) => {
+              const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
               const isOut = ipo.allotment?.status === "OUT" || ipo.rawStatus?.toLowerCase().includes("allotment out");
               const { displayText: allotmentDateText, isEstimated } = getSmartAllotmentDate(ipo.dates, ipo.status);
               const portalUrl = getRegistrarPortalUrl(
@@ -197,7 +198,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                           href={`/ipo/${ipo.slug}`}
                           className="font-normal sm:font-medium text-lg sm:text-xl text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block line-clamp-1 tracking-tight"
                         >
-                          {ipo.name}
+                          <span>{displayName}</span>
                         </Link>
                         <div className="flex flex-wrap items-center gap-2 mt-1.5">
                           <span className="text-xs font-medium px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
@@ -219,44 +220,40 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                             : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
                         }`}
                       >
-                        <span
-                          className={`w-2 h-2 rounded-full ${
-                            isOut ? "bg-purple-500 animate-pulse" : "bg-amber-500"
-                          }`}
-                        />
-                        <span>{isOut ? "Allotment Out" : "Awaited"}</span>
+                        <span className={`w-2 h-2 rounded-full ${isOut ? "bg-purple-500" : "bg-amber-500"}`} />
+                        {isOut ? "ALLOTMENT OUT" : "AWAITED"}
                       </span>
                     </div>
 
-                    {/* Financial & Allotment Metadata Box */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                    {/* Allotment & Financial Details Strip */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-left">
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
+                          Registrar
+                        </span>
+                        <span className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 block truncate mt-0.5">
+                          {ipo.registrar?.name || "Official Portal"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
                           Allotment Date
                         </span>
-                        <span className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white block truncate">
+                        <span className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 block mt-0.5">
                           {allotmentDateText}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
-                          Registrar
-                        </span>
-                        <span className="font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200 truncate block">
-                          {ipo.registrar?.name || "Registrar"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
                           Issue Price
                         </span>
-                        <span className="font-semibold text-sm sm:text-base text-slate-900 dark:text-white block">
+                        <span className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 block mt-0.5">
                           {issuePrice}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-medium uppercase tracking-wider mb-0.5">
-                          GMP Today
+                        <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
+                          GMP (Est. Gain)
                         </span>
                         <span className="font-semibold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 block">
                           {gmpVal > 0 ? `+₹${gmpVal} (${gmpPct}%)` : "₹0"}
@@ -269,17 +266,21 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                   <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
                     <Link
                       href={`/ipo/${ipo.slug}`}
+                      aria-label={`View ${displayName} Full Analysis`}
                       className="text-xs font-medium text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-center sm:text-left"
                     >
-                      View Full Analysis
+                      <span className="sr-only">{displayName} </span>
+                      <span>View Full Analysis</span>
                     </Link>
 
                     <a
                       href={portalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Check ${displayName} Allotment Status`}
                       className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm group-hover:shadow-md w-full sm:w-auto"
                     >
+                      <span className="sr-only">{displayName} </span>
                       <span>Check Allotment Status</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
@@ -313,6 +314,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                 </tr>
               ) : (
                 filteredIpos.map((ipo) => {
+                  const displayName = getCleanIpoDisplayName(ipo.name, ipo.slug);
                   const isOut = ipo.allotment?.status === "OUT" || ipo.rawStatus?.toLowerCase().includes("allotment out");
                   const { displayText: smartAllotmentDate } = getSmartAllotmentDate(ipo.dates, ipo.status);
                   const portalUrl = getRegistrarPortalUrl(
@@ -333,7 +335,8 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                         <div className="flex items-center gap-2.5">
                           <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
                           <Link href={`/ipo/${ipo.slug}`} className="hover:text-blue-600 line-clamp-1 font-bold">
-                            {ipo.name}
+                            <span>{displayName}</span>
+                            <span className="sr-only"> Allotment Info</span>
                           </Link>
                         </div>
                       </td>
@@ -359,8 +362,10 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                           href={portalUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label={`Direct Portal ${displayName} Allotment`}
                           className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm"
                         >
+                          <span className="sr-only">Direct {displayName} </span>
                           <span>Check Allotment</span>
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
