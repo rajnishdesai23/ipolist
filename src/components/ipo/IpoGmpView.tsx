@@ -12,7 +12,7 @@ interface IpoGmpViewProps {
 }
 
 export function IpoGmpView({ ipos }: IpoGmpViewProps) {
-  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"ALL" | "MAINBOARD" | "SME">("ALL");
 
@@ -238,9 +238,9 @@ export function IpoGmpView({ ipos }: IpoGmpViewProps) {
         </div>
       )}
 
-      {/* VIEW 2: GRID VIEW (CARDS) */}
+      {/* VIEW 2: GRID VIEW (2 CARDS PER ROW) */}
       {viewMode === "grid" && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           {filteredIpos.length === 0 ? (
             <div className="col-span-full py-12 text-center text-slate-400 text-xs bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
               No matching IPOs found.

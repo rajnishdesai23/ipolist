@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { BookOpen, PlusCircle, Edit3, Trash2, ExternalLink, X, Save, Image as ImageIcon } from "lucide-react";
 import { BlogPost, BlogCategory } from "@/types/blog";
@@ -120,7 +120,7 @@ export default function AdminBlogPage() {
     }
   };
 
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const insertSnippet = (prefix: string, suffix: string = "", placeholder: string = "") => {
     if (!textareaRef.current) {
