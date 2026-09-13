@@ -77,7 +77,7 @@ export default async function HomePage() {
           {/* Top Pill Badge */}
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/30 text-blue-300 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-inner backdrop-blur-md">
             <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span>India&apos;s Most Trusted IPO & GMP Intelligence Platform</span>
+            <span>Real-Time IPO & GMP Intelligence Platform</span>
           </div>
 
           {/* Main Title */}
