@@ -113,12 +113,20 @@ export async function getTopGmpIpos(limitCount = 6): Promise<IPO[]> {
     .slice(0, limitCount);
 }
 
+function sanitizeForFirestore<T>(data: T): Record<string, any> {
+  return JSON.parse(JSON.stringify(data, (_, value) => (value === undefined ? null : value)));
+}
+
 export async function saveIpo(ipoData: IPO): Promise<IPO> {
+  const targetId = ipoData.slug || ipoData.id;
   const index = inMemoryIpos.findIndex((i) => i.id === ipoData.id || i.slug === ipoData.slug);
+  const existing = index >= 0 ? inMemoryIpos[index] : null;
+
   const updatedItem: IPO = {
+    ...existing,
     ...ipoData,
+    createdAt: existing?.createdAt || ipoData.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    createdAt: ipoData.createdAt || new Date().toISOString(),
   };
 
   if (index >= 0) {
@@ -130,10 +138,14 @@ export async function saveIpo(ipoData: IPO): Promise<IPO> {
   // Persist to Firestore
   if (db) {
     try {
-      const docRef = doc(db, "ipos", updatedItem.slug || updatedItem.id);
-      await setDoc(docRef, updatedItem, { merge: true });
+      const docRef = doc(db, "ipos", targetId);
+      await setDoc(docRef, sanitizeForFirestore(updatedItem), { merge: true });
     } catch (err: any) {
-      console.warn("Firestore save notice:", err?.message || err);
+      if (err?.code === "permission-denied" || err?.message?.includes("PERMISSION_DENIED")) {
+        console.error("Firestore Error [PERMISSION_DENIED]: Please update your Firestore Rules in Firebase Console to allow write access to the 'ipos' collection.");
+      } else {
+        console.warn("Firestore save notice:", err?.message || err);
+      }
     }
   }
 
@@ -170,7 +182,7 @@ export async function updateIpoGmp(
   if (db) {
     try {
       const docRef = doc(db, "ipos", updated.slug || updated.id);
-      await setDoc(docRef, updated, { merge: true });
+      await setDoc(docRef, sanitizeForFirestore(updated), { merge: true });
     } catch (err: any) {
       console.warn("Firestore GMP update notice:", err?.message || err);
     }
@@ -179,19 +191,66 @@ export async function updateIpoGmp(
   return updated;
 }
 
-export async function saveAllIpos(ipos: IPO[]): Promise<void> {
-  inMemoryIpos = ipos;
+export async function saveAllIpos(scrapedIpos: IPO[]): Promise<void> {
+  if (!scrapedIpos || scrapedIpos.length === 0) return;
 
-  if (db && ipos.length > 0) {
-    try {
-      for (const ipo of ipos) {
-        const docRef = doc(db, "ipos", ipo.slug || ipo.id);
-        await setDoc(docRef, ipo, { merge: true });
-      }
-      console.log(`Successfully stored ${ipos.length} IPOs in Firestore.`);
-    } catch (err: any) {
-      console.warn("Firestore batch write notice:", err?.message || err);
+  const upsertedList: IPO[] = [...inMemoryIpos];
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (const newItem of scrapedIpos) {
+    const docId = newItem.slug || newItem.id;
+    const existingIndex = upsertedList.findIndex(
+      (item) => item.id === newItem.id || item.slug === newItem.slug
+    );
+
+    let finalIpo: IPO;
+
+    if (existingIndex >= 0) {
+      // UPSERT: Merge existing record with updated scraped fields
+      const existing = upsertedList[existingIndex];
+      finalIpo = {
+        ...existing,
+        ...newItem,
+        // Preserve manual GMP override if set
+        gmp: existing.gmp?.percentage && !newItem.gmp?.percentage ? existing.gmp : (newItem.gmp || existing.gmp),
+        createdAt: existing.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      upsertedList[existingIndex] = finalIpo;
+    } else {
+      // CREATE NEW record
+      finalIpo = {
+        ...newItem,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      upsertedList.push(finalIpo);
     }
+
+    // Store in Firestore doc with { merge: true }
+    if (db) {
+      try {
+        const docRef = doc(db, "ipos", docId);
+        await setDoc(docRef, sanitizeForFirestore(finalIpo), { merge: true });
+        successCount++;
+      } catch (err: any) {
+        errorCount++;
+        if (err?.code === "permission-denied" || err?.message?.includes("PERMISSION_DENIED")) {
+          console.error(`[Firestore Security Warning] Cannot write IPO '${docId}'. Firestore Security Rules in Firebase Console are set to read-only or permission denied.`);
+        } else {
+          console.warn(`Firestore write error for '${docId}':`, err?.message || err);
+        }
+      }
+    }
+  }
+
+  inMemoryIpos = upsertedList;
+
+  if (successCount > 0) {
+    console.log(`Successfully upserted ${successCount} IPO records in Firestore database.`);
+  } else if (errorCount > 0) {
+    console.warn(`Attempted to save ${errorCount} IPOs, but Firestore writes were rejected due to Firestore Security Rules.`);
   }
 }
 
