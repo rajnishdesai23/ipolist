@@ -48,16 +48,24 @@ export function generateIpoJsonLd(ipo: IPO) {
   const priceBandText = ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : "TBA");
   const estListingPrice = ipo.gmp?.expectedListingPrice || (minPrice > 0 ? minPrice + gmpVal : 0);
 
+  const isoModified = ipo.updatedAt || ipo.scrapedAt || new Date().toISOString();
+
   return {
     "@context": "https://schema.org",
     "@type": "FinancialProduct",
     name: `${ipo.name} IPO`,
     description: `Official ${ipo.name} IPO data: Live GMP today is ₹${gmpVal} (${gmpPct}%), price band ${priceBandText}, lot size ${ipo.lotSize || "TBA"} shares, issue size ${ipo.issueDetails?.issueSize || "TBA"}.`,
     url: `${SITE_CONFIG.url}/ipo/${ipo.slug}`,
+    dateModified: isoModified,
     category: ipo.type === "SME" ? "SME Initial Public Offering" : "Mainboard Initial Public Offering",
     provider: {
       "@type": "Organization",
       name: ipo.name,
+    },
+    author: {
+      "@type": "Organization",
+      name: "IPO List Market Research Desk",
+      url: `${SITE_CONFIG.url}/about`,
     },
     offers: {
       "@type": "AggregateOffer",
@@ -98,6 +106,44 @@ export function generateIpoJsonLd(ipo: IPO) {
         value: ipo.registrar?.name || "Official Registrar",
       },
     ],
+  };
+}
+
+/**
+ * Dataset Schema for Real-Time IPO Financial Tables (Google Dataset Search & SERP)
+ */
+export function generateDatasetJsonLd(name: string, description: string, url: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name,
+    description,
+    url,
+    keywords: ["IPO GMP", "Grey Market Premium", "IPO Allotment Status", "SEBI T+1 Timeline", "Stock Market India"],
+    creator: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      url: SITE_CONFIG.url,
+    },
+    temporalCoverage: `${new Date().getFullYear()}`,
+    spatialCoverage: "India",
+  };
+}
+
+/**
+ * ItemList Schema for Live Ranking Boards (GMP, Gainers, Upcoming)
+ */
+export function generateItemListJsonLd(name: string, items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: item.url.startsWith("http") ? item.url : `${SITE_CONFIG.url}${item.url}`,
+    })),
   };
 }
 

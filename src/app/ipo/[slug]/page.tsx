@@ -36,6 +36,8 @@ import { TimelineStepper } from "@/components/ipo/TimelineStepper";
 import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
 import { constructIpoMetadata } from "@/lib/seo/metadata";
 import { generateIpoJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from "@/lib/seo/schema";
+import { ShareButtons } from "@/components/ui/ShareButtons";
+import IpoAlertBanner from "@/components/ui/IpoAlertBanner";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
@@ -116,7 +118,29 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         <LeaderboardAd />
 
         {/* Hero Header Card — Clean, Airy, Elegant & De-cluttered */}
-        <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-4 sm:p-8 lg:p-10 shadow-card space-y-6 sm:space-y-8">
+        <section id="overview" className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-4 sm:p-8 lg:p-10 shadow-card space-y-6 sm:space-y-8">
+          {/* Freshness & Live Surveillance Pulse */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-slate-100 dark:border-slate-800/60">
+            <div className="flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>Live Market Feed • Verified Today</span>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="text-slate-500 dark:text-slate-400 font-light">Updated Every 60s</span>
+            </div>
+            
+            <ShareButtons
+              ipoName={ipo.name}
+              slug={ipo.slug}
+              gmpValue={gmpVal}
+              gmpPercentage={gmpPct}
+              priceBand={ipo.priceBand?.raw || (ipo.priceBand?.max ? formatINR(ipo.priceBand.max) : undefined)}
+              estListingText={ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : undefined)}
+            />
+          </div>
+
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-8">
             {/* Left side: Logo + Bigger Thinner Title + Badges */}
             <div className="flex items-start gap-3.5 sm:gap-5 flex-1 min-w-0">
@@ -169,7 +193,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             </div>
 
             {/* Right side: Sleek, Uncluttered Live GMP Card */}
-            <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 dark:from-slate-800/60 dark:to-emerald-950/20 p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col items-start lg:items-end shrink-0 shadow-sm space-y-3 w-full lg:w-auto lg:min-w-[260px]">
+            <div id="gmp" className="bg-gradient-to-br from-slate-50 to-emerald-50/20 dark:from-slate-800/60 dark:to-emerald-950/20 p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col items-start lg:items-end shrink-0 shadow-sm space-y-3 w-full lg:w-auto lg:min-w-[260px]">
               <div>
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block lg:text-right">
                   Live Grey Market Premium (GMP)
@@ -255,12 +279,66 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           </div>
         </section>
 
+        {/* 5-Stage Intent Navigation Jump Bar (Mobile & Desktop) */}
+        <nav
+          aria-label="IPO Sections Navigation"
+          className="sticky top-14 sm:top-16 z-20 -mx-4 sm:mx-0 px-4 sm:px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-y sm:border border-slate-200/80 dark:border-slate-800 sm:rounded-2xl shadow-sm overflow-x-auto no-scrollbar"
+        >
+          <ul className="flex items-center gap-1 sm:gap-2 min-w-max text-xs">
+            <li>
+              <a href="#overview" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                Overview
+              </a>
+            </li>
+            <li>
+              <a href="#gmp" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                GMP & Listing
+              </a>
+            </li>
+            <li>
+              <a href="#dates" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                Important Dates
+              </a>
+            </li>
+            {ipo.marketLot && ipo.marketLot.length > 0 && (
+              <li>
+                <a href="#lotsize" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Lot Size
+                </a>
+              </li>
+            )}
+            {ipo.financials && ipo.financials.length > 0 && (
+              <li>
+                <a href="#financials" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Financials
+                </a>
+              </li>
+            )}
+            {ipo.registrar && (
+              <li>
+                <a href="#allotment" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Allotment & Registrar
+                </a>
+              </li>
+            )}
+            {resolvedFaqs.length > 0 && (
+              <li>
+                <a href="#faqs" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  FAQs
+                </a>
+              </li>
+            )}
+          </ul>
+        </nav>
+
         {/* Timeline Dates Stepper Component */}
-        <TimelineStepper dates={ipo.dates} status={ipo.status} />
+        <div id="dates">
+          <TimelineStepper dates={ipo.dates} status={ipo.status} />
+        </div>
 
         {/* Market Lot Size Table */}
         {ipo.marketLot && ipo.marketLot.length > 0 && (
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
+          <section id="lotsize" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <Layers className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
@@ -328,7 +406,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
 
         {/* Company Financials Table */}
         {ipo.financials && ipo.financials.length > 0 && (
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
+          <section id="financials" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-emerald-600" />
               <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white">
@@ -416,7 +494,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
 
         {/* Registrar Gateway & Allotment Box */}
         {ipo.registrar && (
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
+          <section id="allotment" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block">
@@ -479,13 +557,15 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
           </section>
         )}
 
+        {/* Retention & Instant Alert Banner */}
+        <IpoAlertBanner ipoName={ipo.name} />
 
         {/* Broker CTA Card */}
         <BrokerCtaCard variant="horizontal" broker="zerodha" />
 
         {/* Search-Optimized FAQ Section for Google Rich Accordions */}
         {resolvedFaqs.length > 0 && (
-          <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
+          <section id="faqs" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-4">
             <h2 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-blue-600" />
               Frequently Asked Questions on {ipo.name} IPO
@@ -507,6 +587,26 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             </div>
           </section>
         )}
+
+        {/* E-E-A-T Research Desk Verification Footer */}
+        <section className="p-5 sm:p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 backdrop-blur-sm text-xs text-slate-600 dark:text-slate-400 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2 font-normal text-slate-900 dark:text-white">
+              <ShieldCheck className="w-4 h-4 text-primary" />
+              <span>Researched & Fact-Checked by <strong>IPO Ji Research Desk</strong></span>
+            </div>
+            <Link
+              href="/methodology"
+              className="inline-flex items-center gap-1 text-primary hover:underline font-medium"
+            >
+              <span>Read Data Sourcing Methodology</span>
+              <ExternalLink className="w-3 h-3" />
+            </Link>
+          </div>
+          <p className="font-light leading-relaxed">
+            Data sourced from official SEBI DRHP/RHP filings, BSE, NSE, and verified registrar endpoints ({ipo.registrar?.name || "Official Registrars"}). Grey Market Premium (GMP) is surveyed from active dealers and is strictly indicative.
+          </p>
+        </section>
       </div>
     </div>
   );

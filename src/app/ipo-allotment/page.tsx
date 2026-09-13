@@ -7,7 +7,13 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { IpoAllotmentTable } from "@/components/ipo/IpoAllotmentTable";
 import { SITE_CONFIG } from "@/lib/seo/metadata";
-import { generateFaqJsonLd, generateBreadcrumbJsonLd, ALLOTMENT_PAGE_FAQS } from "@/lib/seo/schema";
+import {
+  generateFaqJsonLd,
+  generateBreadcrumbJsonLd,
+  generateDatasetJsonLd,
+  generateItemListJsonLd,
+  ALLOTMENT_PAGE_FAQS,
+} from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "IPO Allotment Status Check Online 2026 | Link Intime, KFintech & BSE Direct Links",
@@ -63,6 +69,19 @@ export default async function IpoAllotmentPage() {
     { name: "Home", url: "/" },
     { name: "IPO Allotment Hub", url: "/ipo-allotment" },
   ]);
+  const datasetSchema = generateDatasetJsonLd(
+    "IPO Allotment Status Results & Registrar Gateways India",
+    "Real-time database of IPO share allotment status, basis of allotment documents, and registrar portal gateways.",
+    `${SITE_CONFIG.url}/ipo-allotment`
+  );
+  const itemListSchema = generateItemListJsonLd(
+    "Recent IPO Allotment Status List",
+    ipos.slice(0, 15).map((ipo, idx) => ({
+      name: `${ipo.name} Allotment Status`,
+      url: `/ipo/${ipo.slug}`,
+      position: idx + 1,
+    }))
+  );
 
   const registrars = [
     {
@@ -108,18 +127,35 @@ export default async function IpoAllotmentPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
 
       <Breadcrumb items={[{ name: "IPO Allotment Hub", url: "/ipo-allotment" }]} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Header */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card space-y-1">
-          <h1 className="text-2xl sm:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
-            IPO Allotment Status Check
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Check real-time basis of allotment results with direct access to official registrars (Link Intime, KFintech, Bigshare, BSE).
-          </p>
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl sm:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
+              IPO Allotment Status Check
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              Check real-time basis of allotment results with direct access to official registrars (Link Intime, KFintech, Bigshare, BSE).
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-medium self-start sm:self-auto shrink-0">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Registrar Feeds Active</span>
+          </div>
         </div>
 
         <LeaderboardAd />

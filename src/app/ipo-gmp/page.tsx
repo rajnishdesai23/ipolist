@@ -7,7 +7,13 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { IpoGmpView } from "@/components/ipo/IpoGmpView";
 import { SITE_CONFIG } from "@/lib/seo/metadata";
-import { generateFaqJsonLd, generateBreadcrumbJsonLd, GMP_PAGE_FAQS } from "@/lib/seo/schema";
+import {
+  generateFaqJsonLd,
+  generateBreadcrumbJsonLd,
+  generateDatasetJsonLd,
+  generateItemListJsonLd,
+  GMP_PAGE_FAQS,
+} from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "IPO GMP Today 2026 | Live Grey Market Premium for Mainboard & SME IPOs",
@@ -64,6 +70,19 @@ export default async function IpoGmpPage() {
     { name: "Home", url: "/" },
     { name: "IPO GMP Today", url: "/ipo-gmp" },
   ]);
+  const datasetSchema = generateDatasetJsonLd(
+    "IPO Grey Market Premium (GMP) Live Dataset India",
+    "Real-time dataset of Grey Market Premium rates, estimated listing gains, and price bands for ongoing Mainboard and SME IPOs in India.",
+    `${SITE_CONFIG.url}/ipo-gmp`
+  );
+  const itemListSchema = generateItemListJsonLd(
+    "Top IPO GMP Rankings Today",
+    ipos.slice(0, 15).map((ipo, idx) => ({
+      name: `${ipo.name} GMP ₹${ipo.gmp?.value ?? 0}`,
+      url: `/ipo/${ipo.slug}`,
+      position: idx + 1,
+    }))
+  );
 
   return (
     <div className="space-y-6 pb-16">
@@ -76,17 +95,34 @@ export default async function IpoGmpPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
 
       <Breadcrumb items={[{ name: "IPO GMP Today", url: "/ipo-gmp" }]} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
-            IPO GMP Today (Grey Market Premium Live)
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Real-time Grey Market Premium rates, estimated listing gains, and price bands for ongoing Mainboard & SME IPOs in India.
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-2xl sm:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
+              IPO GMP Today (Grey Market Premium Live)
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Real-time Grey Market Premium rates, estimated listing gains, and price bands for ongoing Mainboard & SME IPOs in India.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Live Desk • Updated Hourly</span>
+          </div>
         </div>
 
         <LeaderboardAd />
