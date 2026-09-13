@@ -4,10 +4,22 @@ import React, { useState } from "react";
 import { Calculator, TrendingUp, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import { formatINR, formatPercentage } from "@/lib/utils/formatters";
 
-export function ProfitCalculator() {
-  const [issuePrice, setIssuePrice] = useState<number>(100);
-  const [gmp, setGmp] = useState<number>(25);
-  const [lotSize, setLotSize] = useState<number>(150);
+interface ProfitCalculatorProps {
+  initialIssuePrice?: number;
+  initialGmp?: number;
+  initialLotSize?: number;
+  ipoName?: string;
+}
+
+export function ProfitCalculator({
+  initialIssuePrice = 100,
+  initialGmp = 25,
+  initialLotSize = 150,
+  ipoName,
+}: ProfitCalculatorProps = {}) {
+  const [issuePrice, setIssuePrice] = useState<number>(initialIssuePrice);
+  const [gmp, setGmp] = useState<number>(initialGmp);
+  const [lotSize, setLotSize] = useState<number>(initialLotSize);
   const [lotsApplied, setLotsApplied] = useState<number>(1);
 
   // Derived Calculations
@@ -57,10 +69,12 @@ export function ProfitCalculator() {
           </div>
           <div>
             <h3 className="text-lg sm:text-xl font-normal sm:font-medium text-slate-900 dark:text-white font-heading">
-              IPO Profit &amp; Listing Gain Calculator
+              {ipoName ? `${ipoName} Expected Profit & Gain Calculator` : "IPO Profit & Listing Gain Calculator"}
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Estimate your expected profit based on Issue Price, GMP, Lot Size &amp; Lots Applied
+              {ipoName
+                ? `Estimate your return on ${ipoName} based on Price Band, live GMP & lot applications`
+                : "Estimate your expected profit based on Issue Price, GMP, Lot Size & Lots Applied"}
             </p>
           </div>
         </div>

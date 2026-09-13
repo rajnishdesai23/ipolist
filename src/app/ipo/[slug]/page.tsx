@@ -38,6 +38,8 @@ import { constructIpoMetadata } from "@/lib/seo/metadata";
 import { generateIpoJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from "@/lib/seo/schema";
 import { ShareButtons } from "@/components/ui/ShareButtons";
 import IpoAlertBanner from "@/components/ui/IpoAlertBanner";
+import { ProfitCalculator } from "@/components/tools/ProfitCalculator";
+import { GmpChart } from "@/components/ipo/GmpChart";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const ipo = await getIpoBySlug(params.slug);
@@ -292,9 +294,16 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             </li>
             <li>
               <a href="#gmp" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                GMP & Listing
+                GMP &amp; Listing
               </a>
             </li>
+            {ipo.gmp?.history && ipo.gmp.history.length > 0 && (
+              <li>
+                <a href="#gmp-trend" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  GMP Trend
+                </a>
+              </li>
+            )}
             <li>
               <a href="#dates" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Important Dates
@@ -307,6 +316,11 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
                 </a>
               </li>
             )}
+            <li>
+              <a href="#calculator" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                Calculator
+              </a>
+            </li>
             {ipo.financials && ipo.financials.length > 0 && (
               <li>
                 <a href="#financials" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -317,7 +331,7 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             {ipo.registrar && (
               <li>
                 <a href="#allotment" className="px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-normal text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                  Allotment & Registrar
+                  Allotment &amp; Registrar
                 </a>
               </li>
             )}
@@ -335,6 +349,43 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
         <div id="dates">
           <TimelineStepper dates={ipo.dates} status={ipo.status} />
         </div>
+
+        {/* GMP History Chart & Movement Log Table */}
+        {ipo.gmp?.history && ipo.gmp.history.length > 0 && (
+          <section id="gmp-trend" className="space-y-4">
+            <GmpChart history={ipo.gmp.history} ipoName={ipo.name} />
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-6 shadow-card space-y-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+                <h3 className="font-normal sm:font-medium text-base sm:text-lg text-slate-900 dark:text-white">
+                  {ipo.name} Daily GMP Movement History
+                </h3>
+              </div>
+              <div className="overflow-x-auto rounded-2xl border border-slate-100 dark:border-slate-800">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="bg-slate-50 dark:bg-slate-800 text-slate-500 font-bold uppercase border-b border-slate-200 dark:border-slate-800">
+                      <th className="py-3 px-4">Date</th>
+                      <th className="py-3 px-4">Reported GMP</th>
+                      <th className="py-3 px-4">Estimated Listing</th>
+                      <th className="py-3 px-4 text-right">Gain (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {ipo.gmp.history.map((hist, idx) => (
+                      <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                        <td className="py-3 px-4 font-medium text-slate-800 dark:text-slate-200">{hist.displayDate || hist.date}</td>
+                        <td className="py-3 px-4 font-semibold text-emerald-600 dark:text-emerald-400">+{formatINR(hist.gmp)}</td>
+                        <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{hist.expectedListingPrice ? formatINR(hist.expectedListingPrice) : "TBA"}</td>
+                        <td className="py-3 px-4 text-right font-medium text-emerald-600 dark:text-emerald-400">+{hist.percentage}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Market Lot Size Table */}
         {ipo.marketLot && ipo.marketLot.length > 0 && (
@@ -403,6 +454,16 @@ export default async function IpoDetailPage({ params }: { params: { slug: string
             </div>
           </section>
         )}
+
+        {/* Interactive Listing Gain & Profit Calculator */}
+        <section id="calculator">
+          <ProfitCalculator
+            initialIssuePrice={ipo.priceBand?.max || 100}
+            initialGmp={gmpVal}
+            initialLotSize={ipo.lotSize || 150}
+            ipoName={ipo.name}
+          />
+        </section>
 
         {/* Company Financials Table */}
         {ipo.financials && ipo.financials.length > 0 && (

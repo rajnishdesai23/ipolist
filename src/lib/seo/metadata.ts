@@ -3,13 +3,20 @@ import { IPO } from "@/types/ipo";
 import { BlogPost } from "@/types/blog";
 import { formatINR, formatPercentage } from "../utils/formatters";
 
+const getSiteUrl = () => {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "https://ipolist.in";
+};
+
 export const SITE_CONFIG = {
   name: "IPO List",
-  title: "IPO List 2026 | Live IPO GMP Today, Allotment Status, Dates & Subscription",
+  title: "IPO List 2026: Live IPO GMP Today & Allotment Status",
   description:
-    "Real-time Indian IPO tracking platform. Check live IPO GMP today, official registrar allotment status links (Link Intime, KFintech, Bigshare), live subscription demand, price bands, and expected listing gains.",
-  url: "https://ipolist.in",
-  ogImage: "https://ipolist.in/og-image.png",
+    "Track live IPO GMP today, expected listing gains, official registrar allotment status, dates & subscription for Mainboard and SME IPOs in India.",
+  url: getSiteUrl(),
+  ogImage: "/og-image.png",
   twitterHandle: "@IPOListIndia",
 };
 
@@ -25,12 +32,12 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
   const registrar = ipo.registrar?.name || "Official Registrar";
   const dates = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ");
 
-  // High-CTR Dynamic Title Template matching #1 Google SERP Patterns
-  const gmpSnippet = gmpVal > 0 ? `GMP Today: +₹${gmpVal} (+${gmpPct}%)` : "Live GMP & Review";
-  const title = `${ipo.name} IPO ${gmpSnippet} | Allotment Status, Dates & Price Band`;
+  // High-CTR Dynamic Title Template under 580 pixels
+  const gmpSnippet = gmpVal > 0 ? `GMP +₹${gmpVal} (${gmpPct}%)` : "Live GMP & Review";
+  const title = `${ipo.name} IPO ${gmpSnippet} | Allotment & Review`;
 
-  // Search-Intent Focused Meta Description (under 160 chars)
-  const description = `Live ${ipo.name} IPO GMP today is +₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}), expected listing at ${estListing}. Check price band ${priceBand}, lot size ${lotSize}, bidding dates (${dates}) & ${registrar} allotment status link.`;
+  // Search-Intent Focused Meta Description (under 150 chars)
+  const description = `${ipo.name} IPO GMP today is +₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}), expected listing at ${estListing}. Check price band ${priceBand}, dates & allotment link.`;
 
   // Comprehensive Keyword Cluster
   const keywords = [
@@ -52,7 +59,7 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
     "latest ipo gmp 2026",
   ];
 
-  const canonicalUrl = `${SITE_CONFIG.url}/ipo/${ipo.slug}`;
+  const canonicalPath = `/ipo/${ipo.slug}`;
 
   return {
     title,
@@ -61,7 +68,7 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
     openGraph: {
       title,
       description,
-      url: canonicalUrl,
+      url: canonicalPath,
       siteName: SITE_CONFIG.name,
       type: "website",
       locale: "en_IN",
@@ -82,7 +89,7 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
       images: [SITE_CONFIG.ogImage],
     },
     alternates: {
-      canonical: canonicalUrl,
+      canonical: canonicalPath,
     },
     robots: {
       index: true,
@@ -100,7 +107,7 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
 export function constructBlogMetadata(post: BlogPost): Metadata {
   const title = post.seo?.metaTitle || `${post.title} | IPO List`;
   const description = post.seo?.metaDescription || post.excerpt;
-  const canonicalUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
+  const canonicalPath = `/blog/${post.slug}`;
 
   return {
     title,
@@ -115,7 +122,7 @@ export function constructBlogMetadata(post: BlogPost): Metadata {
     openGraph: {
       title,
       description,
-      url: canonicalUrl,
+      url: canonicalPath,
       siteName: SITE_CONFIG.name,
       type: "article",
       publishedTime: post.publishedAt,
@@ -139,7 +146,7 @@ export function constructBlogMetadata(post: BlogPost): Metadata {
       images: [post.coverImage || SITE_CONFIG.ogImage],
     },
     alternates: {
-      canonical: canonicalUrl,
+      canonical: canonicalPath,
     },
     robots: {
       index: true,

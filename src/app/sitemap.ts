@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
 import { getAllIpos } from "@/lib/data/ipoRepository";
 import { getAllBlogs } from "@/lib/data/blogRepository";
+import { SITE_CONFIG } from "@/lib/seo/metadata";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://ipolist.in";
+  const baseUrl = SITE_CONFIG.url;
   const ipos = await getAllIpos();
   const blogs = await getAllBlogs();
 

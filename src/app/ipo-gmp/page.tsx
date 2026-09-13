@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     creator: SITE_CONFIG.twitterHandle,
   },
   alternates: {
-    canonical: `${SITE_CONFIG.url}/ipo-gmp`,
+    canonical: "/ipo-gmp",
   },
 };
 

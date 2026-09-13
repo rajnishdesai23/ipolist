@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     creator: SITE_CONFIG.twitterHandle,
   },
   alternates: {
-    canonical: SITE_CONFIG.url,
+    canonical: "/",
   },
   icons: {
     icon: "/favicon.png",

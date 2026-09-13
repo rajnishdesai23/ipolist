@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: "Data Sourcing & Verification Methodology | IPO Ji Research Desk",
   description: "Learn how IPO Ji sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status in strict compliance with SEBI T+1 guidelines.",
   alternates: {
-    canonical: "https://ipoji.com/methodology",
+    canonical: "/methodology",
   },
   openGraph: {
     title: "Data Sourcing & Verification Methodology | IPO Ji",
     description: "Learn how IPO Ji sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status.",
-    url: "https://ipoji.com/methodology",
+    url: "/methodology",
     type: "website",
   },
 };

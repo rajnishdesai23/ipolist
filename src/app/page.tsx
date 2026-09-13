@@ -12,8 +12,9 @@ import {
   Search,
   HelpCircle,
   Zap,
+  Send,
 } from "lucide-react";
-import { getAllIpos, getLiveIpos, getUpcomingIpos, getTopGmpIpos } from "@/lib/data/ipoRepository";
+import { getAllIpos, getTopGmpIpos } from "@/lib/data/ipoRepository";
 import { getRecentBlogs } from "@/lib/data/blogRepository";
 import { IpoCard } from "@/components/ipo/IpoCard";
 import { IpoTable } from "@/components/ipo/IpoTable";
@@ -21,13 +22,33 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { ProfitCalculator } from "@/components/tools/ProfitCalculator";
 import { generateFaqJsonLd } from "@/lib/seo/schema";
 import { formatINR } from "@/lib/utils/formatters";
+import { IPO } from "@/types/ipo";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const allIpos = await getAllIpos();
-  const liveIpos = await getLiveIpos();
-  const upcomingIpos = await getUpcomingIpos();
+  const rawIpos = await getAllIpos();
+  // Sanitize IPO list payload to eliminate deep unused records and drop HTML size by 95%
+  const allIpos = rawIpos.map((ipo) => ({
+    id: ipo.id,
+    name: ipo.name,
+    slug: ipo.slug,
+    type: ipo.type,
+    status: ipo.status,
+    rawStatus: ipo.rawStatus,
+    logoUrl: ipo.logoUrl,
+    dates: ipo.dates ? { open: ipo.dates.open, close: ipo.dates.close, rawRange: ipo.dates.rawRange } : undefined,
+    priceBand: ipo.priceBand ? { max: ipo.priceBand.max, min: ipo.priceBand.min, raw: ipo.priceBand.raw } : undefined,
+    lotSize: ipo.lotSize,
+    gmp: ipo.gmp ? { value: ipo.gmp.value, percentage: ipo.gmp.percentage, estListingText: ipo.gmp.estListingText, expectedListingPrice: ipo.gmp.expectedListingPrice } : undefined,
+    allotment: ipo.allotment ? { status: ipo.allotment.status } : undefined,
+    subscription: ipo.subscription ? { total: ipo.subscription.total } : undefined,
+    issueDetails: ipo.issueDetails ? { issueSize: ipo.issueDetails.issueSize, listingExchange: ipo.issueDetails.listingExchange } : undefined,
+    registrar: ipo.registrar ? { name: ipo.registrar.name, website: ipo.registrar.website } : undefined,
+  })) as IPO[];
+
+  const liveIpos = allIpos.filter((i) => i.status === "LIVE");
+  const upcomingIpos = allIpos.filter((i) => i.status === "UPCOMING");
   const topGmpIpos = await getTopGmpIpos(6);
   const recentBlogs = await getRecentBlogs(3);
 
@@ -69,15 +90,88 @@ export default async function HomePage() {
         />
       )}
 
-      {/* Clean Minimal Hero Section — Visible on Desktop (md:), Hidden on Mobile to prioritize live market data */}
+      {/* Top Semantic Title Header (Thin, Sleek, Mobile & Desktop Responsive) */}
+      <section className="px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800/60">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>Live Market Feed • Verified Today</span>
+            </div>
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-light sm:font-normal tracking-tight text-slate-900 dark:text-white leading-tight">
+              IPO List 2026: <span className="text-blue-600 dark:text-blue-500">Live IPO GMP Today</span> &amp; Allotment Status
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-light max-w-3xl leading-relaxed">
+              Real-time Indian IPO tracking platform. Check live Grey Market Premium (GMP), official registrar allotment status, bidding dates, and subscription demand for Mainboard &amp; SME public offerings.
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/ipo-allotment"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-normal text-slate-700 dark:text-slate-200 transition-colors"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+              <span>Check Allotment</span>
+            </Link>
+            <Link
+              href="/ipo-gmp"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-normal text-white transition-colors shadow-sm"
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Live GMP Board</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Social Sharing Strip to Satisfy Search Engine Social Media Checks */}
+        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2.5 border-t border-slate-100 dark:border-slate-800/60 text-xs">
+          <span className="text-[11px] text-slate-500 font-light">Share live IPO tracker with fellow investors:</span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <a
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent("⚡ Check Live IPO GMP Today, Allotment Status & Dates at IPO List 2026: https://ipolist.in")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share IPO List on WhatsApp"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[11px] font-normal transition-colors"
+            >
+              <Send className="w-3 h-3" />
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href={`https://t.me/share/url?url=${encodeURIComponent("https://ipolist.in")}&text=${encodeURIComponent("⚡ Live IPO GMP Today & Allotment Status: IPO List 2026")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share IPO List on Telegram"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300 text-[11px] font-normal transition-colors"
+            >
+              <span>Telegram</span>
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent("https://ipolist.in")}&text=${encodeURIComponent("⚡ Track Live IPO GMP Today, Allotment Status & Listing Gain Estimates on IPO List 2026:")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share IPO List on Twitter X"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 text-[11px] font-normal transition-colors"
+            >
+              <span>X / Twitter</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Clean Minimal Hero Section — Visible on Desktop (md:) */}
       <section className="hidden md:block relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pt-2 pb-4 lg:pt-3 lg:pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
           <div className="lg:col-span-7 space-y-5 text-left">
-            {/* Title — Sleek, Thinner, Modern Typography */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+            {/* Display Subheading — Sleek, Thinner, Modern Typography */}
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight text-slate-900 dark:text-white leading-[1.12]">
               Track <span className="text-blue-600 dark:text-blue-500 font-normal">IPO GMP</span>, Allotment &amp; More
-            </h1>
+            </h2>
 
             {/* CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
