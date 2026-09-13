@@ -5,6 +5,7 @@ import {
   Sparkles,
   Layers,
   Calendar,
+  Calculator,
   CheckCircle2,
   ArrowRight,
   Flame,
