@@ -190,14 +190,6 @@ export function IpoCard({ ipo }: { ipo: IPO }) {
           )}
         </div>
       </div>
-
-      {/* Exchange details footer line */}
-      {ipo.issueDetails?.listingExchange && (
-        <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800/60 text-[10px] text-slate-400 font-semibold flex items-center justify-between">
-          <span>Exchange: {ipo.issueDetails.listingExchange}</span>
-          {ipo.registrar?.name && <span className="truncate max-w-[180px]">RTA: {ipo.registrar.name}</span>}
-        </div>
-      )}
     </div>
   );
 }

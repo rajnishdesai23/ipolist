@@ -11,6 +11,10 @@ import {
   Calendar,
   TrendingUp,
   X,
+  Filter,
+  Radio,
+  ListChecks,
+  Flame,
 } from "lucide-react";
 import { IPO, IPOStatus } from "@/types/ipo";
 import { formatINR, formatIssueSize } from "@/lib/utils/formatters";
@@ -99,120 +103,169 @@ export function IpoTable({
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-card overflow-hidden space-y-4 p-3.5 sm:p-6">
-      {/* Top Controls: Segment Tabs & Search Box */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-1">
-        {/* Mainboard vs SME Segment Switcher */}
-        <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto scrollbar-none w-full sm:w-auto">
-          <button
-            onClick={() => setSelectedSegment("ALL")}
-            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-              selectedSegment === "ALL"
-                ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-            }`}
-          >
-            All Market ({ipos.length})
-          </button>
-          <button
-            onClick={() => setSelectedSegment("MAINBOARD")}
-            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-              selectedSegment === "MAINBOARD"
-                ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-            }`}
-          >
-            Mainboard ({ipos.filter((i) => i.type === "MAINBOARD").length})
-          </button>
-          <button
-            onClick={() => setSelectedSegment("SME")}
-            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-              selectedSegment === "SME"
-                ? "bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-            }`}
-          >
-            SME ({ipos.filter((i) => i.type === "SME").length})
-          </button>
+    <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* Left Sidebar Filter Column (Matching Reference Design) */}
+      <div className="lg:col-span-3 space-y-3">
+        {/* Filter Box Header */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-center font-extrabold text-sm text-slate-800 dark:text-white shadow-sm flex items-center justify-center gap-2">
+          <Filter className="w-4 h-4 text-indigo-600" />
+          <span>Filter</span>
         </div>
 
-        {/* Search Input Box & View Toggle */}
-        <div className="flex items-center gap-2 w-full lg:w-auto">
-          <div className="relative flex-1 lg:w-72">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search by company name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-8 py-1.5 sm:py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {searchQuery && (
+        {/* Vertical Status Tab Cards */}
+        <div className="flex lg:flex-col gap-2.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
+          {/* Current IPOs (LIVE) */}
+          <button
+            onClick={() => setSelectedStatus("LIVE")}
+            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+              selectedStatus === "LIVE"
+                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
+                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+            }`}
+          >
+            <div className="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center">
+              <Radio className="w-5 h-5 animate-pulse" />
+            </div>
+            <div>
+              <span className="font-extrabold text-xs sm:text-sm block">Current IPOs</span>
+              <span className="text-[10px] text-slate-400 font-semibold">({counts.live})</span>
+            </div>
+          </button>
+
+          {/* Upcoming IPOs */}
+          <button
+            onClick={() => setSelectedStatus("UPCOMING")}
+            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+              selectedStatus === "UPCOMING"
+                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
+                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+            }`}
+          >
+            <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="font-extrabold text-xs sm:text-sm block">Upcoming IPOs</span>
+              <span className="text-[10px] text-slate-400 font-semibold">({counts.upcoming})</span>
+            </div>
+          </button>
+
+          {/* Listed / Closed IPOs */}
+          <button
+            onClick={() => setSelectedStatus("CLOSED")}
+            className={`flex-1 lg:w-full p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-2.5 ${
+              selectedStatus === "CLOSED"
+                ? "bg-indigo-50/80 border-indigo-500 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-500 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-sm"
+                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300"
+            }`}
+          >
+            <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center">
+              <ListChecks className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="font-extrabold text-xs sm:text-sm block">Listed IPOs</span>
+              <span className="text-[10px] text-slate-400 font-semibold">({counts.closed})</span>
+            </div>
+          </button>
+
+          {/* Show All Reset Button */}
+          {selectedStatus !== "ALL" && (
+            <button
+              onClick={() => setSelectedStatus("ALL")}
+              className="w-full text-center text-xs font-bold text-slate-500 hover:text-indigo-600 py-1 transition-colors"
+            >
+              Show All ({counts.all})
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Right Column: Content Grid */}
+      <div className="lg:col-span-9 space-y-4">
+        {/* Top Controls Bar */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-sm">
+          {/* Mainboard vs SME Segment Switcher */}
+          <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto scrollbar-none w-full sm:w-auto">
+            <button
+              onClick={() => setSelectedSegment("ALL")}
+              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+                selectedSegment === "ALL"
+                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+              }`}
+            >
+              All Market ({ipos.length})
+            </button>
+            <button
+              onClick={() => setSelectedSegment("MAINBOARD")}
+              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+                selectedSegment === "MAINBOARD"
+                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+              }`}
+            >
+              Mainboard ({ipos.filter((i) => i.type === "MAINBOARD").length})
+            </button>
+            <button
+              onClick={() => setSelectedSegment("SME")}
+              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+                selectedSegment === "SME"
+                  ? "bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+              }`}
+            >
+              SME ({ipos.filter((i) => i.type === "SME").length})
+            </button>
+          </div>
+
+          {/* Quick Action Buttons & Search */}
+          <div className="flex items-center gap-2 w-full lg:w-auto">
+            <div className="relative flex-1 lg:w-64">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search by company..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* View Mode Toggle */}
+            <div className="hidden sm:flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
               <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                onClick={() => setViewMode("table")}
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === "table"
+                    ? "bg-white dark:bg-slate-900 text-indigo-600 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+                title="Table View"
               >
-                <X className="w-3.5 h-3.5" />
+                <List className="w-4 h-4" />
               </button>
-            )}
-          </div>
-
-          {/* View Toggle on Mobile & Desktop */}
-          <div className="hidden sm:flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
-            <button
-              onClick={() => setViewMode("table")}
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === "table"
-                  ? "bg-white dark:bg-slate-900 text-blue-600 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              title="Table View"
-            >
-              <List className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode("cards")}
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === "cards"
-                  ? "bg-white dark:bg-slate-900 text-blue-600 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              title="Card View"
-            >
-              <LayoutGrid className="w-4 h-4" />
-            </button>
+              <button
+                onClick={() => setViewMode("cards")}
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === "cards"
+                    ? "bg-white dark:bg-slate-900 text-indigo-600 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+                title="Card View"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Lifecycle Status Filter Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none border-b border-slate-100 dark:border-slate-800">
-        {statusTabs.map((tab) => {
-          const isActive = selectedStatus === tab.value;
-          return (
-            <button
-              key={tab.value}
-              onClick={() => setSelectedStatus(tab.value)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 border ${
-                isActive
-                  ? "bg-slate-900 text-white dark:bg-blue-600 dark:text-white border-transparent shadow-sm"
-                  : "bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
-              }`}
-            >
-              <span>{tab.label}</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
-                  isActive
-                    ? "bg-white/20 text-white"
-                    : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
-                }`}
-              >
-                {tab.count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
 
       {/* Empty State */}
       {filtered.length === 0 && (
@@ -413,5 +466,6 @@ export function IpoTable({
         </div>
       )}
     </div>
-  );
+  </div>
+);
 }
