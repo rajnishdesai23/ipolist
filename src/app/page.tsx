@@ -73,16 +73,16 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Minimal Text & Actions */}
           <div className="lg:col-span-7 space-y-5 text-left">
-            {/* Title */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white font-heading leading-tight sm:leading-none">
-              Track <span className="text-blue-600 dark:text-blue-400">IPO GMP</span>, Allotment &amp; More
+            {/* Title — Sleek, Thinner, Modern Typography */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+              Track <span className="text-blue-600 dark:text-blue-500 font-normal">IPO GMP</span>, Allotment &amp; More
             </h1>
 
             {/* CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 href="/ipo"
-                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold px-7 py-3.5 rounded-2xl text-sm transition-all shadow-md shadow-blue-600/20 hover:scale-[1.02]"
+                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-normal px-7 py-3 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.01]"
               >
                 <span>Explore IPOs</span>
                 <ArrowRight className="w-4 h-4" />
@@ -90,7 +90,7 @@ export default async function HomePage() {
 
               <Link
                 href="/ipo-allotment"
-                className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-extrabold px-7 py-3.5 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.02]"
+                className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-normal px-7 py-3 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.01]"
               >
                 <span>Check Allotment</span>
               </Link>
@@ -103,7 +103,7 @@ export default async function HomePage() {
                   <Zap className="w-5 h-5 fill-blue-500/20" />
                 </div>
                 <div>
-                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Live GMP</span>
+                  <span className="font-medium text-xs text-slate-800 dark:text-slate-200 block">Live GMP</span>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">Updates</span>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default async function HomePage() {
                   <CheckCircle2 className="w-5 h-5 fill-emerald-500/20" />
                 </div>
                 <div>
-                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Allotment</span>
+                  <span className="font-medium text-xs text-slate-800 dark:text-slate-200 block">Allotment</span>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">Status</span>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default async function HomePage() {
                   <Calculator className="w-5 h-5 fill-purple-500/20" />
                 </div>
                 <div>
-                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Financial</span>
+                  <span className="font-medium text-xs text-slate-800 dark:text-slate-200 block">Financial</span>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">Calculators</span>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default async function HomePage() {
                   <Layers className="w-5 h-5 fill-amber-500/20" />
                 </div>
                 <div>
-                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Mainboard</span>
+                  <span className="font-medium text-xs text-slate-800 dark:text-slate-200 block">Mainboard</span>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">&amp; SME</span>
                 </div>
               </div>
@@ -163,7 +163,7 @@ export default async function HomePage() {
               <Flame className="w-5 h-5 fill-amber-500" />
             </div>
             <div>
-              <h2 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
                 Top Grey Market Premium (GMP) Gainers
               </h2>
               <p className="text-xs text-slate-500">Highest expected listing returns right now</p>
@@ -171,7 +171,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/ipo-gmp"
-            className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>Full Board</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -191,20 +191,20 @@ export default async function HomePage() {
                 <div className="space-y-1">
                   <Link
                     href={`/ipo/${ipo.slug}`}
-                    className="font-bold text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
+                    className="font-semibold text-sm text-slate-900 dark:text-white hover:text-blue-600 line-clamp-1"
                   >
                     {ipo.name}
                   </Link>
                   <div className="text-xs text-slate-500 flex items-center gap-2">
                     <span>Price: {ipo.priceBand?.raw || formatINR(ipo.priceBand?.max || 0)}</span>
                     <span>•</span>
-                    <span className="text-emerald-600 font-semibold">
+                    <span className="text-emerald-600 font-medium">
                       Exp: {ipo.gmp?.estListingText || (ipo.gmp?.expectedListingPrice ? formatINR(ipo.gmp.expectedListingPrice) : "TBA")}
                     </span>
                   </div>
                 </div>
                 <div
-                  className={`px-2.5 sm:px-3 py-1 rounded-xl text-xs font-extrabold ${
+                  className={`px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold ${
                     isPositive
                       ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
                       : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
@@ -223,7 +223,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
+            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
               Current & Upcoming IPOs in India
             </h2>
           </div>
@@ -231,13 +231,13 @@ export default async function HomePage() {
           <div className="flex items-center gap-2 flex-wrap">
             <Link
               href="/ipo-gmp"
-              className="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors"
+              className="px-3 py-1.5 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors"
             >
               Live GMP Board
             </Link>
             <Link
               href="/ipo-allotment"
-              className="px-3 py-1.5 rounded-xl text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors"
+              className="px-3 py-1.5 rounded-xl text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors"
             >
               Allotment Checker
             </Link>
@@ -257,13 +257,13 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
+            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
               Latest IPO Reviews & Educational Guides
             </h2>
           </div>
           <Link
             href="/blog"
-            className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>All Articles</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -281,7 +281,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-10 shadow-card space-y-6 sm:space-y-8">
           <div className="max-w-3xl space-y-2 sm:space-y-3">
-            <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
+            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
               Frequently Asked Questions (FAQs) & Market Guide
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
@@ -295,7 +295,7 @@ export default async function HomePage() {
                 key={idx}
                 className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 space-y-2"
               >
-                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-start gap-2">
+                <h3 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white flex items-start gap-2">
                   <HelpCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>{faq.question}</span>
                 </h3>
