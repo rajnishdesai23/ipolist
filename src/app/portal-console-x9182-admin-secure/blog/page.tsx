@@ -7,6 +7,7 @@ import { BlogPost, BlogCategory } from "@/types/blog";
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { PageLoader } from "@/components/ui/PageLoader";
 import { formatDate } from "@/lib/utils/formatters";
+import { formatBlogContent } from "@/lib/utils/blogFormatter";
 
 export default function AdminBlogPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -119,6 +120,26 @@ export default function AdminBlogPage() {
     }
   };
 
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const insertSnippet = (prefix: string, suffix: string = "", placeholder: string = "") => {
+    if (!textareaRef.current) {
+      setContent((prev) => prev + prefix + placeholder + suffix);
+      return;
+    }
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end) || placeholder;
+    const newContent = content.substring(0, start) + prefix + selectedText + suffix + content.substring(end);
+    setContent(newContent);
+    setTimeout(() => {
+      textarea.focus();
+      const newCursor = start + prefix.length + selectedText.length;
+      textarea.setSelectionRange(newCursor, newCursor);
+    }, 20);
+  };
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -148,7 +169,7 @@ export default function AdminBlogPage() {
 
         {loading ? (
           <div className="py-12 flex justify-center">
-            <PageLoader message="Loading Blog Articles..." subMessage="Fetching editorial guides and fundamental reviews" />
+            <PageLoader message="Loading Articles..." />
           </div>
         ) : (
           <div className="divide-y divide-slate-800">
@@ -222,7 +243,7 @@ export default function AdminBlogPage() {
                     required
                     value={title}
                     onChange={(e) => handleTitleChange(e.target.value)}
-                    placeholder="e.g. Hero Motors IPO Review: Apply or Avoid?"
+                    placeholder="e.g. How to Apply for an IPO in India"
                     className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold"
                   />
                 </div>
@@ -277,7 +298,7 @@ export default function AdminBlogPage() {
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-slate-300 font-bold">Article Content (HTML)</label>
+                  <label className="text-slate-300 font-bold">Article Content</label>
                   <div className="flex gap-1">
                     <button
                       type="button"
@@ -291,38 +312,126 @@ export default function AdminBlogPage() {
                       onClick={() => setPreviewMode(true)}
                       className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${previewMode ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
                     >
-                      👁 Preview
+                      👁 Live Preview
                     </button>
                   </div>
                 </div>
+
+                {/* Quick Formatting Toolbar */}
+                {!previewMode && (
+                  <div className="flex flex-wrap items-center gap-1.5 p-2 bg-slate-800/80 border border-slate-700 rounded-t-xl text-[11px]">
+                    <span className="text-slate-400 font-bold px-1 text-[10px] uppercase">Format:</span>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<h2>", "</h2>\n\n", "Section Heading")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold"
+                      title="Insert H2 Heading"
+                    >
+                      H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<h3>", "</h3>\n\n", "Subheading")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold"
+                      title="Insert H3 Heading"
+                    >
+                      H3
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<strong>", "</strong>", "bold text")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold"
+                      title="Bold"
+                    >
+                      B
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<em>", "</em>", "italic text")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded italic font-serif"
+                      title="Italic"
+                    >
+                      I
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<ul>\n  <li>", "</li>\n  <li>Point 2</li>\n</ul>\n\n", "Point 1")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded"
+                      title="Bullet List"
+                    >
+                      • List
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<ol>\n  <li>", "</li>\n  <li>Step 2</li>\n</ol>\n\n", "Step 1")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded"
+                      title="Numbered List"
+                    >
+                      1. Steps
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('<div class="callout-card">\n  <strong>💡 Key Takeaway:</strong> ', '\n</div>\n\n', 'Write important note or quick answer here...')}
+                      className="px-2 py-1 bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700 rounded font-semibold"
+                      title="Highlight Box"
+                    >
+                      💡 Tip Card
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('<div class="step-card">\n  <div class="flex items-center gap-2.5 mb-2">\n    <span class="step-badge">', '</span>\n    <h3 class="!m-0 text-base font-bold">Step Title</h3>\n  </div>\n  <p>Step instruction details here...</p>\n</div>\n\n', '01')}
+                      className="px-2 py-1 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 border border-indigo-700 rounded font-semibold"
+                      title="Step Box with Badge"
+                    >
+                      📋 Step Box
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('<div class="my-2 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 font-semibold text-xs flex items-center gap-2"><span>✓</span><span>', '</span></div>\n\n', 'Shares Allotted')}
+                      className="px-2 py-1 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 border border-emerald-700 rounded font-semibold"
+                      title="Checkmark Pill"
+                    >
+                      ✓ Status
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet("<p>", "</p>\n\n", "Paragraph content here...")}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded"
+                      title="Paragraph"
+                    >
+                      ¶ P
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('<table class="w-full">\n  <thead>\n    <tr><th>Header 1</th><th>Header 2</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Value 1</td><td>Value 2</td></tr>\n  </tbody>\n</table>\n\n')}
+                      className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded"
+                      title="Table"
+                    >
+                      Table
+                    </button>
+                  </div>
+                )}
+
                 {previewMode ? (
                   <div
-                    className="w-full min-h-[220px] max-h-[360px] overflow-y-auto px-4 py-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-700 text-slate-800 dark:text-slate-100 text-sm leading-relaxed prose prose-slate max-w-none"
+                    className="w-full min-h-[260px] max-h-[380px] overflow-y-auto px-5 py-4 rounded-xl bg-white dark:bg-slate-950 border border-slate-700 blog-article-content shadow-inner"
                     dangerouslySetInnerHTML={{
-                      __html: (() => {
-                        const c = content || "<p class='text-slate-400 italic'>Nothing to preview yet…</p>";
-                        if (/<[a-z][\s\S]*>/i.test(c)) return c;
-                        return c
-                          .replace(/^### (.*?)$/gm, "<h3>$1</h3>")
-                          .replace(/^## (.*?)$/gm, "<h2>$1</h2>")
-                          .replace(/^# (.*?)$/gm, "<h1>$1</h1>")
-                          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-                          .replace(/\*(.*?)\*/g, "<em>$1</em>")
-                          .replace(/\n\n/g, "</p><p>")
-                          .replace(/^(?!<)(.+)$/gm, "<p>$1</p>");
-                      })(),
+                      __html: formatBlogContent(content),
                     }}
                   />
                 ) : (
                   <textarea
-                    rows={10}
+                    ref={textareaRef}
+                    rows={12}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder={"Write HTML content:\n<h2>Introduction</h2>\n<p>Your article content here...</p>\n<ul><li>Point 1</li><li>Point 2</li></ul>"}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono text-xs leading-relaxed resize-y"
+                    placeholder={"Write or paste content. You can write HTML tags (<p>, <h2>, <ul>) or standard text and use the toolbar above to style sections!"}
+                    className="w-full px-3 py-2 rounded-b-xl bg-slate-800 border border-slate-700 text-white font-mono text-xs leading-relaxed resize-y focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 )}
-                <p className="text-[10px] text-slate-500 mt-1">Supports full HTML. Use &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, etc. Use Preview to verify before publishing.</p>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Use the toolbar buttons above to format headings, bullet points, step badges, and tip cards. Click &quot;Live Preview&quot; to see the exact styled layout before publishing.
+                </p>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">

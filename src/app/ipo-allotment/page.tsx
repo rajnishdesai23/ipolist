@@ -1,13 +1,11 @@
 import React from "react";
 import { Metadata } from "next";
-import Link from "next/link";
-import { CheckCircle, ExternalLink, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { CheckCircle, ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
 import { getAllIpos } from "@/lib/data/ipoRepository";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
-import { getRegistrarPortalUrl } from "@/lib/utils/registrar";
-import { IpoLogo } from "@/components/ui/IpoLogo";
+import { IpoAllotmentTable } from "@/components/ipo/IpoAllotmentTable";
 
 export const metadata: Metadata = {
   title: "IPO Allotment Status Check Online — Direct KFintech, Link Intime & Bigshare Links",
@@ -19,15 +17,6 @@ export const revalidate = 60;
 
 export default async function IpoAllotmentPage() {
   const ipos = await getAllIpos();
-
-  // Sort IPOs: Allotment OUT first, Allotment Awaited below
-  const sortedAllotmentIpos = [...ipos].sort((a, b) => {
-    const isAOut = a.allotment?.status === "OUT" || a.status === "CLOSED";
-    const isBOut = b.allotment?.status === "OUT" || b.status === "CLOSED";
-    if (isAOut && !isBOut) return -1;
-    if (!isAOut && isBOut) return 1;
-    return 0;
-  });
 
   const registrars = [
     {
@@ -82,13 +71,19 @@ export default async function IpoAllotmentPage() {
 
         <LeaderboardAd />
 
-        {/* Official Registrar Direct Portals */}
-        <div className="space-y-3">
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-heading flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-blue-600" />
-            <span>Official Registrar Direct Portals</span>
-          </h2>
-          
+        {/* 1. Allotment Status Table (OUT First) with Download Option placed prominently at top */}
+        <IpoAllotmentTable ipos={ipos} />
+
+        {/* 2. Official Registrar Direct Portals (5 Options kept downward as requested) */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-heading flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-blue-600" />
+              <span>Official Registrar Direct Portals</span>
+            </h2>
+            <span className="text-xs font-semibold text-slate-400">5 Direct Registrar Links</span>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {registrars.map((reg) => (
               <a
@@ -120,91 +115,9 @@ export default async function IpoAllotmentPage() {
           </div>
         </div>
 
-        {/* Sorted Allotment Status Table: Allotment OUT First, Awaited Below */}
-        <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-card p-5 sm:p-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-heading flex items-center gap-2">
-                <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
-                <span>Allotment Status by IPO (OUT First)</span>
-              </h2>
-              <p className="text-xs text-slate-500">
-                IPOs with allotment declared are listed at the top
-              </p>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto rounded-2xl border border-slate-100 dark:border-slate-800">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 font-bold uppercase border-b border-slate-200 dark:border-slate-800">
-                  <th className="py-3.5 px-4">IPO Company</th>
-                  <th className="py-3.5 px-4">Registrar</th>
-                  <th className="py-3.5 px-4">Allotment Date</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4 text-right">Direct Portal Link</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {sortedAllotmentIpos.map((ipo) => {
-                  const isOut = ipo.allotment?.status === "OUT" || ipo.status === "CLOSED";
-                  const portalUrl = getRegistrarPortalUrl(ipo.registrar?.name, ipo.allotment?.links?.[0]?.url || ipo.registrar?.website);
-
-                  return (
-                    <tr
-                      key={ipo.id}
-                      className={`transition-colors ${
-                        isOut
-                          ? "bg-purple-50/20 dark:bg-purple-950/10 hover:bg-purple-50/40"
-                          : "hover:bg-slate-50/50 dark:hover:bg-slate-800/40"
-                      }`}
-                    >
-                      <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
-                        <div className="flex items-center gap-2.5">
-                          <IpoLogo name={ipo.name} logoUrl={ipo.logoUrl} size="sm" />
-                          <Link href={`/ipo/${ipo.slug}`} className="hover:text-blue-600 line-clamp-1">
-                            {ipo.name}
-                          </Link>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                        {ipo.registrar?.name || "Registrar Server"}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400 font-medium">
-                        {ipo.dates?.allotment || "TBA"}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                            isOut
-                              ? "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-200"
-                              : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200"
-                          }`}
-                        >
-                          {isOut ? "ALLOTMENT OUT" : "AWAITED"}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <a
-                          href={portalUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm"
-                        >
-                          <span>Check Allotment</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
         <BrokerCtaCard variant="horizontal" broker="groww" />
       </div>
     </div>
   );
 }
+
