@@ -13,6 +13,7 @@ export default function AdminBlogPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false);
 
   // Form State
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -275,14 +276,53 @@ export default function AdminBlogPage() {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Article Content (Markdown / HTML)</label>
-                <textarea
-                  rows={8}
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write full article analysis here..."
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono text-xs"
-                />
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-slate-300 font-bold">Article Content (HTML)</label>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode(false)}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${!previewMode ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
+                    >
+                      ✏️ Write
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode(true)}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${previewMode ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
+                    >
+                      👁 Preview
+                    </button>
+                  </div>
+                </div>
+                {previewMode ? (
+                  <div
+                    className="w-full min-h-[220px] max-h-[360px] overflow-y-auto px-4 py-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-700 text-slate-800 dark:text-slate-100 text-sm leading-relaxed prose prose-slate max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: (() => {
+                        const c = content || "<p class='text-slate-400 italic'>Nothing to preview yet…</p>";
+                        if (/<[a-z][\s\S]*>/i.test(c)) return c;
+                        return c
+                          .replace(/^### (.*?)$/gm, "<h3>$1</h3>")
+                          .replace(/^## (.*?)$/gm, "<h2>$1</h2>")
+                          .replace(/^# (.*?)$/gm, "<h1>$1</h1>")
+                          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+                          .replace(/\n\n/g, "</p><p>")
+                          .replace(/^(?!<)(.+)$/gm, "<p>$1</p>");
+                      })(),
+                    }}
+                  />
+                ) : (
+                  <textarea
+                    rows={10}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder={"Write HTML content:\n<h2>Introduction</h2>\n<p>Your article content here...</p>\n<ul><li>Point 1</li><li>Point 2</li></ul>"}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono text-xs leading-relaxed resize-y"
+                  />
+                )}
+                <p className="text-[10px] text-slate-500 mt-1">Supports full HTML. Use &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, etc. Use Preview to verify before publishing.</p>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">

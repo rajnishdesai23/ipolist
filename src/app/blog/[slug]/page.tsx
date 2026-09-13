@@ -119,15 +119,27 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
           </div>
         )}
 
-        {/* Article Body */}
-        <div className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-200 text-sm sm:text-base leading-relaxed space-y-4">
+        {/* Article Body — renders HTML directly if authored as HTML, or converts markdown */}
+        <div className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-200 text-sm sm:text-base leading-relaxed prose-headings:font-heading prose-h2:text-2xl prose-h2:font-extrabold prose-h3:text-xl prose-h3:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900 dark:prose-strong:text-white prose-li:marker:text-blue-500 prose-blockquote:border-l-blue-500">
           <div
             dangerouslySetInnerHTML={{
-              __html: post.content
-                .replace(/\n\n/g, "</p><p>")
-                .replace(/## (.*?)\n/g, "<h2 class='text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-3 font-heading'>$1</h2>")
-                .replace(/### (.*?)\n/g, "<h3 class='text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2'>$1</h3>")
-                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"),
+              __html: (() => {
+                const c = post.content || "";
+                // If content already contains HTML tags, render directly
+                if (/<[a-z][\s\S]*>/i.test(c)) return c;
+                // Otherwise treat as Markdown and do basic conversion
+                return c
+                  .replace(/^### (.*?)$/gm, "<h3>$1</h3>")
+                  .replace(/^## (.*?)$/gm, "<h2>$1</h2>")
+                  .replace(/^# (.*?)$/gm, "<h1>$1</h1>")
+                  .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                  .replace(/\*(.*?)\*/g, "<em>$1</em>")
+                  .replace(/`(.*?)`/g, "<code>$1</code>")
+                  .replace(/^\- (.*?)$/gm, "<li>$1</li>")
+                  .replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>")
+                  .replace(/\n\n/g, "</p><p>")
+                  .replace(/^(?!<)(.+)$/gm, "<p>$1</p>");
+              })(),
             }}
           />
         </div>
