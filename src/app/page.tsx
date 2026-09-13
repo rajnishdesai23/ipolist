@@ -10,6 +10,7 @@ import {
   Flame,
   Search,
   HelpCircle,
+  Zap,
 } from "lucide-react";
 import { getAllIpos, getLiveIpos, getUpcomingIpos, getTopGmpIpos } from "@/lib/data/ipoRepository";
 import { getRecentBlogs } from "@/lib/data/blogRepository";
@@ -67,89 +68,98 @@ export default async function HomePage() {
         />
       )}
 
-      {/* Premium Modern Hero Section (Without metric number boxes) */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-12 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        {/* Glow & Mesh background graphics */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-600/20 via-indigo-600/10 to-transparent pointer-events-none" />
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+      {/* Clean Minimal Hero Section */}
+      <section className="relative bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-10 lg:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80 dark:border-slate-800 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Minimal Text & Actions */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            {/* Tagline */}
+            <div className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+              SIMPLE &bull; REAL-TIME &bull; RELIABLE
+            </div>
 
-        <div className="relative max-w-5xl mx-auto text-center space-y-6">
-          {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/30 text-blue-300 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-inner backdrop-blur-md">
-            <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span>Real-Time IPO & GMP Intelligence Platform</span>
+            {/* Title */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white font-heading leading-tight sm:leading-none">
+              Track <span className="text-blue-600 dark:text-blue-400">IPO GMP</span>, Allotment &amp; More
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal">
+              Get real-time updates, allotment status, key dates and everything about IPOs — all in one place.
+            </p>
+
+            {/* CTAs */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <Link
+                href="/ipo"
+                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold px-7 py-3.5 rounded-2xl text-sm transition-all shadow-md shadow-blue-600/20 hover:scale-[1.02]"
+              >
+                <span>Explore IPOs</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/ipo-allotment"
+                className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-extrabold px-7 py-3.5 rounded-2xl text-sm transition-all shadow-sm hover:scale-[1.02]"
+              >
+                <span>Check Allotment</span>
+              </Link>
+            </div>
+
+            {/* 4 Minimal Features Bottom Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-200/80 dark:border-slate-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-5 h-5 fill-blue-500/20" />
+                </div>
+                <div>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Live GMP</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Updates</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle2 className="w-5 h-5 fill-emerald-500/20" />
+                </div>
+                <div>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Allotment</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Status</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
+                  <Calendar className="w-5 h-5 fill-purple-500/20" />
+                </div>
+                <div>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">IPO</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Calendar</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
+                  <Layers className="w-5 h-5 fill-amber-500/20" />
+                </div>
+                <div>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">Mainboard</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">&amp; SME</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-heading leading-tight sm:leading-none">
-            Track Real-Time <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">IPO GMP</span> & Instant Allotment
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
-            Instant Grey Market Premium updates, market lot details, subscription status, and direct registrar allotment checking for Mainboard & SME IPOs.
-          </p>
-
-          {/* Action CTAs & Quick Feature Shortcuts (Without Numbers) */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto">
-            <Link
-              href="/ipo-gmp"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-6 py-3.5 rounded-2xl text-sm transition-all shadow-lg shadow-blue-600/30 hover:scale-[1.02]"
-            >
-              <Flame className="w-4 h-4 text-amber-300 fill-amber-300" />
-              <span>Explore Live GMP Board</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href="/ipo-allotment"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-extrabold px-6 py-3.5 rounded-2xl text-sm transition-all shadow-md hover:scale-[1.02]"
-            >
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Check Allotment Status</span>
-            </Link>
-          </div>
-
-          {/* Value Proposition Feature Cards (No raw numbers) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                <Flame className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-extrabold text-xs text-white block">Live GMP Updates</span>
-                <span className="text-[10px] text-slate-400 font-medium">Daily listing gain trends</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-extrabold text-xs text-white block">Allotment Verification</span>
-                <span className="text-[10px] text-slate-400 font-medium">Official registrar links</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center flex-shrink-0">
-                <Layers className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-extrabold text-xs text-white block">Mainboard & SME</span>
-                <span className="text-[10px] text-slate-400 font-medium">Complete IPO directory</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-slate-800/60 backdrop-blur-md border border-slate-700/60 p-3.5 rounded-2xl text-left hover:border-slate-600 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
-                <Calendar className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-extrabold text-xs text-white block">Key Dates Tracker</span>
-                <span className="text-[10px] text-slate-400 font-medium">Open, Close & Listing</span>
-              </div>
+          {/* Right Column: 3D Illustration Asset (Hidden on mobile/small screens, visible on Desktop) */}
+          <div className="hidden lg:flex lg:col-span-5 items-center justify-center relative">
+            <div className="relative w-full max-w-lg aspect-square">
+              <img
+                src="/heroimage.png"
+                alt="IPO List Live GMP & Allotment Tracking Illustration"
+                loading="eager"
+                decoding="async"
+                className="w-full h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
+              />
             </div>
           </div>
         </div>
