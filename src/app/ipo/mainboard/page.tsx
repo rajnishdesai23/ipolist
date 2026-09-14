@@ -8,9 +8,12 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "Mainboard IPO List India | Live GMP, Reviews & Dates",
+  title: "Mainboard IPO List India: GMP & Dates",
   description:
     "Check all Mainboard IPOs listing on NSE & BSE. Compare price bands, issue sizes, GMP trends, retail quotas, and basis of allotment.",
+  alternates: {
+    canonical: "/ipo/mainboard",
+  },
 };
 
 export const revalidate = 60;

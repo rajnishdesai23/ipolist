@@ -44,12 +44,13 @@ export function Navbar({ ipos = [], blogs = [] }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-18 gap-3">
             {/* Logo */}
-            <Link href="/" className="flex items-center flex-shrink-0 group">
+            <Link href="/" aria-label="IPO List Home" className="flex items-center flex-shrink-0 group">
               <img
                 src="/ipolistlogo.png"
                 alt="IPO List"
                 className="h-9 sm:h-11 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
               />
+              <span className="sr-only">IPO List Home</span>
             </Link>
 
             {/* Desktop Navigation Links */}

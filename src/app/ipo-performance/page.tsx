@@ -9,9 +9,12 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { formatINR } from "@/lib/utils/formatters";
 
 export const metadata: Metadata = {
-  title: "IPO Listing Performance Tracker | Gain & Listing Price Analysis",
+  title: "IPO Listing Performance Tracker & Returns",
   description:
     "Track historical IPO listing gains, opening prices, current market performance, and return on investment for Mainboard & SME issues.",
+  alternates: {
+    canonical: "/ipo-performance",
+  },
 };
 
 export const revalidate = 60;

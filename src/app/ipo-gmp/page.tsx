@@ -16,7 +16,7 @@ import {
 } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "IPO GMP Today 2026 | Live Grey Market Premium for Mainboard & SME IPOs",
+  title: "IPO GMP Today 2026: Live Grey Market Premium",
   description:
     "Check live IPO GMP (Grey Market Premium) today in India. Daily updated expected listing gains, Kostak rates, Subject to Sauda, and price bands for latest Mainboard & SME IPOs.",
   keywords: [

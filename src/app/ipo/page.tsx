@@ -9,9 +9,12 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "All IPOs in India (2026) | Mainboard & SME IPO List",
+  title: "All IPOs 2026: Mainboard & SME List",
   description:
     "Complete list of all Mainboard and SME IPOs in India. Check live GMP, price band, lot size, subscription status, issue dates, and allotment links.",
+  alternates: {
+    canonical: "/ipo",
+  },
 };
 
 export const revalidate = 60; // Cache IPO listing for 60 seconds

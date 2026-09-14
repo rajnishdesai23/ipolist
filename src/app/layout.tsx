@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
     default: SITE_CONFIG.title,
-    template: "%s | IPO List India",
+    template: "%s | IPO List",
   },
   description: SITE_CONFIG.description,
   keywords: [
@@ -76,9 +76,6 @@ export const metadata: Metadata = {
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
     creator: SITE_CONFIG.twitterHandle,
-  },
-  alternates: {
-    canonical: "/",
   },
   icons: {
     icon: "/favicon.png",

@@ -4,14 +4,14 @@ import Link from "next/link";
 import { ShieldCheck, Database, Clock, Scale, Mail, HelpCircle, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Data Sourcing & Verification Methodology | IPO Ji Research Desk",
-  description: "Learn how IPO Ji sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status in strict compliance with SEBI T+1 guidelines.",
+  title: "Data Sourcing & Research Methodology",
+  description: "Learn how IPO List sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status in strict compliance with SEBI T+1 guidelines.",
   alternates: {
     canonical: "/methodology",
   },
   openGraph: {
-    title: "Data Sourcing & Verification Methodology | IPO Ji",
-    description: "Learn how IPO Ji sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status.",
+    title: "Data Sourcing & Research Methodology | IPO List",
+    description: "Learn how IPO List sources, aggregates, and verifies real-time IPO GMP, subscription figures, and registrar allotment status.",
     url: "/methodology",
     type: "website",
   },

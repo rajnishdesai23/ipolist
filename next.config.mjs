@@ -55,6 +55,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/ipo-allotment-status",
+        destination: "/ipo-allotment",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

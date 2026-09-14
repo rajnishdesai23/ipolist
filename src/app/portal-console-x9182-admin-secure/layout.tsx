@@ -119,10 +119,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center mx-auto shadow-lg shadow-blue-500/30">
               <Lock className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-xl font-black text-white tracking-tight flex items-center justify-center gap-1.5 pt-2 font-heading">
+            <div className="text-xl font-black text-white tracking-tight flex items-center justify-center gap-1.5 pt-2 font-heading">
               <span>Admin Console Protection</span>
               <Sparkles className="w-4 h-4 text-blue-400 animate-pulse" />
-            </h1>
+            </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               Enter your master secret security password to access the IPO List control dashboard.
             </p>

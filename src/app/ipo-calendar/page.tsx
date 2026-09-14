@@ -8,9 +8,12 @@ import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 import { IpoCalendarView } from "@/components/ipo/IpoCalendarView";
 
 export const metadata: Metadata = {
-  title: "IPO Calendar 2026 | Schedule of Open, Close, Allotment & Listing Dates",
+  title: "IPO Calendar 2026: Open, Allotment & Listing",
   description:
     "Interactive IPO calendar timeline in India. Track open dates, close dates, basis of allotment, and listing schedules for all upcoming Mainboard & SME IPOs.",
+  alternates: {
+    canonical: "/ipo-calendar",
+  },
 };
 
 export const revalidate = 60;

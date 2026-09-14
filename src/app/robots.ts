@@ -5,9 +5,14 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
-      disallow: ["/portal-console-x9182-admin-secure/", "/admin/", "/api/"],
+      allow: ["/", "/api/ipo-logo/"],
+      disallow: [
+        "/portal-console-x9182-admin-secure/",
+        "/admin/",
+        "/api/admin/",
+        "/api/cron/",
+      ],
     },
-    sitemap: [`${SITE_CONFIG.url}/sitemap.xml`, `${SITE_CONFIG.url}/feed.xml`],
+    sitemap: [`${SITE_CONFIG.url}/sitemap.xml`],
   };
 }

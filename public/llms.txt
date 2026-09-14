@@ -1,0 +1,28 @@
+# IPO List India (ipolist.in)
+
+> IPO List is India's real-time financial tracking platform for Mainboard and SME Initial Public Offerings (IPOs). The platform aggregates live Grey Market Premium (GMP) rates, subscription metrics, allotment status registrar lookups, and listing gain projections.
+
+## Core Hubs & Directories
+
+- [Live IPO GMP Today](https://ipolist.in/ipo-gmp): Real-time Grey Market Premium (GMP) updates, expected listing gains, cost basis, and fire ratings.
+- [IPO Allotment Status Hub](https://ipolist.in/ipo-allotment): Official direct links and instructions for Link Intime, KFin Technologies, Bigshare Services, Purva Sharegistry, and Skyline Financial.
+- [Complete IPO Directory](https://ipolist.in/ipo): Comprehensive listing of all ongoing, upcoming, and closed Indian IPOs.
+- [Current Open IPOs](https://ipolist.in/ipo/current): Live bidding public issues currently open for retail and institutional bids.
+- [Upcoming IPOs 2026](https://ipolist.in/ipo/upcoming): Pipeline of SEBI DRHP/RHP approved public offerings scheduled to open soon.
+- [Mainboard IPOs](https://ipolist.in/ipo/mainboard): Large-cap initial public offerings listed on NSE & BSE main boards.
+- [SME IPOs](https://ipolist.in/ipo/sme): Small & Medium Enterprise public offerings listed on NSE Emerge and BSE SME platforms.
+- [IPO Subscription Numbers](https://ipolist.in/ipo-subscription): Live category-wise bidding multipliers across QIB, NII/HNI, and Retail portions.
+- [IPO Calendar 2026](https://ipolist.in/ipo-calendar): Interactive timeline of IPO opening dates, closing dates, basis of allotment, and listing dates.
+- [IPO Performance Tracker](https://ipolist.in/ipo-performance): Historical listing day returns and post-listing percentage gains.
+- [IPO Profit Calculator](https://ipolist.in/tools): Interactive lot-size, investment outlay, and estimated net profit calculator based on live GMP.
+- [IPO Guides & Reviews](https://ipolist.in/blog): In-depth editorial reviews, how-to allotment tutorials, and IPO investment strategies.
+
+## Data Structure & Taxonomy
+
+- **IPO Object Schema**: Includes company name, symbol/slug, issue type (Mainboard | SME), price band (INR), lot size, issue size (Crores), bidding dates (open, close, allotment, listing), live GMP (INR value & percentage), and registrar details.
+- **SEBI Regulatory Compliance**: Data provided on ipolist.in is strictly for educational and informational purposes. Unofficial OTC indicators such as GMP carry no exchange backing.
+
+## Machine-Readable Feeds & Sitemaps
+
+- XML Sitemap: https://ipolist.in/sitemap.xml
+- RSS Feed: https://ipolist.in/feed.xml

@@ -23,6 +23,14 @@ import { ProfitCalculator } from "@/components/tools/ProfitCalculator";
 import { generateFaqJsonLd } from "@/lib/seo/schema";
 import { formatINR, getCleanIpoDisplayName } from "@/lib/utils/formatters";
 import { IPO } from "@/types/ipo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Live IPO GMP Today & Allotment Status 2026",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export const revalidate = 60;
 

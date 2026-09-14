@@ -32,9 +32,9 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
   const registrar = ipo.registrar?.name || "Official Registrar";
   const dates = (ipo.dates?.rawRange || (ipo.dates?.open ? `${ipo.dates.open} to ${ipo.dates.close || ""}` : "TBA")).replace(/[–—]/g, " to ");
 
-  // High-CTR Dynamic Title Template under 580 pixels
-  const gmpSnippet = gmpVal > 0 ? `GMP +₹${gmpVal} (${gmpPct}%)` : "Live GMP & Review";
-  const title = `${ipo.name} IPO ${gmpSnippet} | Allotment & Review`;
+  // High-CTR Dynamic Title under 55 characters (Google truncates at 60)
+  const gmpSnippet = gmpVal > 0 ? `GMP +₹${gmpVal}` : "GMP & Review";
+  const title = `${ipo.name} IPO ${gmpSnippet}`;
 
   // Search-Intent Focused Meta Description (under 150 chars)
   const description = `${ipo.name} IPO GMP today is +₹${gmpVal} (${gmpPct > 0 ? `+${gmpPct}%` : "0%"}), expected listing at ${estListing}. Check price band ${priceBand}, dates & allotment link.`;
@@ -105,7 +105,7 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
  * Generates SEO metadata for Blog Posts & Guides
  */
 export function constructBlogMetadata(post: BlogPost): Metadata {
-  const title = post.seo?.metaTitle || `${post.title} | IPO List`;
+  const title = post.seo?.metaTitle || post.title;
   const description = post.seo?.metaDescription || post.excerpt;
   const canonicalPath = `/blog/${post.slug}`;
 

@@ -16,7 +16,7 @@ import {
 } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "IPO Allotment Status Check Online 2026 | Link Intime, KFintech & BSE Direct Links",
+  title: "IPO Allotment Status Check Online 2026",
   description:
     "Check IPO allotment status online with PAN Card or Application Number. Direct official registrar links for Link Intime, KFintech, Bigshare Services, and BSE India.",
   keywords: [

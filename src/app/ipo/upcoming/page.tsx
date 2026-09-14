@@ -8,9 +8,12 @@ import { LeaderboardAd } from "@/components/ads/LeaderboardAd";
 import { BrokerCtaCard } from "@/components/ads/BrokerCtaCard";
 
 export const metadata: Metadata = {
-  title: "Upcoming IPOs 2026 | Latest Upcoming IPO List with GMP & Dates",
+  title: "Upcoming IPOs 2026: Expected List & Dates",
   description:
     "Track all upcoming Mainboard and SME IPOs scheduled to open in India. Check price bands, issue sizes, tentative dates, and initial Grey Market Premium (GMP).",
+  alternates: {
+    canonical: "/ipo/upcoming",
+  },
 };
 
 export const revalidate = 60;
