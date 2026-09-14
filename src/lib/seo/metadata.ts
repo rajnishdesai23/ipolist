@@ -105,7 +105,14 @@ export function constructIpoMetadata(ipo: IPO): Metadata {
  * Generates SEO metadata for Blog Posts & Guides
  */
 export function constructBlogMetadata(post: BlogPost): Metadata {
-  const title = post.seo?.metaTitle || post.title;
+  const rawTitle = post.seo?.metaTitle || post.title;
+  // Keep title concise so total title + brand suffix remains under 56 characters
+  const title =
+    rawTitle.length > 45 && rawTitle.includes(":")
+      ? rawTitle.split(":")[0].trim()
+      : rawTitle.length > 45
+      ? `${rawTitle.slice(0, 42).trim()}...`
+      : rawTitle;
   const description = post.seo?.metaDescription || post.excerpt;
   const canonicalPath = `/blog/${post.slug}`;
 

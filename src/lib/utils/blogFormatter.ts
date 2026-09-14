@@ -24,10 +24,10 @@ export function formatBlogContent(content: string = ""): string {
   // Step 1: Normalize line breaks
   text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-  // Step 2: Markdown headers
+  // Step 2: Markdown headers (use h2/h3/h4 in content body to preserve single semantic h1 for article title)
   text = text.replace(/^###\s+(.*?)$/gm, "<h3>$1</h3>");
   text = text.replace(/^##\s+(.*?)$/gm, "<h2>$1</h2>");
-  text = text.replace(/^#\s+(.*?)$/gm, "<h1>$1</h1>");
+  text = text.replace(/^#\s+(.*?)$/gm, "<h2>$1</h2>");
 
   // Step 3: Bold & Italic
   text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");

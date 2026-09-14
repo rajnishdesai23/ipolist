@@ -276,7 +276,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                     <a
                       href={portalUrl}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="nofollow noopener noreferrer"
                       aria-label={`Check ${displayName} Allotment Status`}
                       className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm group-hover:shadow-md w-full sm:w-auto"
                     >
@@ -361,7 +361,7 @@ export function IpoAllotmentTable({ ipos }: IpoAllotmentTableProps) {
                         <a
                           href={portalUrl}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="nofollow noopener noreferrer"
                           aria-label={`Direct Portal ${displayName} Allotment`}
                           className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm"
                         >

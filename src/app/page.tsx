@@ -27,6 +27,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Live IPO GMP Today & Allotment Status 2026",
+  description:
+    "India's real-time IPO tracking platform. Check live Grey Market Premium (GMP) today, allotment status direct links, subscription numbers, and dates for Mainboard & SME IPOs.",
   alternates: {
     canonical: "/",
   },

@@ -96,6 +96,21 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/ipo-calendar" className="hover:text-blue-400 transition-colors">
+                  IPO Calendar 2026
+                </Link>
+              </li>
+              <li>
+                <Link href="/ipo-subscription" className="hover:text-blue-400 transition-colors">
+                  Live IPO Subscription
+                </Link>
+              </li>
+              <li>
+                <Link href="/methodology" className="hover:text-blue-400 transition-colors">
+                  Data Methodology
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="hover:text-blue-400 transition-colors">
                   IPO Reviews & Guides
                 </Link>
@@ -112,7 +127,7 @@ export function Footer() {
                   <a
                     href={r.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="nofollow noopener noreferrer"
                     className="hover:text-blue-400 transition-colors inline-flex items-center gap-1"
                   >
                     <span>{r.name}</span>
