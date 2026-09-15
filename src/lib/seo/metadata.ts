@@ -18,6 +18,7 @@ export const SITE_CONFIG = {
   url: getSiteUrl(),
   ogImage: "/og-image.png",
   twitterHandle: "@IPOListIndia",
+  adsenseClientId: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-5634761133211089",
 };
 
 /**
